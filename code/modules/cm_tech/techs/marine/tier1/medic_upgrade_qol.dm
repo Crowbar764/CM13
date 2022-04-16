@@ -5,6 +5,7 @@
 	droppod_name = "Medic CZSP"
 
 	flags = TREE_FLAG_MARINE
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 15
 	tier = /datum/tier/one

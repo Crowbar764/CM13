@@ -9,8 +9,6 @@
 	var/list/unlocked_techs = list() // Unlocked techs (single use)
 	var/list/all_techs = list() // All techs that can be unlocked. Each sorted into tiers
 
-	var/points = INITIAL_STARTING_POINTS
-
 	var/background_icon = "background"
 	var/background_icon_locked = "marine"
 	var/turf/entrance
@@ -19,17 +17,12 @@
 	var/datum/tier/tier = /datum/tier/free
 	var/list/datum/tier/tree_tiers = TECH_TIER_GAMEPLAY
 
-	// Resource variables
-	var/resource_icon_state = ""
-	var/resource_make_sound = 'sound/machines/click.ogg'
-	var/resource_destroy_sound = 'sound/machines/click.ogg'
-
-	var/resource_break_sound = 'sound/machines/click.ogg'
-	var/resource_harvest_sound = 'sound/machines/click.ogg'
-
-	var/resource_receive_process = FALSE
-
-	var/obj/structure/resource_node/passive_node
+	// Tech points
+	var/points = INITIAL_STARTING_POINTS // Current points.
+	var/points_mult = 1.0 // Factor we earn points by. Increases based on current unlocked tech tier.
+	var/resources_per_second = PASSIVE_INCREASE_AMOUNT // The rate points are passively earned.
+	var/passive_gain_enabled = FALSE // Should we passively earn points? Start disabled, we only start getting points after first drop.
+	var/next_passive_increase = PASSIVE_INCREASE_INTERVAL // How long until the rate we passively earn points increases.
 
 	// UI Variables
 	var/ui_theme
@@ -48,7 +41,7 @@
 	if(!zlevel)
 		return
 
-	passive_node.make_active()
+	//passive_node.make_active()
 
 	var/longest_tier = 0
 	for(var/tier in all_techs)
@@ -103,19 +96,20 @@
 	points = max(number, 0)
 
 /datum/techtree/proc/add_points(var/number)
-	set_points(points + number)
+	set_points(points + (number * points_mult))
+
+/datum/techtree/proc/spend_points(var/number)
+	set_points(points - number)
 
 /datum/techtree/proc/can_use_points(var/number)
 	if(number <= points)
 		return TRUE
-	else
-		return FALSE
+	return FALSE
 
 /datum/techtree/proc/check_and_use_points(var/number)
 	if(!can_use_points(number))
 		return FALSE
-
-	add_points(-number)
+	spend_points(number)
 	return TRUE
 
 /datum/techtree/proc/has_access(var/mob/M, var/access_required)
@@ -177,3 +171,21 @@
 
 /datum/techtree/proc/can_attack(var/mob/living/carbon/H)
 	return TRUE
+
+/// Triggered just after a tier change
+/datum/techtree/proc/on_tier_change(datum/tier/oldtier)
+	return
+
+// Passive gain increases over time.
+/datum/techtree/proc/passive_gain()
+	if (!passive_gain_enabled)
+		return
+
+	message_admins("PASSIVE GAIN STARTING...:")
+
+	if (next_passive_increase < world.time)
+		resources_per_second += PASSIVE_INCREASE_AMOUNT
+		next_passive_increase = world.time + PASSIVE_INCREASE_INTERVAL
+		message_admins("resources_per_second increase to [resources_per_second] (+ [PASSIVE_INCREASE_AMOUNT])")
+
+	add_points(resources_per_second)

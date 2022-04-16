@@ -564,6 +564,9 @@
 		if(mutation_type != "Normal")
 			to_chat(user, "It has specialized into a [mutation_type].")
 
+	if(stat == DEAD && (world.time < (timeofdeath + 2 MINUTES)))
+		to_chat(user, SPAN_NOTICE("This corpse has recently died. You'll need to wait about [DisplayTimeText(timeofdeath + 2 MINUTES - world.time, 1)] before you can move it."))
+
 	return
 
 /mob/living/carbon/Xenomorph/Destroy()
@@ -645,6 +648,9 @@
 	return ..()
 
 /mob/living/carbon/Xenomorph/pull_response(mob/puller)
+	if(stat == DEAD && (world.time < (timeofdeath + 2 MINUTES)))
+		to_chat(puller, SPAN_WARNING("[src] is still covered in acid. You'll need to wait about [DisplayTimeText(timeofdeath + 2 MINUTES - world.time, 1)] before you can safely pull it."))
+		return FALSE
 	if(stat != DEAD && has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
 		var/mob/living/carbon/human/H = puller
 		if(H.ally_of_hivenumber(hivenumber))

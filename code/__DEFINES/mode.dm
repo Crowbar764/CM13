@@ -116,11 +116,11 @@ var/list/be_special_flags = list(
 //=================================================
 
 //Role defines, specifically lists of roles for job bans, crew manifests and the like.
-var/global/list/ROLES_COMMAND 		= list(JOB_CO, JOB_XO, JOB_SO, JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_POLICE, JOB_POLICE_CADET, JOB_CORPORATE_LIAISON, JOB_CHIEF_REQUISITION, JOB_CHIEF_ENGINEER, JOB_CMO, JOB_CHIEF_POLICE, JOB_SEA, JOB_SYNTH, JOB_WARDEN)
+var/global/list/ROLES_COMMAND 		= list(JOB_CO, JOB_XO, JOB_SO, JOB_INTEL, JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_POLICE, JOB_POLICE_CADET, JOB_CORPORATE_LIAISON, JOB_CHIEF_REQUISITION, JOB_CHIEF_ENGINEER, JOB_CMO, JOB_CHIEF_POLICE, JOB_SEA, JOB_SYNTH, JOB_WARDEN)
 
-#define ROLES_OFFICERS				list(JOB_CO, JOB_XO, JOB_SO, JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_SEA, JOB_CORPORATE_LIAISON, JOB_SYNTH, JOB_CHIEF_POLICE, JOB_WARDEN, JOB_POLICE, JOB_POLICE_CADET)
+#define ROLES_OFFICERS				list(JOB_CO, JOB_XO, JOB_SO, JOB_INTEL, JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_SEA, JOB_CORPORATE_LIAISON, JOB_SYNTH, JOB_CHIEF_POLICE, JOB_WARDEN, JOB_POLICE, JOB_POLICE_CADET)
 var/global/list/ROLES_CIC			= list(JOB_CO, JOB_XO, JOB_SO, JOB_WO_CO, JOB_WO_XO)
-var/global/list/ROLES_AUXIL_SUPPORT	= list(JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_WO_CHIEF_POLICE, JOB_WO_SO, JOB_WO_CREWMAN, JOB_WO_POLICE, JOB_WO_PILOT)
+var/global/list/ROLES_AUXIL_SUPPORT	= list(JOB_INTEL, JOB_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_CREWMAN, JOB_WO_CHIEF_POLICE, JOB_WO_SO, JOB_WO_CREWMAN, JOB_WO_POLICE, JOB_WO_PILOT)
 var/global/list/ROLES_MISC			= list(JOB_SYNTH, JOB_SEA, JOB_CORPORATE_LIAISON, JOB_MESS_SERGEANT, JOB_WO_CORPORATE_LIAISON, JOB_WO_SYNTH)
 var/global/list/ROLES_POLICE		= list(JOB_CHIEF_POLICE, JOB_WARDEN, JOB_POLICE, JOB_POLICE_CADET)
 var/global/list/ROLES_ENGINEERING 	= list(JOB_CHIEF_ENGINEER, JOB_ORDNANCE_TECH, JOB_MAINT_TECH, JOB_WO_CHIEF_ENGINEER, JOB_WO_ORDNANCE_TECH)
@@ -192,11 +192,11 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 
 // Objective priorities
 #define OBJECTIVE_NO_VALUE 0
-#define OBJECTIVE_LOW_VALUE 10
-#define OBJECTIVE_MEDIUM_VALUE 20
-#define OBJECTIVE_HIGH_VALUE 30
-#define OBJECTIVE_EXTREME_VALUE 50
-#define OBJECTIVE_ABSOLUTE_VALUE 100
+#define OBJECTIVE_LOW_VALUE 6
+#define OBJECTIVE_MEDIUM_VALUE 12
+#define OBJECTIVE_HIGH_VALUE 20
+#define OBJECTIVE_EXTREME_VALUE 40
+#define OBJECTIVE_ABSOLUTE_VALUE 60
 //=================================================
 
 // Required prereqs
@@ -207,21 +207,38 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 #define PREREQUISITES_ALL 4
 
 // Functionality flags
-#define OBJ_PREREQS_CANT_FAIL 1
-#define OBJ_DO_NOT_TREE 2
-#define OBJ_REQUIRES_POWER 4
-#define OBJ_REQUIRES_COMMS 8
-#define OBJ_DEAD_END 16
-#define OBJ_PROCESS_ON_DEMAND 32
-#define OBJ_CRITICAL 64 // does failing this constitute a loss?
-#define OBJ_CAN_BE_UNCOMPLETED 128
-#define OBJ_FAILABLE 256
+#define OBJ_DO_NOT_TREE (1<<0)
+#define OBJ_REQUIRES_POWER (1<<1)
+#define OBJ_REQUIRES_COMMS (1<<2)
+#define OBJ_DEAD_END (1<<3)
+#define OBJ_PROCESS_ON_DEMAND (1<<4)
+/// This objective can be taken over by a different faction
+#define OBJ_CONTROL_FLAG (1<<5)
 
 // Display flags
-#define OBJ_DISPLAY_AT_END 1 // show it on the round end screen
-#define OBJ_DISPLAY_WHEN_INACTIVE 2
-#define OBJ_DISPLAY_WHEN_COMPLETE 4
-#define OBJ_DISPLAY_HIDDEN 8
+#define OBJ_DISPLAY_AT_END (1<<0) // show it on the round end screen
+#define OBJ_DISPLAY_WHEN_INACTIVE (1<<1)
+#define OBJ_DISPLAY_WHEN_COMPLETE (1<<2)
+#define OBJ_DISPLAY_HIDDEN (1<<3)
+
+/// Show this objective even when controlled by a different faction
+#define OBJ_DISPLAY_UBIQUITOUS (1<<4)
+
+/// Misc. defines for objectives
+#define APC_SCORE_INTERVAL 10 MINUTES
+
+//=================================================
+
+// TW / DEFCON balancing factors
+/// Scale from objective value to given out tech points
+#define OBJ_VALUE_TO_TECH_POINTS 0.025
+/// Scales xeno point gain for recovering corpses compared to base point gain
+#define XENO_REWARD_MULTIPLIER 2
+/// Defines how many resource points xenos get when they pool/morpher a scored corpse.
+#define TECH_POINTS_PER_CORPSE 4
+
+
+//=================================================
 
 // Faction names
 #define FACTION_NEUTRAL "Neutral"

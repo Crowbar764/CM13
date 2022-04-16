@@ -2,9 +2,10 @@
 /datum/cm_objective/crack_safe
 	var/obj/structure/safe/target
 	var/area/initial_location
-	priority = OBJECTIVE_MEDIUM_VALUE
+	value = OBJECTIVE_MEDIUM_VALUE
 	prerequisites_required = PREREQUISITES_NONE
 	objective_flags = OBJ_DEAD_END
+	controller = TREE_MARINE
 	number_of_clues_to_generate = 4
 
 /datum/cm_objective/crack_safe/New(var/obj/structure/safe/safe)
@@ -26,8 +27,6 @@
 		return
 	if(target.open)
 		complete()
-	else if(objective_flags & OBJ_CAN_BE_UNCOMPLETED)
-		complete = FALSE
 	. = ..()
 	return
 

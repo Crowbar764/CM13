@@ -4,6 +4,7 @@
 	icon_state = "ammo"
 	droppod_name = "Ammo Kits"
 	flags = TREE_FLAG_MARINE
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 25
 	tier = /datum/tier/two

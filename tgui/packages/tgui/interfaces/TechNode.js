@@ -18,6 +18,7 @@ export const TechNode = (props, context) => {
 
   const {
     total_points,
+    can_buy,
     unlocked,
     theme,
     cost,
@@ -74,7 +75,7 @@ export const TechNode = (props, context) => {
             <Section>
               <Stack>
                 <Stack.Item grow>
-                  <Label label="Current Points" content={Math.round(total_points*10)/10} />
+                  <Label label="Tech Points" content={Math.round(total_points*10)/10} />
                 </Stack.Item>
                 {!!extra_buttons && (
                   <Stack.Item>
@@ -130,7 +131,7 @@ export const TechNode = (props, context) => {
                       fluid
                       height="100%"
                       icon="shopping-cart"
-                      color={total_points >= cost? "good" : "bad"}
+                      color={can_buy? "good" : "bad"}
                       onClick={() => act("purchase")}
                     />
                   )}

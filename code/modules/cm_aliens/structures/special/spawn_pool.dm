@@ -50,10 +50,7 @@
 		return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if(H.is_revivable())
-			to_chat(user, SPAN_XENOWARNING("This one is not suitable yet!"))
-			return
-		if(H.spawned_corpse)
+		if(H.is_revivable() || H.spawned_corpse || !H.chestburst)
 			to_chat(user, SPAN_XENOWARNING("This one does not look suitable!"))
 			return
 
@@ -131,10 +128,23 @@
 	playsound(src, 'sound/bullets/acid_impact1.ogg', 25)
 	iterations -= 1
 	if(!iterations)
+		handle_corpse_scoring()
 		vis_contents.Cut()
+
+		for(var/atom/movable/A in melting_body.contents_recursive()) // Get rid of any unacidable objects so we don't delete them
+			if(isobj(A))
+				var/obj/O = A
+				if(O.unacidable)
+					O.forceMove(get_turf(loc))
+
 		QDEL_NULL(melting_body)
 	else
 		addtimer(CALLBACK(src, /obj/effect/alien/resin/special/pool.proc/melt_body, iterations), 2 SECONDS)
+
+// Keep track of the fact we morphed a corpse for objective purposes
+/obj/effect/alien/resin/special/pool/proc/handle_corpse_scoring()
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_POOLED, melting_body, linked_hive)
+	msg_admin_niche("Corpse of [melting_body] pooled by hive [linked_hive].")
 
 /obj/effect/alien/resin/special/pool/proc/can_spawn_larva()
 	if(linked_hive.hardcore)
@@ -164,6 +174,8 @@
 	return FALSE
 
 /obj/effect/alien/resin/special/pool/Destroy()
+	if(melting_body)
+		handle_corpse_scoring()
 	linked_hive.spawn_pool = null
 	vis_contents.Cut()
 	QDEL_NULL(melting_body)

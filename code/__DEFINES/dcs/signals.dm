@@ -16,10 +16,16 @@
 #define COMSIG_GLOB_MODE_PRESETUP "!mode_presetup"
 ///from /datum/game_mode/proc/post_setup
 #define COMSIG_GLOB_MODE_POSTSETUP "!mode_postsetup"
+///from /datum/game_mode/proc/ds_first_landed
+#define COMSIG_GLOB_DS_FIRST_LANDED "!ds_first_landed"
 ///from /mob/living/carbon/human/death
 #define COMSIG_GLOB_MARINE_DEATH "!marine_death"
 ///from /mob/living/carbon/Xenomorph/death
 #define COMSIG_GLOB_XENO_DEATH "!xeno_death"
+///from /obj/effect/alien/resin/special/eggmorph/proc/handle_corpse_scoring
+#define COMSIG_GLOB_CORPSE_MORPHED "!corpse_morphed"
+///from /obj/effect/alien/resin/special/pool/proc/handle_corpse_scoring
+#define COMSIG_GLOB_CORPSE_POOLED "!corpse_pooled"
 
 ///from /mob/living/carbon/Xenomorph/Initialize
 #define COMSIG_GLOB_XENO_SPAWN "!xeno_spawn"
@@ -210,7 +216,10 @@
 #define COMSIG_XENO_STOP_OVERWATCH	"xeno_stop_overwatch"
 #define COMSIG_XENO_STOP_OVERWATCH_XENO "xeno_stop_overwatch_xeno"
 #define COMSIG_XENO_PRE_HEAL "xeno_pre_heal"
-	#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
+#define COMPONENT_CANCEL_XENO_HEAL (1<<0)
+
+/// From /mob/living/carbon/Xenomorph/revive()
+#define COMSIG_XENO_REVIVED "xeno_revived"
 
 /// from /mob/living/carbon/Xenomorph/bullet_act(): (list/damagedata)
 #define COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE_PROJECTILE "xeno_pre_calculate_armoured_damage_projectile"

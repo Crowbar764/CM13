@@ -4,6 +4,7 @@
 	icon_state = "stimulants"
 	droppod_name = "Stimulants"
 	flags = TREE_FLAG_MARINE
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 25
 	tier = /datum/tier/three

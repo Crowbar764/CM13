@@ -7,9 +7,12 @@
 	var/obj/item/document_objective/document
 	var/area/initial_area
 	var/important = 0
-	priority = OBJECTIVE_LOW_VALUE
-	objective_flags = OBJ_PROCESS_ON_DEMAND | OBJ_FAILABLE
+	var/static/total_instances = 123
+	var/static/completed_instances = 456
+	value = OBJECTIVE_LOW_VALUE
+	objective_flags = OBJ_PROCESS_ON_DEMAND
 	display_flags = OBJ_DISPLAY_HIDDEN
+	controller = TREE_MARINE
 	prerequisites_required = PREREQUISITES_NONE
 	display_category = "Documents"
 
@@ -29,11 +32,14 @@
 	return document.label
 
 /datum/cm_objective/document/complete()
-	if(..())
-		if(important)
-			var/datum/cm_objective/O = new /datum/cm_objective/retrieve_item/almayer(document)
-			O.priority = priority //retrieving item gets you double the points for whatever the item is worth, rather than EXTREME value each time
-			SSobjectives.add_objective(O)
+	. = ..()
+	if(!.)
+		return
+	if(important)
+		var/datum/cm_objective/O = new /datum/cm_objective/retrieve_item/almayer(document)
+		O.value = value //retrieving item gets you double the points for whatever the item is worth, rather than EXTREME value each time
+		SSobjectives.add_objective(O)
+	// SSobjectives.score_documents(src)
 
 /datum/cm_objective/document/get_clue()
 	return SPAN_DANGER("[document.name] in <u>[initial_area]</u>")
@@ -45,11 +51,12 @@
 			complete()
 			return TRUE
 	else
-		fail()
+		//CASPERTODO
+		// fail()
 		return FALSE
 
 /datum/cm_objective/document/folder
-	priority = OBJECTIVE_MEDIUM_VALUE
+	value = OBJECTIVE_MEDIUM_VALUE
 	prerequisites_required = PREREQUISITES_ONE
 	display_flags = 0
 	var/color
@@ -57,7 +64,7 @@
 	number_of_clues_to_generate = 2
 
 /datum/cm_objective/document/progress_report
-	priority = OBJECTIVE_MEDIUM_VALUE
+	value = OBJECTIVE_MEDIUM_VALUE
 	prerequisites_required = PREREQUISITES_NONE
 	display_flags = 0
 
@@ -65,7 +72,7 @@
 	return SPAN_DANGER("A <font color=[display_color]><u>[color]</u></font> folder <b>[document.label]</b> in <u>[initial_area]</u>.")
 
 /datum/cm_objective/document/technical_manual
-	priority = OBJECTIVE_HIGH_VALUE
+	value = OBJECTIVE_HIGH_VALUE
 	prerequisites_required = PREREQUISITES_NONE
 	display_flags = 0
 
@@ -89,12 +96,14 @@
 	objective = new objective_type(src)
 
 /obj/item/document_objective/Destroy()
-	objective?.fail()
 	objective.document = null
 	objective = null
 	return ..()
 
 /obj/item/document_objective/proc/display_read_message(mob/living/user)
+	to_chat(user, SPAN_NOTICE("STATIC: [objective.total_instances] / [objective.completed_instances]"))
+	objective.total_instances++
+
 	if(user && user.mind)
 		user.mind.store_objective(objective)
 	var/related_labels = ""
@@ -115,22 +124,23 @@
 		to_chat(user, SPAN_NOTICE("You don't notice anything useful."))
 
 /obj/item/document_objective/attack_self(mob/living/carbon/human/user)
-	if(!objective.is_active())
+	. = ..()
+	if(!objective.active)
 		objective.activate() //Trying to rejig it just in case
 	to_chat(user, SPAN_NOTICE("You start reading \the [src]."))
 
-	if(!do_after(user, reading_time * user.get_skill_duration_multiplier(), INTERRUPT_INCAPACITATED|INTERRUPT_NEEDHAND, BUSY_ICON_GENERIC)) // Can move while reading intel
+	if(!do_after(user, reading_time * user.get_skill_duration_multiplier(SKILL_INTEL), INTERRUPT_INCAPACITATED|INTERRUPT_NEEDHAND, BUSY_ICON_GENERIC)) // Can move while reading intel
 		to_chat(user, SPAN_WARNING("You get distracted and lose your train of thought, you'll have to start over reading this."))
 		return FALSE
 
-	if(!objective.is_active() && !objective.is_complete())
+	if(!objective.active && !objective.complete)
 		display_fail_message(user)
 		return FALSE
 
 	read = 1
 	objective.check_completion()
 	display_read_message(user)
-	if(objective.important && objective.is_complete())
+	if(objective.important && objective.complete)
 		to_chat(user, SPAN_NOTICE("You feel this document is important and should be returned to the [MAIN_SHIP_NAME]."))
 	return TRUE
 

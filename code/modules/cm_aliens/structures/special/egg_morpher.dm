@@ -53,12 +53,15 @@
 				return
 			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
-				if(H.is_revivable())
+				if(isSynth(H))
+					to_chat(user, SPAN_XENOWARNING("This one is not suitable!"))
+					return
+				if(H.is_revivable() && H.check_tod())
 					to_chat(user, SPAN_XENOWARNING("This one is not suitable yet!"))
 					return
 			if(isXeno(M))
 				return
-			if(M == captured_mob)
+			if(captured_mob)
 				to_chat(user, SPAN_XENOWARNING("[src] is already digesting [M]!"))
 				return
 			if(huggers_to_grow + stored_huggers >= huggers_to_grow_max)
@@ -72,6 +75,7 @@
 				//Get rid of what we have there, we're overwriting it
 				qdel(captured_mob)
 			captured_mob = M
+			handle_corpse_scoring()
 			captured_mob.setDir(SOUTH)
 			captured_mob.moveToNullspace()
 			var/matrix/MX = matrix()
@@ -100,6 +104,11 @@
 		return
 	return ..(I, user)
 
+// Keep track of the fact we morphed a corpse for objective purposes
+/obj/effect/alien/resin/special/eggmorph/proc/handle_corpse_scoring()
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CORPSE_MORPHED, captured_mob, linked_hive)
+	msg_admin_niche("Corpse of [captured_mob] morphed by hive [linked_hive].")
+
 /obj/effect/alien/resin/special/eggmorph/update_icon()
 	..()
 	appearance_flags |= KEEP_TOGETHER
@@ -124,6 +133,13 @@
 		if(huggers_to_grow <= 0)
 			visible_message(SPAN_DANGER("\The [src] groans as its contents are reduced to nothing!"))
 			vis_contents.Cut()
+
+			for(var/atom/movable/A in captured_mob.contents_recursive()) // Get rid of any unacidable objects so we don't delete them
+				if(isobj(A))
+					var/obj/O = A
+					if(O.unacidable)
+						O.forceMove(get_turf(loc))
+
 			QDEL_NULL(captured_mob)
 			update_icon()
 

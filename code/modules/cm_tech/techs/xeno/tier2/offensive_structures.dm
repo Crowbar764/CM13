@@ -3,6 +3,7 @@
 	desc = "Unlock offensive structures to use to attack people with."
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 20
 	tier = /datum/tier/two

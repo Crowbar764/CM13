@@ -98,8 +98,10 @@ var/global/list/deployed_fultons = list()
 			if(X.stat != DEAD)
 				to_chat(user, SPAN_WARNING("You can't attach [src] to [target_atom], kill it first!"))
 				return
-			else
-				can_attach = TRUE
+			if(world.time < (X.timeofdeath + 2 MINUTES))
+				to_chat(user, SPAN_WARNING("[X] is still covered in acid. You'll need to wait about [DisplayTimeText(X.timeofdeath + 2 MINUTES - world.time, 1)] before you can safely fulton it."))
+				return
+			can_attach = TRUE
 		else
 			can_attach = TRUE
 
@@ -113,7 +115,7 @@ var/global/list/deployed_fultons = list()
 	if(can_attach)
 		user.visible_message(SPAN_WARNING("[user] begins attaching [src] onto [target_atom]."), \
 					SPAN_WARNING("You begin to attach [src] onto [target_atom]."))
-		if(do_after(user, 50 * user.get_skill_duration_multiplier(), INTERRUPT_ALL, BUSY_ICON_GENERIC))
+		if(do_after(user, 50 * user.get_skill_duration_multiplier(SKILL_INTEL), INTERRUPT_ALL, BUSY_ICON_GENERIC))
 			if(!amount || get_dist(target_atom,user) > 1)
 				return
 			for(var/obj/item/stack/fulton/F in get_turf(target_atom))
@@ -162,6 +164,11 @@ var/global/list/deployed_fultons = list()
 		attached_atom.forceMove(return_turf)
 		attached_atom.anchored = FALSE
 		playsound(attached_atom.loc,'sound/effects/bamf.ogg', 50, 1)
+
+	if(intel_system)
+		//Giving marines an objective to retrieve that fulton (so they'd know what they lost and where)
+		// var/datum/cm_objective/retrieve_item/fulton/objective = new /datum/cm_objective/retrieve_item/fulton(attached_atom)
+		// intel_system.store_single_objective(objective)
 
 	qdel(src)
 	return

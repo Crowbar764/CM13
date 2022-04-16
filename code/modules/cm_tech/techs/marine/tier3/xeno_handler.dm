@@ -4,6 +4,7 @@
 	icon_state = "friendly_xeno"
 
 	flags = TREE_FLAG_MARINE
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 20
 	tier = /datum/tier/three

@@ -4,6 +4,7 @@
 	icon_state = "endurance"
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 25
 	tier = /datum/tier/three

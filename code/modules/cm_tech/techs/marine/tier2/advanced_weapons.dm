@@ -4,6 +4,7 @@
 	icon_state = "weapon"
 
 	flags = TREE_FLAG_MARINE
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 0
 	tier = /datum/tier/two

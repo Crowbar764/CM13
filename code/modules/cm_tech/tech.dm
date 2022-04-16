@@ -43,13 +43,15 @@
 
 /datum/tech/proc/check_tier_level(var/mob/M)
 	if(holder.tier.tier < tier.tier)
-		to_chat(M, SPAN_WARNING("This tier level has not been unlocked yet!"))
-		return
+		if(M)
+			to_chat(M, SPAN_WARNING("This tier level has not been unlocked yet!"))
+		return FALSE
 
 	var/datum/tier/t_target = holder.tree_tiers[tier.type]
 	if(t_target.max_techs != INFINITE_TECHS && LAZYLEN(holder.unlocked_techs[tier.type]) >= t_target.max_techs)
-		to_chat(M, SPAN_WARNING("You can't purchase any more techs of this tier!"))
-		return
+		if(M)
+			to_chat(M, SPAN_WARNING("You can't purchase any more techs of this tier!"))
+		return FALSE
 
 	return TRUE
 
@@ -63,7 +65,7 @@
 
 	unlocked = TRUE
 	to_chat(user, SPAN_HELPFUL("You have purchased the '[name]' tech node."))
-	holder.add_points(-required_points)
+	holder.spend_points(required_points)
 	update_icon(node)
 	return TRUE
 
@@ -77,6 +79,7 @@
 
 	. = list(
 		"total_points" = total_points,
+		"can_buy" = holder.can_use_points(required_points) && check_tier_level(),
 		"unlocked" = tech_flags & TECH_FLAG_MULTIUSE? FALSE: unlocked,
 		"cost" = required_points
 	)

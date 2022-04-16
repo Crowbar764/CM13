@@ -120,7 +120,7 @@ var/const/ENG_FREQ 		= 1357
 var/const/SEC_FREQ 		= 1359
 var/const/SUP_FREQ 		= 1354
 var/const/JTAC_FREQ 	= 1358
-var/const/TACTICS_FREQ	= 1356
+var/const/INTEL_FREQ	= 1356
 
 var/const/DS1_FREQ		= 1441
 var/const/DS2_FREQ		= 1443
@@ -156,7 +156,7 @@ var/list/radiochannels = list(
 	"MP"			= SEC_FREQ,
 	"Req"			= SUP_FREQ,
 	"JTAC"			= JTAC_FREQ,
-	"Tactics" 		= TACTICS_FREQ,
+	"Intel" 		= INTEL_FREQ,
 
 	SQUAD_NAME_1	= ALPHA_FREQ,
 	SQUAD_NAME_2	= BRAVO_FREQ,
@@ -176,7 +176,7 @@ var/list/radiochannels = list(
 #define ANTAG_FREQS list()
 
 //Depts - used for colors in headset.dm, as well as deciding what the marine comms tower can listen into
-#define DEPT_FREQS list(COMM_FREQ, MED_FREQ, ENG_FREQ, SEC_FREQ, ERT_FREQ, DTH_FREQ, ALPHA_FREQ, BRAVO_FREQ, CHARLIE_FREQ, DELTA_FREQ, ECHO_FREQ, SUP_FREQ, JTAC_FREQ, TACTICS_FREQ, WY_FREQ)
+#define DEPT_FREQS list(COMM_FREQ, MED_FREQ, ENG_FREQ, SEC_FREQ, ERT_FREQ, DTH_FREQ, ALPHA_FREQ, BRAVO_FREQ, CHARLIE_FREQ, DELTA_FREQ, ECHO_FREQ, SUP_FREQ, JTAC_FREQ, INTEL_FREQ, WY_FREQ)
 
 #define TRANSMISSION_WIRE	0
 #define TRANSMISSION_RADIO	1
@@ -220,7 +220,7 @@ SUBSYSTEM_DEF(radio)
 		"[MED_FREQ]" = "medradio",
 		"[SUP_FREQ]" = "supradio",
 		"[JTAC_FREQ]" = "jtacradio",
-		"[TACTICS_FREQ]" = "intelradio",
+		"[INTEL_FREQ]" = "intelradio",
 		"[WY_FREQ]" = "wyradio",
 		"[RUS_FREQ]" = "syndradio",
 		"[CLF_FREQ]" = "clfradio",

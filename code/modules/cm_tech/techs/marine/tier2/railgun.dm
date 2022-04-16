@@ -7,6 +7,7 @@ GLOBAL_DATUM(railgun_eye_location, /datum/coords)
 	icon_state = "railgun"
 
 	flags = TREE_FLAG_MARINE
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 20
 	tier = /datum/tier/two

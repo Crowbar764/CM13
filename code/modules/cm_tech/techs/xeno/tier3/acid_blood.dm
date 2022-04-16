@@ -4,6 +4,7 @@
 	icon_state = "acid_blood"
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 30
 	tier = /datum/tier/three

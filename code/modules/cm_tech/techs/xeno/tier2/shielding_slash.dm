@@ -5,6 +5,7 @@
 	var/stat_name = "Shielding Slash Shield"
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 25
 	var/max_shield = 160

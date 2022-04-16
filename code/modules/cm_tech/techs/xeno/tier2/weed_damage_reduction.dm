@@ -4,6 +4,7 @@
 	icon_state = "weed_reinforcement"
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 15
 	tier = /datum/tier/two

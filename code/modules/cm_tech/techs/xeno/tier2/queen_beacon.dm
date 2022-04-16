@@ -4,6 +4,7 @@
 	icon_state = "beacon"
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 10
 	var/charges_to_give = 1

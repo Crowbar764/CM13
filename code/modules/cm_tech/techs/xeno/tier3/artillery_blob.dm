@@ -4,10 +4,11 @@
 	icon_state = "boiler_glob"
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_NO_ANNOUNCE
 
 	required_points = 2
 	var/charges_to_give = 1
-	tier = /datum/tier/three
+	tier = /datum/tier/two
 
 /datum/tech/xeno/powerup/artillery_blob/ui_static_data(mob/user)
 	. = ..()

@@ -8,6 +8,7 @@
 	droppod_name = "Armor Plates"
 
 	flags = TREE_FLAG_MARINE
+	tech_flags = TECH_FLAG_DISABLED
 
 	required_points = 10
 	tier = /datum/tier/one

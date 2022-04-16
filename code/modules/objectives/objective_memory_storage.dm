@@ -17,9 +17,9 @@
 /datum/objective_memory_storage/proc/store_single_objective(var/datum/cm_objective/O)
 	if(!istype(O))
 		return
-	if (O.is_finalised())
+	// if (O.is_finalised())
 		//We don't need to store the objective, it is either completed or failed and won't be coming back
-		return
+		// return
 	if(istype(O, /datum/cm_objective/document/folder))
 		addToListNoDupe(folders, O)
 	else if(istype(O, /datum/cm_objective/document/progress_report))
@@ -53,34 +53,32 @@
 		return TRUE
 	return FALSE
 
-/datum/objective_memory_storage/proc/view_objective_memories(mob/recipient, var/real_name)
+/datum/objective_memory_storage/proc/view_objective_memories(mob/recipient, tree = TREE_NONE, var/real_name)
 	synchronize_objectives()
 	var/output
 
-	// Do we have DEFCON?
-	output += "<b>DEFCON [defcon_controller.current_defcon_level]:</b> [defcon_controller.check_defcon_percentage()]%"
-
-	output += format_objective_list(folders, "FOLDERS")
-	output += format_objective_list(progress_reports, "PROGRESS REPORTS")
-	output += format_objective_list(technical_manuals, "TECHNICAL MANUALS")
-	output += format_objective_list(disks, "DISKS")
-	output += format_objective_list(terminals, "TERMINALS")
-	output += format_objective_list(retrieve_items, "RETRIEVE ITEMS")
-	output += format_objective_list(other, "OTHER")
+	// Item and body retrieval %, power, etc.
+	output = SSobjectives.get_objectives_progress(tree)
+	var/window_name = "objective clues"
+	if(real_name)
+		window_name = "[real_name]'s objective clues"
 
 	output += "<br>"
 	output += "<hr>"
 	output += "<br>"
 
-	// Item and body retrieval %, power, etc.
-	output += SSobjectives.get_objectives_progress()
-	var/window_name = "objective clues"
-	if(real_name)
-		window_name = "[real_name]'s objective clues"
+	output += format_objective_list(folders, tree, "FOLDERS")
+	output += format_objective_list(progress_reports, tree, "PROGRESS REPORTS")
+	output += format_objective_list(technical_manuals, tree, "TECHNICAL MANUALS")
+	output += format_objective_list(disks, tree, "DISKS")
+	output += format_objective_list(terminals, tree, "TERMINALS")
+	output += format_objective_list(retrieve_items, tree, "RETRIEVE ITEMS")
+	output += format_objective_list(other, tree, "OTHER")
+
 
 	show_browser(recipient, output, window_name, "objectivesmemory")
 
-/datum/objective_memory_storage/proc/format_objective_list(var/list/datum/cm_objective/os, var/category)
+/datum/objective_memory_storage/proc/format_objective_list(var/list/datum/cm_objective/os, tree = TREE_NONE, var/category)
 	var/output = ""
 	if (!os || !os.len)
 		return output
@@ -89,11 +87,13 @@
 	for(var/datum/cm_objective/O in os)
 		if(!O)
 			continue
-		if(!O.is_prerequisites_completed() || !O.is_active())
+		if(!O.observable_by_faction(tree))
+			continue
+		if(!O.is_prerequisites_completed() || !O.active)
 			continue
 		if(O.display_flags & OBJ_DISPLAY_HIDDEN)
 			continue
-		if(O.is_complete())
+		if(O.complete)
 			continue
 		output += "<BR>[O.get_clue()]"
 		something_to_display = TRUE
@@ -103,27 +103,27 @@
 	return output
 
 /datum/objective_memory_storage/proc/clean_objectives()
-	for(var/datum/cm_objective/O in folders)
-		if(O.is_finalised())
-			folders -= O
-	for(var/datum/cm_objective/O in progress_reports)
-		if(O.is_finalised())
-			progress_reports -= O
-	for(var/datum/cm_objective/O in technical_manuals)
-		if(O.is_finalised())
-			technical_manuals -= O
-	for(var/datum/cm_objective/O in terminals)
-		if(O.is_finalised())
-			terminals -= O
-	for(var/datum/cm_objective/O in disks)
-		if(O.is_finalised())
-			disks -= O
-	for(var/datum/cm_objective/O in retrieve_items)
-		if(O.is_finalised())
-			retrieve_items -= O
-	for(var/datum/cm_objective/O in other)
-		if(O.is_finalised())
-			other -= O
+	// for(var/datum/cm_objective/O in folders)
+	// 	if(O.is_finalised())
+	// 		folders -= O
+	// for(var/datum/cm_objective/O in progress_reports)
+	// 	if(O.is_finalised())
+	// 		progress_reports -= O
+	// for(var/datum/cm_objective/O in technical_manuals)
+	// 	if(O.is_finalised())
+	// 		technical_manuals -= O
+	// for(var/datum/cm_objective/O in terminals)
+	// 	if(O.is_finalised())
+	// 		terminals -= O
+	// for(var/datum/cm_objective/O in disks)
+	// 	if(O.is_finalised())
+	// 		disks -= O
+	// for(var/datum/cm_objective/O in retrieve_items)
+	// 	if(O.is_finalised())
+	// 		retrieve_items -= O
+	// for(var/datum/cm_objective/O in other)
+	// 	if(O.is_finalised())
+	// 		other -= O
 
 /datum/objective_memory_storage/proc/synchronize_objectives()
 	clean_objectives()
@@ -254,7 +254,7 @@ var/global/datum/intel_system/intel_system = new()
 
 	playsound(user, pick('sound/machines/computer_typing4.ogg', 'sound/machines/computer_typing5.ogg', 'sound/machines/computer_typing6.ogg'), 5, 1)
 
-	if(!do_after(user, typing_time * user.get_skill_duration_multiplier(), INTERRUPT_ALL, BUSY_ICON_GENERIC)) // Can't move from the spot
+	if(!do_after(user, typing_time * user.get_skill_duration_multiplier(SKILL_INTEL), INTERRUPT_ALL, BUSY_ICON_GENERIC)) // Can't move from the spot
 		to_chat(user, SPAN_WARNING("You get distracted and lose your train of thought, you'll have to start the typing over..."))
 		return -1
 

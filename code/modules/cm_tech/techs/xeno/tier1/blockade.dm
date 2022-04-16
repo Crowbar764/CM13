@@ -3,6 +3,7 @@
 	desc = "The queen gets the ability to place blockades."
 
 	flags = TREE_FLAG_XENO
+	tech_flags = TECH_FLAG_NO_ANNOUNCE
 
 	required_points = 2
 	var/charges_to_give = 1
