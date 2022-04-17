@@ -197,6 +197,12 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 #define OBJECTIVE_HIGH_VALUE 20
 #define OBJECTIVE_EXTREME_VALUE 40
 #define OBJECTIVE_ABSOLUTE_VALUE 60
+
+// Objective states
+#define OBJECTIVE_INACTIVE (1<<0)
+#define OBJECTIVE_ACTIVE (1<<1)
+#define OBJECTIVE_COMPLETE (1<<2)
+
 //=================================================
 
 // Required prereqs

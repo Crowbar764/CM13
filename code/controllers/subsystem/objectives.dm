@@ -16,6 +16,9 @@ SUBSYSTEM_DEF(objectives)
 	var/next_sitrep = SITREP_INTERVAL
 	// var/corpses = 15
 
+	var/total_analysed_chemicals = 0
+	var/total_analysed_chemicals_points_earned = 0
+
 	// Controller runtime
 	var/list/datum/cm_objective/current_active_run = list()
 
@@ -94,23 +97,23 @@ SUBSYSTEM_DEF(objectives)
 		return
 
 	//roughly the numbers LV has:
-	var/paper_scraps = 40
-	var/progress_reports = 15
-	var/folders = 30
-	var/technical_manuals = 10
-	var/disks = 30
-	var/experimental_devices = 15
+	var/paper_scraps = 9
+	var/progress_reports = 3
+	var/folders = 6
+	var/technical_manuals = 2
+	var/disks = 6
+	var/experimental_devices = 3
 
-	var/research_papers = 15
-	var/vial_boxes = 20
+	var/research_papers = 6
+	var/vial_boxes = 6
 
 	//A stub of tweaking item spawns based on map
 	switch(SSmapping.configs[GROUND_MAP])
 		if(MAP_LV_624)
-			paper_scraps = 35
-			progress_reports = 12
-			folders = 25
-			disks = 25
+			paper_scraps = 9
+			progress_reports = 3
+			folders = 6
+			disks = 6
 		if(MAP_CORSAT)
 			vial_boxes = 30
 			research_papers = 30
@@ -477,23 +480,3 @@ SUBSYSTEM_DEF(objectives)
 	non_processing_objectives -= O
 	// inactive_objectives -= O
 	active_objectives -= O
-
-/datum/controller/subsystem/objectives/proc/get_total_points(tree = TREE_NONE)
-	var/total_points = 0
-
-	for(var/datum/cm_objective/L as anything in objectives)
-		if(!L.observable_by_faction(tree))
-			continue
-		// total_points += L.total_point_value(tree)
-
-	return total_points
-
-/datum/controller/subsystem/objectives/proc/get_scored_points(tree = TREE_NONE)
-	var/scored_points = 0
-
-	for(var/datum/cm_objective/L in objectives)
-		if(!L.observable_by_faction(tree))
-			continue
-		// scored_points += L.get_point_value(tree)
-
-	return scored_points

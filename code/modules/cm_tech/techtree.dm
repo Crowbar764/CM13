@@ -18,6 +18,7 @@
 	var/list/datum/tier/tree_tiers = TECH_TIER_GAMEPLAY
 
 	// Tech points
+	var/total_points = 0 // How many points we have earned total.
 	var/points = INITIAL_STARTING_POINTS // Current points.
 	var/points_mult = 1.0 // Factor we earn points by. Increases based on current unlocked tech tier.
 	var/resources_per_second = PASSIVE_INCREASE_AMOUNT // The rate points are passively earned.

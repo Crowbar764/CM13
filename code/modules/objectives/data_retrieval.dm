@@ -6,7 +6,7 @@
 	var/data_total = 100
 	var/data_retrieved = 0
 	var/data_transfer_rate = 10
-	var/area/initial_location
+	var/area/initial_area
 	controller = TREE_MARINE
 	var/decryption_password
 	display_category = "Data Retrieval"
@@ -17,7 +17,7 @@
 	decryption_password = "[pick(alphabet_uppercase)][rand(100,999)][pick(alphabet_uppercase)][rand(10,99)]"
 
 /datum/cm_objective/retrieve_data/Destroy()
-	initial_location = null
+	initial_area = null
 	return ..()
 
 /datum/cm_objective/retrieve_data/check_completion()
@@ -59,7 +59,7 @@
 /datum/cm_objective/retrieve_data/terminal/New(var/obj/structure/machinery/computer/objective/D)
 	. = ..()
 	data_source = D
-	initial_location = get_area(data_source)
+	initial_area = get_area(data_source)
 
 /datum/cm_objective/retrieve_data/terminal/Destroy()
 	data_source.objective = null
@@ -84,6 +84,19 @@
 	if(!data_source.uploading)
 		return FALSE
 
+/datum/cm_objective/retrieve_data/terminal/get_tgui_data()
+	if(..())
+		return
+	var/list/clue = list()
+
+	clue["text"] = "Upload data from terminal"
+	clue["itemID"] = data_source.label
+	clue["key_text"] = ", password is "
+	clue["key"] = decryption_password
+	clue["location"] = initial_area.name
+
+	return clue
+
 // --------------------------------------------
 // *** Retrieve a disk and upload it ***
 // --------------------------------------------
@@ -97,7 +110,7 @@
 	disk = O
 	data_total = disk.data_amount
 	data_transfer_rate = disk.read_speed
-	initial_location = get_area(disk)
+	initial_area = get_area(disk)
 
 /datum/cm_objective/retrieve_data/disk/Destroy()
 	disk?.objective = null
@@ -120,7 +133,7 @@
 	return FALSE
 
 /datum/cm_objective/retrieve_data/disk/get_clue()
-	return SPAN_DANGER("Retrieving <font color=[disk.display_color]><u>[disk.disk_color]</u></font> computer disk <b>[disk.label]</b> in <u>[initial_location]</u>, decryption password is <b>[decryption_password]</b>")
+	return SPAN_DANGER("Retrieving <font color=[disk.display_color]><u>[disk.disk_color]</u></font> computer disk <b>[disk.label]</b> in <u>[initial_area]</u>, decryption password is <b>[decryption_password]</b>")
 
 /datum/cm_objective/retrieve_data/disk/data_is_available()
 	. = ..()
@@ -131,6 +144,21 @@
 		return FALSE
 	if(!is_mainship_level(reader.z))
 		return FALSE
+
+/datum/cm_objective/retrieve_data/disk/get_tgui_data()
+	if(..())
+		return
+	var/list/clue = list()
+
+	clue["text"] = "disk"
+	clue["itemID"] = disk.label
+	clue["color"] = disk.disk_color
+	clue["color_name"] = disk.display_color
+	clue["key_text"] = ", decryption key is "
+	clue["key"] = decryption_password
+	clue["location"] = initial_area.name
+
+	return clue
 
 // --------------------------------------------
 // *** Mapping objects ***
@@ -145,7 +173,7 @@
 	unacidable = TRUE
 	var/datum/cm_objective/retrieve_data/disk/objective
 	var/display_color = "white"
-	var/disk_color = "white"
+	var/disk_color = "White"
 
 /obj/item/disk/objective/Initialize(mapload, ...)
 	. = ..()
@@ -154,25 +182,25 @@
 
 	switch(diskvar)
 		if (1,2)
-			disk_color = "grey"
+			disk_color = "Grey"
 			display_color = "#8f9494"
 		if (3 to 5)
-			disk_color = "white"
+			disk_color = "White"
 			display_color = "#e8eded"
 		if (6,7)
-			disk_color = "green"
+			disk_color = "Green"
 			display_color = "#64c242"
 		if (8 to 10)
-			disk_color = "red"
+			disk_color = "Red"
 			display_color = "#ed5353"
 		if (11 to 13)
-			disk_color = "blue"
+			disk_color = "Blue"
 			display_color = "#5296e3"
 		if (14)
-			disk_color = "cracked blue"
+			disk_color = "Cracked blue"
 			display_color = "#5296e3"
 		if (15)
-			disk_color = "bloodied blue"
+			disk_color = "Bloodied blue"
 			display_color = "#5296e3"
 
 	label = "[pick(greek_letters)]-[rand(100,999)]"

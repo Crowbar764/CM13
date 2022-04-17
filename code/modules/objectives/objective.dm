@@ -3,6 +3,7 @@
 // --------------------------------------------
 /datum/cm_objective
 	var/name = "An objective to complete"
+	var/state = OBJECTIVE_INACTIVE
 	var/complete = FALSE
 	var/active = FALSE
 	var/value = OBJECTIVE_NO_VALUE
@@ -58,6 +59,9 @@
 	// 		return TRUE // Go gettem
 	// 	return FALSE
 	return TRUE
+
+/datum/cm_objective/proc/get_tgui_data()
+	return (state != OBJECTIVE_ACTIVE)
 
 /// Update awarded points to the controlling tech-faction
 /datum/cm_objective/proc/award_points()
