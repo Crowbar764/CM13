@@ -141,6 +141,7 @@ FLOOR SAFES
 			open = !open
 			update_icon()
 			updateUsrDialog()
+			SEND_SIGNAL(src, COMSIG_SAFE_OPENED)
 			return
 		else
 			to_chat(user, SPAN_NOTICE("You can't [open ? "close" : "open"] [src], the lock is engaged!"))

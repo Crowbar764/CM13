@@ -6,12 +6,9 @@
 	name = "Document Clue"
 	var/obj/item/document_objective/document
 	var/area/initial_area
-	var/static/completed_instances = 0
-	var/static/total_instances = 0
-	var/static/total_points_earned = 0
 	value = OBJECTIVE_LOW_VALUE
-	objective_flags = OBJ_PROCESS_ON_DEMAND
 	display_flags = OBJ_DISPLAY_HIDDEN
+	state = OBJECTIVE_ACTIVE
 	controller = TREE_MARINE
 	prerequisites_required = PREREQUISITES_NONE
 	display_category = "Documents"
@@ -20,7 +17,7 @@
 	. = ..()
 	document = D
 	initial_area = get_area(document)
-	total_instances++
+	SSobjectives.statistics["documents_total_instances"]++
 
 /datum/cm_objective/document/Destroy()
 	document.objective = null
@@ -36,19 +33,18 @@
 
 	var/datum/techtree/tree = GET_TREE(controller)
 	tree.add_points(value)
-	total_points_earned += value
+	SSobjectives.statistics["documents_total_points_earned"] += value
 
 	for(var/datum/cm_objective/child_objective in enables_objectives)
 		if(child_objective.state & OBJECTIVE_INACTIVE)
 			child_objective.state = OBJECTIVE_ACTIVE
+			// CASPERTODO IF NEEDS ONTICK PROCESS, ADD TO LIST HERE??
 
 /datum/cm_objective/document/get_clue()
 	return SPAN_DANGER("[document.name] in <u>[initial_area]</u>")
 
 // Paper scrap
 /datum/cm_objective/document/get_tgui_data()
-	if(..())
-		return
 	var/list/clue = list()
 
 	clue["text"] = "Paper scrap"
@@ -64,10 +60,9 @@
 	var/color // Text name of the color
 	var/display_color // Color of the sprite
 	number_of_clues_to_generate = 2
+	state = OBJECTIVE_INACTIVE
 
 /datum/cm_objective/document/folder/get_tgui_data()
-	if(..())
-		return
 	var/list/clue = list()
 
 	clue["text"] = "folder"
@@ -88,8 +83,6 @@
 	display_flags = 0
 
 /datum/cm_objective/document/progress_report/get_tgui_data()
-	if(..())
-		return
 	var/list/clue = list()
 
 	clue["text"] = "Progress report"
@@ -102,10 +95,9 @@
 	value = OBJECTIVE_HIGH_VALUE
 	prerequisites_required = PREREQUISITES_NONE
 	display_flags = 0
+	state = OBJECTIVE_INACTIVE
 
 /datum/cm_objective/document/technical_manual/get_tgui_data()
-	if(..())
-		return
 	var/list/clue = list()
 
 	clue["text"] = "Technical manual"
@@ -174,10 +166,8 @@
 	// Our first time reading this successfully.
 	if(!(objective.state & OBJECTIVE_COMPLETE))
 		objective.complete()
-		objective.completed_instances++
+		SSobjectives.statistics["documents_completed"]++
 		objective.state = OBJECTIVE_COMPLETE
-
-	to_chat(user, SPAN_NOTICE("STATIC: [objective.completed_instances] / [objective.total_instances]"))
 
 /obj/item/document_objective/paper
 	name = "Paper scrap"
@@ -185,10 +175,6 @@
 	icon = 'icons/obj/items/paper.dmi'
 	icon_state = "paper_words"
 	w_class = SIZE_TINY
-
-/obj/item/document_objective/paper/Initialize(mapload, ...)
-	. = ..()
-	objective.state = OBJECTIVE_ACTIVE
 
 /obj/item/document_objective/report
 	name = "Progress report"
@@ -198,10 +184,6 @@
 	w_class = SIZE_TINY
 	reading_time = 60
 	objective_type = /datum/cm_objective/document/progress_report
-
-/obj/item/document_objective/report/Initialize(mapload, ...)
-	. = ..()
-	objective.state = OBJECTIVE_ACTIVE
 
 /obj/item/document_objective/folder
 	name = "intel folder"

@@ -96,7 +96,7 @@
 	last_power_output = total_power_output
 	if(total_power_output >= minimum_power_required)
 
-		GET_TREE(controller)
+		// GET_TREE(controller)
 		complete()
 		return TRUE
 	return FALSE

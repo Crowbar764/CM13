@@ -98,6 +98,7 @@
 
 /datum/techtree/proc/add_points(var/number)
 	set_points(points + (number * points_mult))
+	total_points += number * points_mult
 
 /datum/techtree/proc/spend_points(var/number)
 	set_points(points - number)

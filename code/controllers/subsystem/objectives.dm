@@ -3,9 +3,10 @@ SUBSYSTEM_DEF(objectives)
 	init_order = SS_INIT_OBJECTIVES
 	wait = 5.5 SECONDS
 	var/list/objectives = list()
-	var/list/active_objectives = list()
+	// var/list/active_objectives = list()
 	// var/list/inactive_objectives = list()
-	var/list/non_processing_objectives = list()
+	// var/list/non_processing_objectives = list()
+	var/list/processing_objectives = list()
 	// var/datum/cm_objective/communications/comms
 	// var/datum/cm_objective/power/establish_power/power
 	// var/datum/cm_objective/power/repair_apcs/repair_apcs
@@ -16,14 +17,34 @@ SUBSYSTEM_DEF(objectives)
 	var/next_sitrep = SITREP_INTERVAL
 	// var/corpses = 15
 
-	var/total_analysed_chemicals = 0
-	var/total_analysed_chemicals_points_earned = 0
+	var/comms_online = TRUE
+
+	var/statistics = list()
 
 	// Controller runtime
 	var/list/datum/cm_objective/current_active_run = list()
 
 /datum/controller/subsystem/objectives/Initialize(start_timeofday)
 	. = ..()
+
+	statistics["documents_completed"] = 0
+	statistics["documents_total_instances"] = 0
+	statistics["documents_total_points_earned"] = 0
+
+	statistics["chemicals_completed"] = 0
+	statistics["chemicals_total_points_earned"] = 0
+
+	statistics["data_retrieval_completed"] = 0
+	statistics["data_retrieval_total_instances"] = 0
+	statistics["data_retrieval_total_points_earned"] = 0
+
+	statistics["item_retrieval_completed"] = 0
+	statistics["item_retrieval_total_instances"] = 0
+	statistics["item_retrieval_total_points_earned"] = 0
+
+	statistics["miscellaneous_completed"] = 0
+	statistics["miscellaneous_total_instances"] = 0
+	statistics["miscellaneous_total_points_earned"] = 0
 
 	// Setup some global objectives
 	// power = new
@@ -40,8 +61,7 @@ SUBSYSTEM_DEF(objectives)
 
 /datum/controller/subsystem/objectives/fire(resumed = FALSE)
 	if(!resumed)
-		// current_inactive_run = inactive_objectives.Copy()
-		current_active_run = active_objectives.Copy()
+		current_active_run = processing_objectives.Copy()
 
 		if(world.time > next_sitrep)
 			next_sitrep = world.time + SITREP_INTERVAL
@@ -54,34 +74,34 @@ SUBSYSTEM_DEF(objectives)
 		current_active_run.len--
 		O.process()
 		O.check_completion()
-		// O.award_points()
-		if(O.complete)
-			O.deactivate()
+		if(O.state == OBJECTIVE_COMPLETE)
+			stop_processing_objective(O)
+
 		if(MC_TICK_CHECK)
 			return
 
 /datum/controller/subsystem/objectives/proc/announce_stats()
-	var/scored_points
-	var/total_points
-	var/datum/techtree/tree
+	// var/scored_points
+	// var/total_points
+	// var/datum/techtree/tree
 
-	total_points = get_total_points(TREE_MARINE)
-	scored_points = get_scored_points(TREE_MARINE)
-	tree = GET_TREE(TREE_MARINE)
+	// total_points = get_total_points(TREE_MARINE)
+	// scored_points = get_scored_points(TREE_MARINE)
+	// tree = GET_TREE(TREE_MARINE)
 
-	ai_silent_announcement("Tier [tree.tier.tier] assets active. [round(tree.points, 0.1)] tech points available.", ":v", TRUE)
-	ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved.", ":i", TRUE)
-	message_staff("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points available.")
-	to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
-	to_chat(GLOB.observer_list, SPAN_WARNING("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points."))
+	// ai_silent_announcement("Tier [tree.tier.tier] assets active. [round(tree.points, 0.1)] tech points available.", ":v", TRUE)
+	// ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved.", ":i", TRUE)
+	// message_staff("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points available.")
+	// to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
+	// to_chat(GLOB.observer_list, SPAN_WARNING("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points."))
 
-	total_points = get_total_points(TREE_XENO)
-	scored_points = get_scored_points(TREE_XENO)
-	tree = GET_TREE(TREE_XENO)
+	// total_points = get_total_points(TREE_XENO)
+	// scored_points = get_scored_points(TREE_XENO)
+	// tree = GET_TREE(TREE_XENO)
 
-	xeno_message(SPAN_XENOANNOUNCE("The hive recollects having achieved [scored_points] / [total_points] points of its current objectives."), 2)
-	message_staff("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points available.")
-	to_chat(GLOB.observer_list, SPAN_WARNING("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points."))
+	// xeno_message(SPAN_XENOANNOUNCE("The hive recollects having achieved [scored_points] / [total_points] points of its current objectives."), 2)
+	// message_staff("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points available.")
+	// to_chat(GLOB.observer_list, SPAN_WARNING("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points."))
 
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/objectives/proc/initialize_objectives()
@@ -263,13 +283,13 @@ SUBSYSTEM_DEF(objectives)
 	for(var/datum/cm_objective/C in objectives)
 		if(!(C in objectives))
 			objectives += C
-		if(C.objective_flags & OBJ_PROCESS_ON_DEMAND)
-			non_processing_objectives += C
-		else
+		// if(C.objective_flags & OBJ_PROCESS_ON_DEMAND)
+		// 	non_processing_objectives += C
+		// else
 			// inactive_objectives += C
 	setup_tree()
-	for(var/datum/cm_objective/N in non_processing_objectives)
-		N.activate()
+	// for(var/datum/cm_objective/N in non_processing_objectives)
+	// 	N.activate()
 
 /datum/controller/subsystem/objectives/proc/pre_round_start()
 	SIGNAL_HANDLER
@@ -283,7 +303,7 @@ SUBSYSTEM_DEF(objectives)
 		O.post_round_start()
 
 /datum/controller/subsystem/objectives/proc/get_objectives_progress(tree = TREE_NONE)
-	var/point_total = 0
+	// var/point_total = 0
 	var/complete = 0
 
 	var/list/categories = list()
@@ -467,16 +487,13 @@ SUBSYSTEM_DEF(objectives)
 	LAZYADD(required_objective.enables_objectives, enabled_objective)
 
 /datum/controller/subsystem/objectives/proc/add_objective(var/datum/cm_objective/O)
-	if(!(O in objectives))
-		objectives += O
-	if((O.objective_flags & OBJ_PROCESS_ON_DEMAND) && !(O in non_processing_objectives))
-		non_processing_objectives += O
-	// else if(!(O in inactive_objectives))
-	// 	inactive_objectives += O
-	// 	O.activate()
+	LAZYADD(objectives, O)
 
 /datum/controller/subsystem/objectives/proc/remove_objective(var/datum/cm_objective/O)
-	objectives -= O
-	non_processing_objectives -= O
-	// inactive_objectives -= O
-	active_objectives -= O
+	LAZYREMOVE(objectives, O)
+
+/datum/controller/subsystem/objectives/proc/start_processing_objective(var/datum/cm_objective/O)
+	processing_objectives += O
+
+/datum/controller/subsystem/objectives/proc/stop_processing_objective(var/datum/cm_objective/O)
+	processing_objectives -= O

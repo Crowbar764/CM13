@@ -4,7 +4,7 @@
 /datum/cm_objective/retrieve_item
 	var/obj/target_item
 	var/list/area/target_areas
-	var/area/initial_location
+	var/area/initial_area
 	controller = TREE_MARINE
 	display_category = "Item Retrieval"
 
@@ -12,13 +12,13 @@
 	..()
 	if(T)
 		target_item = T
-		initial_location = get_area(target_item)
+		initial_area = get_area(target_item)
 	RegisterSignal(target_item, COMSIG_PARENT_PREQDELETED, .proc/clean_up_ref)
 
 /datum/cm_objective/retrieve_item/Destroy()
 	target_item = null
 	target_areas = null
-	initial_location = null
+	initial_area= null
 	return ..()
 
 /datum/cm_objective/retrieve_item/proc/clean_up_ref()
@@ -26,7 +26,7 @@
 	target_item = null
 
 /datum/cm_objective/retrieve_item/get_clue()
-	return SPAN_DANGER("[target_item] in <u>[initial_location]</u>")
+	return SPAN_DANGER("[target_item] in <u>[initial_area]</u>")
 
 /datum/cm_objective/retrieve_item/check_completion()
 	. = ..()
@@ -51,6 +51,15 @@
 		/area/almayer/medical/medical_science
 	)
 	value = OBJECTIVE_EXTREME_VALUE
+
+/datum/cm_objective/retrieve_item/get_tgui_data()
+	var/list/clue = list()
+
+	clue["text"] = target_item.name
+	// clue["itemID"] = document.label
+	clue["location"] = initial_area.name
+
+	return clue
 
 // --------------------------------------------
 // *** Get communications up ***

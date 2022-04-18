@@ -7,7 +7,7 @@
 /datum/cm_objective/move_mob
 	var/mob/living/target
 	var/mob_can_die = MOB_CAN_COMPLETE_AFTER_DEATH
-	objective_flags = OBJ_DO_NOT_TREE | OBJ_CONTROL_FLAG
+	objective_flags = OBJ_DO_NOT_TREE
 
 /datum/cm_objective/move_mob/New(var/mob/living/H)
 	if(istype(H, /mob/living))
@@ -25,7 +25,7 @@
 			var/mob/living/carbon/human/H = target
 			if(!H.check_tod() || !H.is_revivable()) // they went unrevivable
 				//Synths can (almost) always be revived, so don't fail their objective...
-				if(!isSynth(H))
+				// if(!isSynth(H))
 					// CASPERTODO
 					// fail()
 				return FALSE

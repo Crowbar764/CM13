@@ -303,10 +303,10 @@
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	var/selected = tgui_input_list(usr, "Which tree-related objectives to observe?", "Objectives Tree", list(TREE_MARINE, TREE_XENO))
+	// var/selected = tgui_input_list(usr, "Which tree-related objectives to observe?", "Objectives Tree", list(TREE_MARINE, TREE_XENO))
 
-	to_chat(src, SSobjectives.get_objectives_progress(selected))
-	to_chat(src, "<b>Objectives:</b> [SSobjectives.get_scored_points(selected)]")
+	// to_chat(src, SSobjectives.get_objectives_progress(selected))
+	// to_chat(src, "<b>Objectives:</b> [SSobjectives.get_scored_points(selected)]")
 
 /client/proc/view_faxes()
 	set name = "View Faxes"

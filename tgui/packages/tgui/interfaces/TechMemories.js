@@ -19,17 +19,8 @@ export const TechMemories = (props, context) => {
 
   const {
     tech_points,
-    can_buy,
-    unlocked,
     theme,
-    cost,
-    name,
-    desc,
-    extra_buttons,
-    extra_sliders,
-    stats,
     clue_categories,
-    objectives,
   } = data;
 
   return (
@@ -47,7 +38,7 @@ export const TechMemories = (props, context) => {
             />
           )}
         >
-          <Box fontSize="16px">{tech_points + " (+0.05 / min)"}</Box>
+          <Box fontSize="16px">{tech_points + " (+" + data.passive_tech_points + " / min)"}</Box>
         </Section>
 
         <Objectives />
@@ -130,69 +121,67 @@ const CluesAdvanced = (props, context) => {
 const Objectives = (props, context) => {
   const { data } = useBackend(context);
 
-  const test123 = [
-    {
-      label: "Documents",
-      content: "5 / 20",
-      content_color: "orange",
-      content_credits: "(420pts)",
-    },
-    {
-      label: "Data retrieval",
-      content_credits: "100pts",
-    },
-    {
-      label: "Item retrieval",
-      content_credits: "420pts",
-    },
-    {
-      label: "Analyze chems",
-      content: "5 / ∞",
-      content_credits: "420pts",
-    },
-    {
-      label: "Colony communications",
-      content: "Online",
-      content_color: "green",
-      content_credits: "(420pts)",
-    },
-    {
-      label: "Colony generators",
-      content: "Offline",
-      content_color: "red",
-    },
-    {
-      label: "Colony generators",
-      content: "20000W. 30000W required",
-      content_color: "orange",
-      content_credits: "(100pts)",
-    },
-    {
-      label: "Colony generators",
-      content: "Online",
-      content_color: "green",
-      content_credits: "(200pts)",
-    },
-    {
-      label: "Colony power grid",
-      content: "5/24 APCs online",
-      content_color: "orange",
-      content_credits: "(300pts. +5pts / 10 mins)",
-    },
-    {
-      label: "Corpses recovered",
-      content_credits: "100pts",
-    },
-  ];
+  // const test123 = [
+  //   {
+  //     label: "Documents",
+  //     content: "5 / 20",
+  //     content_color: "orange",
+  //     content_credits: "(420pts)",
+  //   },
+  //   {
+  //     label: "Data retrieval",
+  //     content_credits: "100pts",
+  //   },
+  //   {
+  //     label: "Item retrieval",
+  //     content_credits: "420pts",
+  //   },
+  //   {
+  //     label: "Analyze chems",
+  //     content: "5 / ∞",
+  //     content_credits: "420pts",
+  //   },
+  //   {
+  //     label: "Colony communications",
+  //     content: "Online",
+  //     content_color: "green",
+  //     content_credits: "(420pts)",
+  //   },
+  //   {
+  //     label: "Colony generators",
+  //     content: "Offline",
+  //     content_color: "red",
+  //   },
+  //   {
+  //     label: "Colony generators",
+  //     content: "20000W. 30000W required",
+  //     content_color: "orange",
+  //     content_credits: "(100pts)",
+  //   },
+  //   {
+  //     label: "Colony generators",
+  //     content: "Online",
+  //     content_color: "green",
+  //     content_credits: "(200pts)",
+  //   },
+  //   {
+  //     label: "Colony power grid",
+  //     content: "5/24 APCs online",
+  //     content_color: "orange",
+  //     content_credits: "(300pts. +5pts / 10 mins)",
+  //   },
+  //   {
+  //     label: "Corpses recovered",
+  //     content_credits: "100pts",
+  //   },
+  // ];
 
   return (
     <Section title="Objectives"
       buttons={(
         <Button
-          content="Total earned credits: 620"
+          content={"Total earned credits: " + data.total_tech_points}
           backgroundColor="transparent"
-          tooltip="1 credit = 0.05 tech points"
-          tooltipPosition="left"
         />
       )}
     >
@@ -201,7 +190,7 @@ const Objectives = (props, context) => {
           return (
             <LabeledList.Item label={page.label} key={0}>
               {!!page.content && (
-                <Box color={page.content_color} inline preserveWhitespace>
+                <Box color={page.content_color ? page.content_color : "white"} inline preserveWhitespace>
                   {page.content + " "}
                 </Box>
               )}

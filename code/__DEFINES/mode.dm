@@ -214,12 +214,7 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 
 // Functionality flags
 #define OBJ_DO_NOT_TREE (1<<0)
-#define OBJ_REQUIRES_POWER (1<<1)
-#define OBJ_REQUIRES_COMMS (1<<2)
-#define OBJ_DEAD_END (1<<3)
-#define OBJ_PROCESS_ON_DEMAND (1<<4)
-/// This objective can be taken over by a different faction
-#define OBJ_CONTROL_FLAG (1<<5)
+#define OBJ_DEAD_END (1<<1)
 
 // Display flags
 #define OBJ_DISPLAY_AT_END (1<<0) // show it on the round end screen

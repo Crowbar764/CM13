@@ -9,26 +9,18 @@
 	number_of_clues_to_generate = 4
 
 /datum/cm_objective/crack_safe/New(var/obj/structure/safe/safe)
-	if(!istype(safe))
-		CRASH("Object is not of type safe - [safe]")
 	target = safe
 	initial_area = get_area(target)
+	SSobjectives.statistics["miscellaneous_total_instances"]++
+
+	RegisterSignal(safe, COMSIG_SAFE_OPENED, .proc/on_safe_open)
+	RegisterSignal(safe, COMSIG_PARENT_QDELETING, .proc/on_safe_open)
 	. = ..()
 
 /datum/cm_objective/crack_safe/Destroy()
 	target = null
 	initial_area = null
 	return ..()
-
-/datum/cm_objective/crack_safe/check_completion()
-	if(!target)
-		complete() //Safe got blown up probably
-		. = ..()
-		return
-	if(target.open)
-		complete()
-	. = ..()
-	return
 
 /datum/cm_objective/crack_safe/get_clue()
 	return SPAN_DANGER("Crack open a safe in <u>[initial_area]</u>, the combination lock is <b>[target.tumbler_1_open]|[target.tumbler_2_open]</b>")
@@ -37,8 +29,6 @@
 	return "Safe"
 
 /datum/cm_objective/crack_safe/get_tgui_data()
-	if(..())
-		return
 	var/list/clue = list()
 
 	clue["text"] = "Crack open the safe"
@@ -47,3 +37,15 @@
 	clue["location"] = initial_area.name
 
 	return clue
+
+/datum/cm_objective/crack_safe/complete()
+	state = OBJECTIVE_COMPLETE
+	SSobjectives.statistics["miscellaneous_completed"]++
+	award_points()
+
+/datum/cm_objective/crack_safe/proc/on_safe_open(var/obj/structure/safe)
+	SIGNAL_HANDLER
+
+	if (state != OBJECTIVE_COMPLETE)
+		UnregisterSignal(safe, COMSIG_SAFE_OPENED)
+		complete()

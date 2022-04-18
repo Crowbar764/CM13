@@ -221,6 +221,9 @@
 /// From /mob/living/carbon/Xenomorph/revive()
 #define COMSIG_XENO_REVIVED "xeno_revived"
 
+// From /obj/structure/safe/Topic()
+#define COMSIG_SAFE_OPENED "safe_opened"
+
 /// from /mob/living/carbon/Xenomorph/bullet_act(): (list/damagedata)
 #define COMSIG_XENO_PRE_CALCULATE_ARMOURED_DAMAGE_PROJECTILE "xeno_pre_calculate_armoured_damage_projectile"
 /// from /mob/living/carbon/Xenomorph/apply_armoured_damage(): (list/damagedata)

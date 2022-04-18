@@ -61,7 +61,6 @@
 	return TRUE
 
 /datum/cm_objective/proc/get_tgui_data()
-	return (state != OBJECTIVE_ACTIVE)
 
 /// Update awarded points to the controlling tech-faction
 /datum/cm_objective/proc/award_points()
@@ -84,37 +83,13 @@
 	//For returning labels of related items (folders, discs, etc.)
 	return
 
-/datum/cm_objective/process()
-	if(!is_prerequisites_completed())
-		deactivate()
-		return FALSE
-	check_completion()
-	return TRUE
-
 /datum/cm_objective/proc/complete()
-	complete = TRUE
-	// if(can_be_deactivated() && !(objective_flags & OBJ_PROCESS_ON_DEMAND))
-	deactivate()
-	for(var/datum/cm_objective/O in enables_objectives)
-		O.activate()
-	return
 
 /datum/cm_objective/proc/check_completion()
 	return complete
 
 /datum/cm_objective/proc/activate()
-	active = TRUE
-	if(!(objective_flags & OBJ_PROCESS_ON_DEMAND))
-		if(!(src in SSobjectives.active_objectives))
-			SSobjectives.active_objectives += src
-		// SSobjectives.inactive_objectives -= src
-
-/datum/cm_objective/proc/deactivate()
-	active = FALSE
-	if(!(objective_flags & OBJ_PROCESS_ON_DEMAND))
-		SSobjectives.active_objectives -= src
-		// if(!(src in SSobjectives.inactive_objectives))
-			// SSobjectives.inactive_objectives += src
+	SSobjectives.start_processing_objective(src)
 
 /datum/cm_objective/proc/is_prerequisites_completed()
 	var/prereq_complete = 0

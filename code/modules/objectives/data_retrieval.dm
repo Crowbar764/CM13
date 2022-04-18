@@ -11,91 +11,100 @@
 	var/decryption_password
 	display_category = "Data Retrieval"
 	number_of_clues_to_generate = 2
+	controller = TREE_MARINE
 
 /datum/cm_objective/retrieve_data/New()
 	. = ..()
 	decryption_password = "[pick(alphabet_uppercase)][rand(100,999)][pick(alphabet_uppercase)][rand(10,99)]"
 
+/datum/cm_objective/retrieve_data/Initialize()
+	. = ..()
+	SSobjectives.statistics["data_retrieval_total_instances"]++
+	message_admins(src.type)
+	message_admins(SSobjectives.statistics["data_retrieval_total_instances"])
+
 /datum/cm_objective/retrieve_data/Destroy()
 	initial_area = null
 	return ..()
 
-/datum/cm_objective/retrieve_data/check_completion()
-	. = ..()
-	if(data_retrieved >= data_total)
-		complete()
-		return TRUE
-
 /datum/cm_objective/retrieve_data/process()
-	if(..())
-		if(data_is_available())
-			data_retrieved += data_transfer_rate
+	data_retrieved += data_transfer_rate
+	message_admins(data_retrieved)
 
-/datum/cm_objective/retrieve_data/proc/data_is_available()
-	if(objective_flags & OBJ_REQUIRES_COMMS)
-		// if(SSobjectives.comms?.complete)
-			// return TRUE
-		// else
-			// return FALSE
-	return TRUE
+/datum/cm_objective/retrieve_data/check_completion()
+	if(data_retrieved == data_total)
+		complete()
 
 /datum/cm_objective/retrieve_data/complete()
-	if(..())
-		if(intel_system)
-			intel_system.store_objective(src)
-		return TRUE
-	return FALSE
+	SSobjectives.statistics["data_retrieval_total_points_earned"] += value
+	SSobjectives.statistics["data_retrieval_completed"]++
 
 // --------------------------------------------
 // *** Upload data from a terminal ***
 // --------------------------------------------
 /datum/cm_objective/retrieve_data/terminal
-	var/obj/structure/machinery/computer/objective/data_source
+	var/obj/structure/machinery/computer/objective/terminal
+	var/uploading = FALSE
 	value = OBJECTIVE_EXTREME_VALUE
-	objective_flags = OBJ_REQUIRES_POWER | OBJ_REQUIRES_COMMS
 	prerequisites_required = PREREQUISITES_MAJORITY
-	controller = TREE_MARINE
 
 /datum/cm_objective/retrieve_data/terminal/New(var/obj/structure/machinery/computer/objective/D)
 	. = ..()
-	data_source = D
-	initial_area = get_area(data_source)
+	terminal = D
+	initial_area = get_area(terminal)
 
 /datum/cm_objective/retrieve_data/terminal/Destroy()
-	data_source.objective = null
-	data_source = null
+	terminal.objective = null
+	terminal = null
 	return ..()
 
 /datum/cm_objective/retrieve_data/terminal/get_related_label()
-	return data_source.label
+	return terminal.label
+
+/datum/cm_objective/retrieve_data/terminal/process()
+	if(!terminal.powered())
+		terminal.visible_message(SPAN_WARNING("\The [terminal] powers down mid-operation as the area looses power."))
+		playsound(terminal, 'sound/machines/terminal_shutdown.ogg', 25, 1)
+		SSobjectives.stop_processing_objective(src)
+		uploading = FALSE
+		return
+	if(!SSobjectives.comms_online)
+		terminal.visible_message(SPAN_WARNING("\The [terminal] stops mid-operation due to a network connection error."))
+		playsound(terminal, 'sound/machines/terminal_shutdown.ogg', 25, 1)
+		SSobjectives.stop_processing_objective(src)
+		uploading = FALSE
+		return
+
+	..()
 
 /datum/cm_objective/retrieve_data/terminal/complete()
-	if(..())
-		data_source.visible_message(SPAN_NOTICE("[data_source] pings softly as it finishes the upload."))
-		playsound(data_source, 'sound/machines/screen_output1.ogg', 25, 1)
+	state = OBJECTIVE_COMPLETE
+	uploading = FALSE
+	terminal.visible_message(SPAN_NOTICE("[terminal] pings softly as it finishes the upload."))
+	playsound(terminal, 'sound/machines/screen_output1.ogg', 25, 1)
+	award_points()
 
-/datum/cm_objective/retrieve_data/terminal/get_clue()
-	return SPAN_DANGER("Upload data from data terminal <b>[data_source.label]</b> in <u>[get_area(data_source)]</u>, the password is <b>[decryption_password]</b>")
+	..()
 
-/datum/cm_objective/retrieve_data/terminal/data_is_available()
-	. = ..()
-	if(!data_source.powered())
-		return FALSE
-	if(!data_source.uploading)
-		return FALSE
+	// if(..())
+	// 	if(intel_system)
+	// 		intel_system.store_objective(src)
+	// 	return TRUE
+	// return FALSE
 
 /datum/cm_objective/retrieve_data/terminal/get_tgui_data()
-	if(..())
-		return
 	var/list/clue = list()
 
 	clue["text"] = "Upload data from terminal"
-	clue["itemID"] = data_source.label
+	clue["itemID"] = terminal.label
 	clue["key_text"] = ", password is "
 	clue["key"] = decryption_password
 	clue["location"] = initial_area.name
 
 	return clue
+
+/datum/cm_objective/retrieve_data/terminal/get_clue()
+	return SPAN_DANGER("Upload data from data terminal <b>[terminal.label]</b> in <u>[get_area(terminal)]</u>, the password is <b>[decryption_password]</b>")
 
 // --------------------------------------------
 // *** Retrieve a disk and upload it ***
@@ -108,9 +117,8 @@
 /datum/cm_objective/retrieve_data/disk/New(var/obj/item/disk/objective/O)
 	. = ..()
 	disk = O
-	data_total = disk.data_amount
-	data_transfer_rate = disk.read_speed
 	initial_area = get_area(disk)
+	// SSobjectives.statistics["data_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_data/disk/Destroy()
 	disk?.objective = null
@@ -120,34 +128,31 @@
 /datum/cm_objective/retrieve_data/disk/get_related_label()
 	return disk.label
 
-/datum/cm_objective/retrieve_data/disk/complete()
-	if(..())
-		if(istype(disk.loc,/obj/structure/machinery/computer/disk_reader))
-			var/obj/structure/machinery/computer/disk_reader/reader = disk.loc
-			reader.visible_message("\The [reader] pings softly as the upload finishes and ejects the disk.")
-			playsound(reader, 'sound/machines/screen_output1.ogg', 25, 1)
-			disk.forceMove(reader.loc)
-			disk.name = "[disk.name] (complete)"
-			reader.disk = null
-		return TRUE
-	return FALSE
-
-/datum/cm_objective/retrieve_data/disk/get_clue()
-	return SPAN_DANGER("Retrieving <font color=[disk.display_color]><u>[disk.disk_color]</u></font> computer disk <b>[disk.label]</b> in <u>[initial_area]</u>, decryption password is <b>[decryption_password]</b>")
-
-/datum/cm_objective/retrieve_data/disk/data_is_available()
-	. = ..()
-	if(!istype(disk.loc,/obj/structure/machinery/computer/disk_reader))
-		return FALSE
+/datum/cm_objective/retrieve_data/disk/process()
 	var/obj/structure/machinery/computer/disk_reader/reader = disk.loc
 	if(!reader.powered())
-		return FALSE
-	if(!is_mainship_level(reader.z))
-		return FALSE
+		reader.visible_message(SPAN_WARNING("\The [reader] powers down mid-operation as the area looses power."))
+		playsound(reader, 'sound/machines/terminal_shutdown.ogg', 25, 1)
+		SSobjectives.stop_processing_objective(src)
+		disk.forceMove(reader.loc)
+		reader.disk = null
+		return
+
+	..()
+
+/datum/cm_objective/retrieve_data/disk/complete()
+	state = OBJECTIVE_COMPLETE
+	var/obj/structure/machinery/computer/disk_reader/reader = disk.loc
+	reader.visible_message("\The [reader] pings softly as the upload finishes and ejects the disk.")
+	playsound(reader, 'sound/machines/screen_output1.ogg', 25, 1)
+	disk.forceMove(reader.loc)
+	disk.name = "[disk.name] (complete)"
+	reader.disk = null
+	award_points()
+
+	..()
 
 /datum/cm_objective/retrieve_data/disk/get_tgui_data()
-	if(..())
-		return
 	var/list/clue = list()
 
 	clue["text"] = "disk"
@@ -160,6 +165,9 @@
 
 	return clue
 
+/datum/cm_objective/retrieve_data/disk/get_clue()
+	return SPAN_DANGER("Retrieve <font color=[disk.display_color]><u>[disk.disk_color]</u></font> computer disk <b>[disk.label]</b> in <u>[initial_area]</u>, decryption password is <b>[decryption_password]</b>")
+
 // --------------------------------------------
 // *** Mapping objects ***
 // *** Retrieve a disk and upload it ***
@@ -168,8 +176,6 @@
 	name = "computer disk"
 	var/label = ""
 	desc = "A boring looking computer disk. The name label is just a gibberish collection of letters and numbers."
-	var/data_amount = 500
-	var/read_speed = 50
 	unacidable = TRUE
 	var/datum/cm_objective/retrieve_data/disk/objective
 	var/display_color = "white"
@@ -226,6 +232,7 @@
 	icon_state = "medlaptop"
 	unslashable = TRUE
 	unacidable = TRUE
+	indestructible = TRUE
 	var/datum/cm_objective/retrieve_data/terminal/objective
 
 /obj/structure/machinery/computer/objective/Initialize()
@@ -235,42 +242,42 @@
 	objective = new /datum/cm_objective/retrieve_data/terminal(src)
 
 /obj/structure/machinery/computer/objective/Destroy()
-	objective?.data_source = null
+	objective?.terminal = null
 	objective = null
 	return ..()
 
 /obj/structure/machinery/computer/objective/attack_hand(mob/living/user)
-	if(!powered())
-		to_chat(user, SPAN_WARNING("This terminal has no power!"))
-		return FALSE
-	if(objective.objective_flags & OBJ_REQUIRES_COMMS)
-		// if(!SSobjectives.comms?.complete)
-			// to_chat(user, SPAN_WARNING("The terminal flashes a network connection error."))
-			// return FALSE
-	if(objective.complete)
-		to_chat(user, SPAN_WARNING("There's a message on the screen that the data upload finished successfully."))
-		return TRUE
-	if(uploading)
-		to_chat(user, SPAN_WARNING("Looks like the terminal is already uploading, better make sure nothing interupts it!"))
-		return TRUE
+	if (!check_if_usable(user))
+		return
+
 	if(input(user,"Enter the password","Password","") != objective.decryption_password)
 		to_chat(user, SPAN_WARNING("The terminal rejects the password."))
-		return FALSE
-	if(!objective.active)
-		objective.activate(1) // force it active now, we have the password
-	if(!powered())
-		to_chat(user, SPAN_WARNING("This terminal has no power!"))
-		return FALSE
-	if(objective.objective_flags & OBJ_REQUIRES_COMMS)
-		// if(!SSobjectives.comms?.complete)
-		// 	to_chat(user, SPAN_WARNING("The terminal flashes a network connection error."))
-		// 	return FALSE
-	if(uploading)
-		to_chat(user, SPAN_WARNING("Looks like the terminal is already uploading, better make sure nothing interupts it!"))
-		return TRUE
+		return
+
+	// Check if the terminal became unusable since we started entering the password.
+	if (!check_if_usable(user))
+		return
+
 	uploading = 1
+	objective.activate()
 	to_chat(user, SPAN_NOTICE("You start uploading the data."))
 	user.count_niche_stat(STATISTICS_NICHE_UPLOAD)
+
+/obj/structure/machinery/computer/objective/proc/check_if_usable(mob/living/user)
+	if(!powered())
+		to_chat(user, SPAN_WARNING("This terminal has no power!"))
+		return
+	if(!SSobjectives.comms_online)
+		to_chat(user, SPAN_WARNING("The terminal flashes a network connection error."))
+		return
+	if(objective.complete)
+		to_chat(user, SPAN_WARNING("There's a message on the screen that the data upload finished successfully."))
+		return
+	if(uploading)
+		to_chat(user, SPAN_WARNING("Looks like the terminal is already uploading, better make sure nothing interupts it!"))
+		return
+
+	return TRUE
 
 // --------------------------------------------
 // *** Upload data from an inserted disk ***
@@ -284,15 +291,15 @@
 	unacidable = TRUE
 
 /obj/structure/machinery/computer/disk_reader/attack_hand(mob/living/user)
-	if(isXeno(user))
-		return
-	if(disk)
-		to_chat(user, SPAN_NOTICE("[disk] is currently loaded into the machine."))
-		if(disk.objective)
-			if(disk.objective.active && !disk.objective.complete && disk.objective.data_is_available())
-				to_chat(user, SPAN_NOTICE("Data is currently being uploaded to ARES."))
-				return
-		to_chat(user, SPAN_NOTICE("No data is being uploaded."))
+	// if(isXeno(user))
+	// 	return
+	// if(disk)
+	// 	to_chat(user, SPAN_NOTICE("[disk] is currently loaded into the machine."))
+	// 	if(disk.objective)
+	// 		if(disk.objective.active && !disk.objective.complete && disk.objective.data_is_available())
+	// 			to_chat(user, SPAN_NOTICE("Data is currently being uploaded to ARES."))
+	// 			return
+	// 	to_chat(user, SPAN_NOTICE("No data is being uploaded."))
 
 /obj/structure/machinery/computer/disk_reader/attackby(obj/item/W, mob/living/user)
 	if(istype(W, /obj/item/disk/objective))

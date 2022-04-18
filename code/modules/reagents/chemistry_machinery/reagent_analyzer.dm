@@ -101,10 +101,12 @@
 					P.trigger()
 				else
 					return
+
 			chemical_data.update_credits(2)
 			chemical_identified_list[S.id] = S.objective_value
-			SSobjectives.total_analysed_chemicals++
-			SSobjectives.total_analysed_chemicals_points_earned += S.objective_value
+			SSobjectives.statistics["chemicals_completed"]++
+			SSobjectives.statistics["chemicals_total_points_earned"] += S.objective_value
+
 			var/datum/techtree/tree = GET_TREE(TREE_MARINE)
 			tree.add_points(S.objective_value)
 	else
