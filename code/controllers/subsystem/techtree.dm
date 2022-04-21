@@ -79,8 +79,8 @@ SUBSYSTEM_DEF(techtree)
 
 	. = ..()
 
-/datum/controller/subsystem/techtree/proc/activate_passive_gain()
-	for(var/name in trees)
-		var/datum/techtree/T = trees[name]
-		T.passive_gain_enabled = TRUE
-		T.next_passive_increase = world.time + PASSIVE_INCREASE_INTERVAL
+// /datum/controller/subsystem/techtree/proc/activate_passive_gain()
+// 	for(var/name in trees)
+// 		var/datum/techtree/T = trees[name]
+// 		T.passive_gain_enabled = TRUE
+// 		T.next_passive_increase = world.time + PASSIVE_INCREASE_INTERVAL

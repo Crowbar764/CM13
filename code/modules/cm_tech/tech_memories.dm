@@ -90,55 +90,116 @@
 
 	return clue_categories
 
+/datum/objective_memory_interface/proc/get_objective(var/label, var/completed, var/instances, var/points_earned, var/custom_color = FALSE, var/custom_status = FALSE)
+	var/list/objective = list()
+	objective["label"] = label
+	objective["content_credits"] = (points_earned ? "([points_earned])" : "")
+
+	if (!custom_status)
+		objective["content"] = "[completed] / [(instances ? instances : "∞")]"
+	else
+		objective["content"] = custom_status
+
+	if (custom_color)
+		objective["content_color"] = custom_color
+	else
+		if (!completed)
+			objective["content_color"] = "red"
+		else if (completed == instances)
+			objective["content_color"] = "green"
+		else
+			objective["content_color"] = "orange"
+
+	return objective
+
 // Get our progression for each objective.
-/datum/objective_memory_interface/proc/get_objectives(mob/user)
+/datum/objective_memory_interface/proc/get_objectives()
 	var/list/objectives = list()
 
 	// Documents (papers + reports + folders + manuals)
-	var/list/objective = list()
-	objective["label"] = "Documents"
-	objective["content_credits"] = "([SSobjectives.statistics["documents_total_points_earned"]])"
-	objective["content"] = "[SSobjectives.statistics["documents_completed"]] / [SSobjectives.statistics["documents_total_instances"]]"
-	if (!SSobjectives.statistics["documents_completed"])
-		objective["content_color"] = "red"
-	else if (SSobjectives.statistics["documents_completed"] == SSobjectives.statistics["documents_total_instances"])
-		objective["content_color"] = "green"
-	else
-		objective["content_color"] = "orange"
-	objectives += list(objective)
+	objectives += list(get_objective(
+		"Documents",
+		SSobjectives.statistics["documents_completed"],
+		SSobjectives.statistics["documents_total_instances"],
+		SSobjectives.statistics["documents_total_points_earned"]
+	))
 
 	// Data (disks + terminals)
-	objective = list()
-	objective["label"] = "Upload data"
-	objective["content_credits"] = "([SSobjectives.statistics["data_retrieval_total_points_earned"]])"
-	objective["content"] = "[SSobjectives.statistics["data_retrieval_completed"]] / [SSobjectives.statistics["data_retrieval_total_instances"]]"
-	if (!SSobjectives.statistics["data_retrieval_completed"])
-		objective["content_color"] = "red"
-	else if (SSobjectives.statistics["data_retrieval_completed"] == SSobjectives.statistics["data_retrieval_total_instances"])
-		objective["content_color"] = "green"
-	else
-		objective["content_color"] = "orange"
-	objectives += list(objective)
+	objectives += list(get_objective(
+		"Upload data",
+		SSobjectives.statistics["data_retrieval_completed"],
+		SSobjectives.statistics["data_retrieval_total_instances"],
+		SSobjectives.statistics["data_retrieval_total_points_earned"]
+	))
 
-	// Chemicals
-	objective = list()
-	objective["label"] = "Analyze chemicals"
-	objective["content_credits"] = "([SSobjectives.statistics["chemicals_total_points_earned"]])"
-	objective["content"] = "[SSobjectives.statistics["chemicals_completed"]] / ∞"
-	objectives += list(objective)
+	// Retrieve items (devices + documents + fultons)
+	objectives += list(get_objective(
+		"Retrieve items",
+		SSobjectives.statistics["item_retrieval_completed"],
+		SSobjectives.statistics["item_retrieval_total_instances"],
+		SSobjectives.statistics["item_retrieval_total_points_earned"]
+	))
 
 	// Miscellaneous (safes)
-	objective = list()
-	objective["label"] = "Miscellaneous"
-	objective["content_credits"] = "([SSobjectives.statistics["miscellaneous_total_points_earned"]])"
-	objective["content"] = "[SSobjectives.statistics["miscellaneous_completed"]] / [SSobjectives.statistics["miscellaneous_total_instances"]]"
-	if (!SSobjectives.statistics["miscellaneous_completed"])
-		objective["content_color"] = "red"
-	else if (SSobjectives.statistics["miscellaneous_completed"] == SSobjectives.statistics["miscellaneous_total_instances"])
-		objective["content_color"] = "green"
+	objectives += list(get_objective(
+		"Miscellaneous",
+		SSobjectives.statistics["miscellaneous_completed"],
+		SSobjectives.statistics["miscellaneous_total_instances"],
+		SSobjectives.statistics["miscellaneous_total_points_earned"]
+	))
+
+	// Chemicals
+	objectives += list(get_objective(
+		"Analyze chemicals",
+		SSobjectives.statistics["chemicals_completed"],
+		FALSE,
+		SSobjectives.statistics["chemicals_total_points_earned"],
+		"white"
+	))
+
+	// Corpses (human + xeno)
+	objectives += list(get_objective(
+		"Recover corpses",
+		SSobjectives.statistics["corpses_recovered"],
+		FALSE,
+		SSobjectives.statistics["corpses_total_points_earned"],
+		"white"
+	))
+
+	// Communications
+	objectives += list(get_objective(
+		"Colony communications",
+		FALSE,
+		FALSE,
+		(SSobjectives.comms.state == OBJECTIVE_COMPLETE ? SSobjectives.comms.value : FALSE),
+		(SSobjectives.comms.state == OBJECTIVE_COMPLETE ? "green" : "red"),
+		(SSobjectives.comms.state == OBJECTIVE_COMPLETE ? "Online" : "Offline"),
+	))
+
+	// Power (smes)
+	var/message
+	var/color
+	if (!SSobjectives.first_drop_complete)
+		message = "Unable to remotely interface with powernet"
+		color = "white"
+	else if (SSobjectives.power.state == OBJECTIVE_COMPLETE)
+		message = "Online"
+		color = "green"
+	else if (SSobjectives.power.last_power_output)
+		message = "[SSobjectives.power.last_power_output]W, [SSobjectives.power.minimum_power_required]W required"
+		color = "orange"
 	else
-		objective["content_color"] = "orange"
-	objectives += list(objective)
+		message = "Offline"
+		color = "red"
+
+	objectives += list(get_objective(
+		"Colony power",
+		FALSE,
+		FALSE,
+		(SSobjectives.power.state == OBJECTIVE_COMPLETE ? SSobjectives.power.value : FALSE),
+		color,
+		message,
+	))
 
 	return objectives
 
@@ -149,7 +210,7 @@
 
 	.["tech_points"] = holder.points
 	.["total_tech_points"] = tree.total_points
-	.["passive_tech_points"] = tree.resources_per_second * 60
+	// .["passive_tech_points"] = tree.resources_per_second * 60
 	.["objectives"] = get_objectives(user)
 	.["clue_categories"] = get_clues(user)
 

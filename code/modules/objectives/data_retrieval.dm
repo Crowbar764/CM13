@@ -11,17 +11,13 @@
 	var/decryption_password
 	display_category = "Data Retrieval"
 	number_of_clues_to_generate = 2
-	controller = TREE_MARINE
 
 /datum/cm_objective/retrieve_data/New()
 	. = ..()
 	decryption_password = "[pick(alphabet_uppercase)][rand(100,999)][pick(alphabet_uppercase)][rand(10,99)]"
 
-/datum/cm_objective/retrieve_data/Initialize()
-	. = ..()
+/datum/cm_objective/retrieve_data/pre_round_start()
 	SSobjectives.statistics["data_retrieval_total_instances"]++
-	message_admins(src.type)
-	message_admins(SSobjectives.statistics["data_retrieval_total_instances"])
 
 /datum/cm_objective/retrieve_data/Destroy()
 	initial_area = null
@@ -68,7 +64,7 @@
 		SSobjectives.stop_processing_objective(src)
 		uploading = FALSE
 		return
-	if(!SSobjectives.comms_online)
+	if(!SSobjectives.comms.state == OBJECTIVE_COMPLETE)
 		terminal.visible_message(SPAN_WARNING("\The [terminal] stops mid-operation due to a network connection error."))
 		playsound(terminal, 'sound/machines/terminal_shutdown.ogg', 25, 1)
 		SSobjectives.stop_processing_objective(src)
@@ -118,7 +114,6 @@
 	. = ..()
 	disk = O
 	initial_area = get_area(disk)
-	// SSobjectives.statistics["data_retrieval_total_instances"]++
 
 /datum/cm_objective/retrieve_data/disk/Destroy()
 	disk?.objective = null
@@ -150,6 +145,10 @@
 	reader.disk = null
 	award_points()
 
+	// Now enable the objective to store this disk in the lab.
+	disk.retrieve_objective.state = OBJECTIVE_ACTIVE
+	disk.retrieve_objective.activate()
+
 	..()
 
 /datum/cm_objective/retrieve_data/disk/get_tgui_data()
@@ -178,6 +177,7 @@
 	desc = "A boring looking computer disk. The name label is just a gibberish collection of letters and numbers."
 	unacidable = TRUE
 	var/datum/cm_objective/retrieve_data/disk/objective
+	var/datum/cm_objective/retrieve_item/document/retrieve_objective
 	var/display_color = "white"
 	var/disk_color = "White"
 
@@ -212,6 +212,7 @@
 	label = "[pick(greek_letters)]-[rand(100,999)]"
 	name = "[disk_color] computer disk [label]"
 	objective = new /datum/cm_objective/retrieve_data/disk(src)
+	retrieve_objective = new /datum/cm_objective/retrieve_item/document(src)
 	pixel_y = rand(-8, 8)
 	pixel_x = rand(-9, 9)
 	w_class = SIZE_TINY
@@ -219,6 +220,8 @@
 /obj/item/disk/objective/Destroy()
 	objective?.disk = null
 	objective = null
+	retrieve_objective.target_item = null
+	retrieve_objective = null
 	return ..()
 
 // --------------------------------------------
@@ -267,10 +270,10 @@
 	if(!powered())
 		to_chat(user, SPAN_WARNING("This terminal has no power!"))
 		return
-	if(!SSobjectives.comms_online)
+	if(!SSobjectives.comms.state == OBJECTIVE_COMPLETE)
 		to_chat(user, SPAN_WARNING("The terminal flashes a network connection error."))
 		return
-	if(objective.complete)
+	if(objective.state == OBJECTIVE_COMPLETE)
 		to_chat(user, SPAN_WARNING("There's a message on the screen that the data upload finished successfully."))
 		return
 	if(uploading)
@@ -291,15 +294,10 @@
 	unacidable = TRUE
 
 /obj/structure/machinery/computer/disk_reader/attack_hand(mob/living/user)
-	// if(isXeno(user))
-	// 	return
-	// if(disk)
-	// 	to_chat(user, SPAN_NOTICE("[disk] is currently loaded into the machine."))
-	// 	if(disk.objective)
-	// 		if(disk.objective.active && !disk.objective.complete && disk.objective.data_is_available())
-	// 			to_chat(user, SPAN_NOTICE("Data is currently being uploaded to ARES."))
-	// 			return
-	// 	to_chat(user, SPAN_NOTICE("No data is being uploaded."))
+	if(isXeno(user))
+		return
+	if(disk)
+		to_chat(user, SPAN_NOTICE("[disk] is currently being uploaded to ARES."))
 
 /obj/structure/machinery/computer/disk_reader/attackby(obj/item/W, mob/living/user)
 	if(istype(W, /obj/item/disk/objective))
@@ -307,20 +305,20 @@
 			to_chat(user, SPAN_WARNING("There is a disk in the drive being uploaded already!"))
 			return FALSE
 		var/obj/item/disk/objective/newdisk = W
-		if(newdisk.objective.complete)
+		if(newdisk.objective.state == OBJECTIVE_COMPLETE)
 			to_chat(user, SPAN_WARNING("The reader displays a message stating this disk has already been read and refuses to accept it."))
 			return FALSE
 		if(input(user,"Enter the encryption key","Decrypting [newdisk]","") != newdisk.objective.decryption_password)
 			to_chat(user, SPAN_WARNING("The reader asks for the encryption key for this disk, not having the correct key you eject the disk."))
 			return FALSE
-		if(!newdisk.objective.active)
-			newdisk.objective.activate(1) // force it active now, we have the password
 		if(istype(disk))
 			to_chat(user, SPAN_WARNING("There is a disk in the drive being uploaded already!"))
 			return FALSE
 
 		if(!(newdisk in user.contents))
 			return FALSE
+
+		newdisk.objective.activate()
 
 		user.drop_inv_item_to_loc(W, src)
 		disk = W

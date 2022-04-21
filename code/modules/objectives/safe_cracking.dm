@@ -11,11 +11,14 @@
 /datum/cm_objective/crack_safe/New(var/obj/structure/safe/safe)
 	target = safe
 	initial_area = get_area(target)
-	SSobjectives.statistics["miscellaneous_total_instances"]++
+
 
 	RegisterSignal(safe, COMSIG_SAFE_OPENED, .proc/on_safe_open)
 	RegisterSignal(safe, COMSIG_PARENT_QDELETING, .proc/on_safe_open)
 	. = ..()
+
+/datum/cm_objective/crack_safe/pre_round_start()
+	SSobjectives.statistics["miscellaneous_total_instances"]++
 
 /datum/cm_objective/crack_safe/Destroy()
 	target = null
@@ -41,6 +44,7 @@
 /datum/cm_objective/crack_safe/complete()
 	state = OBJECTIVE_COMPLETE
 	SSobjectives.statistics["miscellaneous_completed"]++
+	SSobjectives.statistics["miscellaneous_total_points_earned"] += value
 	award_points()
 
 /datum/cm_objective/crack_safe/proc/on_safe_open(var/obj/structure/safe)

@@ -60,95 +60,111 @@
 	name = "Recover corpses"
 	objective_flags = OBJ_DO_NOT_TREE
 	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_UBIQUITOUS
+	state = OBJECTIVE_ACTIVE
 	/// List of list of active corpses per tech-faction ownership
-	var/list/corpses
-	/// Base scoring points for each faction, eg. to account for consumed corpses
-	var/list/points_base
-	/// Cache of point values as per last update for each faction
-	var/list/points_cache
-	/// Cache of total baseline value of objectives as per last update (informative, inexact)
-	var/list/points_potential
+	var/list/corpses = list()
+	var/list/scored_corpses = list()
 
 /datum/cm_objective/recover_corpses/New()
 	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_CORPSE_POOLED, .proc/handle_corpse_consumption)
-	RegisterSignal(SSdcs, COMSIG_GLOB_CORPSE_MORPHED, .proc/handle_corpse_consumption)
-	RegisterSignal(SSdcs, COMSIG_GLOB_MARINE_DEATH, .proc/handle_marine_deaths)
-	RegisterSignal(SSdcs, COMSIG_GLOB_XENO_DEATH, .proc/handle_xeno_deaths)
-	corpses          = list(TREE_MARINE = list(), TREE_XENO = list(), TREE_NONE = list())
-	points_base      = list(TREE_MARINE = 0, TREE_XENO = 0, TREE_NONE = 0)
-	points_cache     = list(TREE_MARINE = 0, TREE_XENO = 0, TREE_NONE = 0)
-	points_potential = list(TREE_MARINE = 0, TREE_XENO = 0, TREE_NONE = 0)
-	awarded_points   = list(TREE_MARINE = 0, TREE_XENO = 0, TREE_NONE = 0)
+	// RegisterSignal(SSdcs, list(
+	// 	COMSIG_GLOB_CORPSE_POOLED,
+	// 	COMSIG_GLOB_CORPSE_MORPHED
+	// ), .proc/handle_corpse_consumption)
+
+	RegisterSignal(SSdcs, list(
+		COMSIG_GLOB_MARINE_DEATH,
+		COMSIG_GLOB_XENO_DEATH
+	), .proc/handle_mob_deaths)
 
 /datum/cm_objective/recover_corpses/Destroy()
 	corpses = null
-	points_base = null
-	points_cache = null
-	points_potential = null
 	. = ..()
 
+/datum/cm_objective/recover_corpses/proc/generate_corpses(numCorpsesToSpawn)
+	var/list/obj/effect/landmark/corpsespawner/objective_spawn_corpse = GLOB.corpse_spawns.Copy()
+	while(numCorpsesToSpawn--)
+		if(!length(objective_spawn_corpse))
+			break
+		var/obj/effect/landmark/corpsespawner/spawner = pick(objective_spawn_corpse)
+		var/turf/spawnpoint = get_turf(spawner)
+		if(spawnpoint)
+			var/mob/living/carbon/human/M = new /mob/living/carbon/human(spawnpoint)
+			M.create_hud() //Need to generate hud before we can equip anything apparently...
+			arm_equipment(M, "Corpse - [spawner.name]", TRUE, FALSE)
+		objective_spawn_corpse.Remove(spawner)
+
 /datum/cm_objective/recover_corpses/post_round_start()
+	activate()
 	// Populate list at round start with survivors
-	for(var/mob/living/carbon/human/H as anything in GLOB.human_mob_list)
-		var/turf/T = get_turf(H)
-		if(is_ground_level(T?.z) && H.stat == DEAD && !H.spawned_corpse)
-			LAZYADD(corpses[TREE_NONE], H)
+	// for(var/mob/living/carbon/human/H as anything in GLOB.human_mob_list)
+	// 	var/turf/T = get_turf(H)
+	// 	if(is_ground_level(T?.z) && H.stat == DEAD && !H.spawned_corpse)
+	// 		LAZYADD(corpses, H)
 
-/datum/cm_objective/recover_corpses/proc/handle_marine_deaths(datum/source, mob/living/carbon/human/H, gibbed)
+
+/datum/cm_objective/recover_corpses/proc/handle_mob_deaths(datum/source, mob/living/carbon/dead_mob, gibbed)
 	SIGNAL_HANDLER
-	if(gibbed || !istype(H) || !isSpeciesHuman(H))
+
+	message_admins("New corpse dead1 [dead_mob.type]")
+	message_admins("New corpse dead2 [dead_mob.name]")
+
+
+
+	// if(gibbed || !istype(dead_mob, /mob/living/carbon))
+	// 	message_admins("Gibbed or not type")
+	// 	return
+
+	if(!iscarbon(dead_mob))
+		message_admins("Gibbed or not type")
 		return
-	LAZYDISTINCTADD(corpses[TREE_MARINE], H)
-	RegisterSignal(H, list(
-		COMSIG_LIVING_REJUVENATED,
-		COMSIG_HUMAN_REVIVED,
-	), .proc/handle_marine_revival)
-	RegisterSignal(H, COMSIG_PARENT_QDELETING, .proc/handle_marine_corpse_deletion)
 
-/datum/cm_objective/recover_corpses/proc/handle_marine_revival(mob/living/carbon/human/H)
-	SIGNAL_HANDLER
-	UnregisterSignal(H, list(
-		COMSIG_LIVING_REJUVENATED,
-		COMSIG_HUMAN_REVIVED,
-	))
-	LAZYREMOVE(corpses[TREE_MARINE], H)
-
-/datum/cm_objective/recover_corpses/proc/handle_marine_corpse_deletion(mob/living/carbon/human/H)
-	SIGNAL_HANDLER
-	UnregisterSignal(H, list(
-		COMSIG_LIVING_REJUVENATED,
-		COMSIG_HUMAN_REVIVED,
-	))
-	LAZYREMOVE(corpses[TREE_MARINE], H)
-
-/datum/cm_objective/recover_corpses/proc/handle_xeno_deaths(datum/source, mob/living/carbon/Xenomorph/X, gibbed)
-	SIGNAL_HANDLER
-	if(!isXeno(X) || gibbed)
+	// This mob has already been scored before
+	if(LAZYISIN(scored_corpses, dead_mob))
+		message_admins("corpse already scored.")
 		return
-	LAZYDISTINCTADD(corpses[TREE_XENO], X)
-	RegisterSignal(X, list(
-		COMSIG_LIVING_REJUVENATED,
-		COMSIG_XENO_REVIVED,
-	), .proc/handle_xeno_revival)
-	RegisterSignal(X, COMSIG_PARENT_QDELETING, .proc/handle_xeno_corpse_deletion)
 
-/datum/cm_objective/recover_corpses/proc/handle_xeno_revival(mob/living/carbon/Xenomorph/X)
-	SIGNAL_HANDLER
-	UnregisterSignal(X, list(
-		COMSIG_LIVING_REJUVENATED,
-		COMSIG_XENO_REVIVED,
-	))
-	LAZYREMOVE(corpses[TREE_XENO], X)
+	LAZYDISTINCTADD(corpses, dead_mob)
+	RegisterSignal(dead_mob, COMSIG_PARENT_QDELETING, .proc/handle_corpse_deletion)
+	RegisterSignal(dead_mob, COMSIG_LIVING_REJUVENATED, .proc/handle_mob_revival)
 
-/datum/cm_objective/recover_corpses/proc/handle_xeno_corpse_deletion(mob/living/carbon/Xenomorph/X)
+	if (isXeno(dead_mob))
+		RegisterSignal(dead_mob, COMSIG_XENO_REVIVED, .proc/handle_mob_revival)
+	else
+		RegisterSignal(dead_mob, COMSIG_HUMAN_REVIVED, .proc/handle_mob_revival)
+
+
+/datum/cm_objective/recover_corpses/proc/handle_mob_revival(mob/living/carbon/revived_mob)
 	SIGNAL_HANDLER
-	UnregisterSignal(X, list(
+
+	message_admins("Corpse being revived")
+
+	UnregisterSignal(revived_mob, list(COMSIG_LIVING_REJUVENATED, COMSIG_PARENT_QDELETING))
+
+	if (isXeno(revived_mob))
+		UnregisterSignal(revived_mob, COMSIG_XENO_REVIVED)
+	else
+		UnregisterSignal(revived_mob, COMSIG_HUMAN_REVIVED)
+
+	LAZYREMOVE(corpses, revived_mob)
+
+
+/datum/cm_objective/recover_corpses/proc/handle_corpse_deletion(mob/living/carbon/deleted_mob)
+	SIGNAL_HANDLER
+
+	message_admins("Corpse being deleted")
+
+	UnregisterSignal(deleted_mob, list(
 		COMSIG_LIVING_REJUVENATED,
-		COMSIG_XENO_REVIVED,
-		COMSIG_PARENT_QDELETING,
+		COMSIG_PARENT_QDELETING
 	))
-	LAZYREMOVE(corpses[TREE_XENO], X)
+
+	if (isXeno(deleted_mob))
+		UnregisterSignal(deleted_mob, COMSIG_XENO_REVIVED)
+	else
+		UnregisterSignal(deleted_mob, COMSIG_HUMAN_REVIVED)
+
+	LAZYREMOVE(corpses, deleted_mob)
 
 /// Get score value for a given corpse
 /datum/cm_objective/recover_corpses/proc/score_corpse(mob/target)
@@ -173,142 +189,93 @@
 					value = OBJECTIVE_ABSOLUTE_VALUE
 
 	else if(isHumanSynthStrict(target))
-		var/mob/living/carbon/human/H = target
-		if(H.spawned_corpse) // No scoring spawned corpses
-			return OBJECTIVE_NO_VALUE
 		return OBJECTIVE_LOW_VALUE
 
 	return value
 
 /// Handle consumption of a corpse by a spawn pool or eggmorpher and addition to base point pool
-/datum/cm_objective/recover_corpses/proc/handle_corpse_consumption(datum/source, mob/target, target_hive)
-	var/current = LAZYACCESS(points_base, TREE_XENO) // TODO handle mapping the day techtrees support multi hive
-	var/datum/techtree/T = GET_TREE(TREE_XENO)
-	if(ishuman(target))
-		var/mob/living/carbon/human/H = target
-		if(!H.spawned_corpse) // Gives points for pooled marines/survivors/monkey reskins, but not roundstart corpses
-			T.add_points(TECH_POINTS_PER_CORPSE)
-	else if(isYautja(target))
-		T.add_points(TECH_POINTS_PER_CORPSE * 3) // Gives more points in the event a pred gets captured
-	current += score_corpse(target)
-	LAZYSET(points_base, TREE_XENO, current)
-	for(var/F as anything in corpses)
-		LAZYREMOVE(corpses[F], target)
+// /datum/cm_objective/recover_corpses/proc/handle_corpse_consumption(datum/source, mob/target, target_hive)
+// 	var/datum/techtree/T = GET_TREE(TREE_XENO)
+// 	if(ishuman(target))
+// 		var/mob/living/carbon/human/H = target
+// 		if(!H.spawned_corpse) // Gives points for pooled marines/survivors/monkey reskins, but not roundstart corpses
+// 			T.add_points(TECH_POINTS_PER_CORPSE)
+// 	else if(isYautja(target))
+// 		T.add_points(TECH_POINTS_PER_CORPSE * 3) // Gives more points in the event a pred gets captured
+// 	current += score_corpse(target)
+// 	LAZYSET(points_base, TREE_XENO, current)
+// 	for(var/F as anything in corpses)
+// 		LAZYREMOVE(corpses[F], target)
 
-/datum/cm_objective/recover_corpses/process(delta_time)
-	. = ..()
-	if(!.)
-		return
+/datum/cm_objective/recover_corpses/process()
+	message_admins("Corpse process:")
 
-	// Reset points cache
-	points_cache = list()
-	for(var/F as anything in points_base)
-		points_cache[F] = points_base[F]
-		points_potential[F] = points_base[F]
+	for(var/mob/target as anything in corpses)
+		if(QDELETED(target))
+			LAZYREMOVE(corpses, target)
+			continue
 
-	// Recompute all corpses ownership for scoring
-	for(var/F as anything in corpses)
-		for(var/mob/target as anything in corpses[F])
-			if(QDELETED(target))
-				LAZYREMOVE(corpses[F], target)
-				continue
+		// Get the corpse value
+		var/corpse_val = score_corpse(target)
 
-			// Get the corpse value
-			var/corpse_val = score_corpse(target)
-			points_potential[TREE_MARINE] += corpse_val
-			points_potential[TREE_XENO] += corpse_val
+		// Add points depending on who controls it
+		var/turf/T = get_turf(target)
+		var/area/A = get_area(T)
+		message_admins("Checking Corpse '[target]'.")
+		if(istype(A, /area/almayer/medical/morgue) || istype(A, /area/almayer/medical/containment))
+			award_points(corpse_val)
+			SSobjectives.statistics["corpses_recovered"]++
 
-			// Add points depending on who controls it
-			var/turf/T = get_turf(target)
-			var/area/A = get_area(T)
-			if(istype(A, /area/almayer/medical/morgue) || istype(A, /area/almayer/medical/containment))
-				points_cache[TREE_MARINE] += corpse_val
-			else
-				var/obj/effect/alien/weeds/weed = locate() in T
-				if(weed)
-					if(weed?.weed_strength >= WEED_LEVEL_HIVE)
-						points_cache[TREE_XENO] += corpse_val
+			message_admins("Corpse '[target]' in ship, awarding points.")
+			corpses -= target
+			scored_corpses += target
 
 /// Update awarded points to the controlling tech-faction
-/datum/cm_objective/recover_corpses/award_points()
-	if(!awarded_points)
-		awarded_points = list()
-	for(var/F as anything in points_cache)
-		var/current = points_cache[F]
-		if(!current)
-			continue
-		if(!awarded_points[F])
-			awarded_points[F] = 0
-		var/diff = current - awarded_points[F]
-		if(diff > 0)
-			if(F == TREE_XENO)
-				diff *= XENO_REWARD_MULTIPLIER
-			var/datum/techtree/TT = GET_TREE(F)
-			if(TT)
-				TT.add_points(diff * OBJ_VALUE_TO_TECH_POINTS)
-				awarded_points[F] = current
+/datum/cm_objective/recover_corpses/award_points(points)
+	message_admins("Awarding points: [points].")
+	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
+	tree.add_points(points)
+	SSobjectives.statistics["corpses_total_points_earned"] += points
 
-// /datum/cm_objective/recover_corpses/total_point_value(tree = TREE_NONE)
-// 	if(tree == TREE_NONE || !points_potential[tree])
-// 		return points_potential[TREE_MARINE]
-// 	return points_potential[tree]
+// /datum/cm_objective/contain
+// 	name = "Contain alien specimens"
+// 	objective_flags = OBJ_DO_NOT_TREE
+// 	display_flags = OBJ_DISPLAY_AT_END
+// 	controller = TREE_MARINE
+// 	var/area/recovery_area = /area/almayer/medical/containment/cell
+// 	var/contained_specimen_points = 0
 
-// /datum/cm_objective/recover_corpses/get_completion_status(tree = TREE_NONE)
-// 	if(tree == TREE_NONE) // Observer mode
-// 		return "[points_cache[TREE_MARINE]]pts controlled by Marines (awarded [awarded_points[TREE_MARINE]]pts out of [points_potential[TREE_MARINE]] in play), [points_cache[TREE_XENO]]pts controlled by Xenos (awarded [awarded_points[TREE_XENO]]pts out of [points_potential[TREE_XENO]] in play)"
+// 	var/points_per_specimen_tier_0 = 10
+// 	var/points_per_specimen_tier_1 = 50
+// 	var/points_per_specimen_tier_2 = 100
+// 	var/points_per_specimen_tier_3 = 150
+// 	var/points_per_specimen_tier_4 = 200
 
-// 	var/enemy_points = 0
-// 	var/claimable_points = points_potential[tree] - points_cache[tree]
-// 	for(var/F as anything in points_cache)
-// 		claimable_points -= points_base[F]
-// 		if(F == tree) continue
-// 		enemy_points += points_cache[F]
-// 	return "<span class='objectivesuccess'>[points_cache[tree]]pts recovered</span>, [awarded_points[tree]]pts awarded, <span class='objectivefail'>[enemy_points]pts controlled by enemy</span>, [claimable_points]pts unclaimed"
-
-// /datum/cm_objective/recover_corpses/get_point_value(tree = TREE_NONE)
-// 	if(points_cache[tree])
-// 		return points_cache[tree]
-// 	return 0
-
-/datum/cm_objective/contain
-	name = "Contain alien specimens"
-	objective_flags = OBJ_DO_NOT_TREE
-	display_flags = OBJ_DISPLAY_AT_END
-	controller = TREE_MARINE
-	var/area/recovery_area = /area/almayer/medical/containment/cell
-	var/contained_specimen_points = 0
-
-	var/points_per_specimen_tier_0 = 10
-	var/points_per_specimen_tier_1 = 50
-	var/points_per_specimen_tier_2 = 100
-	var/points_per_specimen_tier_3 = 150
-	var/points_per_specimen_tier_4 = 200
-
-/datum/cm_objective/contain/process()
-	contained_specimen_points = 0
-	for(var/mob/living/carbon/Xenomorph/X as anything in GLOB.living_xeno_list)
-		if(istype(get_area(X),recovery_area))
-			switch(X.tier)
-				if(1)
-					if(isXenoPredalien(X))
-						contained_specimen_points += points_per_specimen_tier_4
-					else
-						contained_specimen_points += points_per_specimen_tier_1
-				if(2)
-					contained_specimen_points += points_per_specimen_tier_2
-				if(3)
-					contained_specimen_points += points_per_specimen_tier_3
-				else
-					if(isXenoQueen(X)) //Queen is Tier 0 for some reason...
-						contained_specimen_points += points_per_specimen_tier_4
-					else
-						contained_specimen_points += points_per_specimen_tier_0
+// /datum/cm_objective/contain/process()
+// 	contained_specimen_points = 0
+// 	for(var/mob/living/carbon/Xenomorph/X as anything in GLOB.living_xeno_list)
+// 		if(istype(get_area(X),recovery_area))
+// 			switch(X.tier)
+// 				if(1)
+// 					if(isXenoPredalien(X))
+// 						contained_specimen_points += points_per_specimen_tier_4
+// 					else
+// 						contained_specimen_points += points_per_specimen_tier_1
+// 				if(2)
+// 					contained_specimen_points += points_per_specimen_tier_2
+// 				if(3)
+// 					contained_specimen_points += points_per_specimen_tier_3
+// 				else
+// 					if(isXenoQueen(X)) //Queen is Tier 0 for some reason...
+// 						contained_specimen_points += points_per_specimen_tier_4
+// 					else
+// 						contained_specimen_points += points_per_specimen_tier_0
 
 
-	for(var/mob/living/carbon/human/Y in GLOB.yautja_mob_list)
-		if(Y.stat == DEAD) continue
-		if(istype(get_area(Y),recovery_area))
-			contained_specimen_points += points_per_specimen_tier_4
+// 	for(var/mob/living/carbon/human/Y in GLOB.yautja_mob_list)
+// 		if(Y.stat == DEAD) continue
+// 		if(istype(get_area(Y),recovery_area))
+// 			contained_specimen_points += points_per_specimen_tier_4
 
 // /datum/cm_objective/contain/get_readable_progress()
 // 	return "[get_point_value()]pts Contained"

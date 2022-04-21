@@ -4,8 +4,6 @@
 /datum/cm_objective
 	var/name = "An objective to complete"
 	var/state = OBJECTIVE_INACTIVE
-	var/complete = FALSE
-	var/active = FALSE
 	var/value = OBJECTIVE_NO_VALUE
 	var/list/required_objectives //List of objectives that are required to complete this objectives
 	var/list/enables_objectives //List of objectives that require this objective to complete
@@ -71,10 +69,10 @@
 	controlling_tree.add_points(value)
 
 /datum/cm_objective/proc/get_readable_progress(tree = TREE_NONE)
-	if (complete)
-		return "<b>Completed!</b>"
-	else
-		return "<b>Not completed.</b>"
+	// if (complete)
+	// 	return "<b>Completed!</b>"
+	// else
+	// 	return "<b>Not completed.</b>"
 
 /datum/cm_objective/proc/get_clue() //TODO: change this to an formatted list like above -spookydonut
 	return
@@ -86,7 +84,6 @@
 /datum/cm_objective/proc/complete()
 
 /datum/cm_objective/proc/check_completion()
-	return complete
 
 /datum/cm_objective/proc/activate()
 	SSobjectives.start_processing_objective(src)
@@ -94,7 +91,7 @@
 /datum/cm_objective/proc/is_prerequisites_completed()
 	var/prereq_complete = 0
 	for(var/datum/cm_objective/O in required_objectives)
-		if(O.complete)
+		if(O.state == OBJECTIVE_COMPLETE)
 			prereq_complete++
 	switch(prerequisites_required)
 		if(PREREQUISITES_NONE)

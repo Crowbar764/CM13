@@ -132,15 +132,10 @@
 		objective_memory.store_objective(O)
 
 /datum/mind/proc/view_objective_memories(mob/recipient)
-	if(objective_memory)
-		objective_interface.holder = GET_TREE(TREE_MARINE)
-		objective_interface.tgui_interact(current)
+	if(!objective_memory)
+		return
 
-		if(isHumanSynthStrict(current))
-			// objective_interface.holder = GET_TREE(TREE_MARINE)
-			// objective_interface.tgui_interact(current)
-			objective_memory.view_objective_memories(recipient, TREE_MARINE, current.real_name)
-		else if(isXeno(current))
-			objective_memory.view_objective_memories(recipient, TREE_XENO, current.real_name)
-		else // basically observer
-			objective_memory.view_objective_memories(recipient, TREE_NONE, null)
+	objective_memory.synchronize_objectives()
+
+	objective_interface.holder = GET_TREE(TREE_MARINE)
+	objective_interface.tgui_interact(current)

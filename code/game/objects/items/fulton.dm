@@ -1,6 +1,7 @@
 // Fulton baloon deployment devices, used to gather and send crates, dead things, and other objective-based items into space for collection.
 
-var/global/list/deployed_fultons = list()
+var/global/list/deployed_fultons = list() // A list of fultons currently airborne.
+var/global/list/failed_fultons = list() // A list of fultoned items which weren't collected and fell back down.
 
 /obj/item/stack/fulton
 	name = "fulton recovery device"
@@ -155,21 +156,24 @@ var/global/list/deployed_fultons = list()
 	deployed_fultons += src
 	attached_atom.overlays -= I
 
-	addtimer(CALLBACK(src, .proc/return_fulton, original_location), 150 SECONDS)
+	addtimer(CALLBACK(src, .proc/return_fulton, original_location), 10 SECONDS)
 
 /obj/item/stack/fulton/proc/return_fulton(var/turf/return_turf)
+
+	// Fulton is not in space, it must have been collected.
 	if(!istype(get_area(attached_atom), /area/space/highalt))
 		return
-	if(return_turf)
-		attached_atom.forceMove(return_turf)
-		attached_atom.anchored = FALSE
-		playsound(attached_atom.loc,'sound/effects/bamf.ogg', 50, 1)
 
-	// if(intel_system)
-		//Giving marines an objective to retrieve that fulton (so they'd know what they lost and where)
-		// var/datum/cm_objective/retrieve_item/fulton/objective = new /datum/cm_objective/retrieve_item/fulton(attached_atom)
-		// intel_system.store_single_objective(objective)
+	attached_atom.forceMove(return_turf)
+	attached_atom.anchored = FALSE
+	playsound(attached_atom.loc,'sound/effects/bamf.ogg', 50, 1)
+
+	if(intel_system)
+		if (!LAZYISIN(failed_fultons, attached_atom))
+			//Giving marines an objective to retrieve that fulton (so they'd know what they lost and where)
+			var/datum/cm_objective/retrieve_item/fulton/objective = new /datum/cm_objective/retrieve_item/fulton(attached_atom)
+			intel_system.store_single_objective(objective)
+			LAZYADD(failed_fultons, attached_atom)
 
 	qdel(src)
 	return
-

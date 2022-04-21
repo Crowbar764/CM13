@@ -294,20 +294,6 @@
 
 	message_staff("[key_name_admin(usr)] admin-started self destruct system.")
 
-/client/proc/show_objectives_status()
-	set name = "Objectives Status"
-	set desc = "Check the status of objectives."
-	set category = "Admin.Events"
-
-	if(!admin_holder || !(admin_holder.rights & R_MOD))
-		to_chat(src, "Only administrators may use this command.")
-		return
-
-	// var/selected = tgui_input_list(usr, "Which tree-related objectives to observe?", "Objectives Tree", list(TREE_MARINE, TREE_XENO))
-
-	// to_chat(src, SSobjectives.get_objectives_progress(selected))
-	// to_chat(src, "<b>Objectives:</b> [SSobjectives.get_scored_points(selected)]")
-
 /client/proc/view_faxes()
 	set name = "View Faxes"
 	set desc = "View faxes from this round"

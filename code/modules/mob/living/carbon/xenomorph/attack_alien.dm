@@ -807,6 +807,23 @@
 
 //APCs.
 /obj/structure/machinery/power/apc/attack_alien(mob/living/carbon/Xenomorph/M)
+
+	// Corruption
+	if(isXenoBuilder(M) && M.a_intent == INTENT_HELP)
+		var/wait_time = (10 SECONDS) * M.caste.build_time_mult
+		if(corrupted) // Already corrupted.
+			to_chat(M, SPAN_XENOWARNING("[src] is already wired into the hive!"))
+			return XENO_NO_DELAY_ACTION
+		else if (!M.check_plasma(500)) // Not enough plasma.
+			to_chat(M, SPAN_XENOWARNING("You need 500 plasma to corrupt [src]."))
+			return XENO_NO_DELAY_ACTION
+		else
+			to_chat(M, SPAN_XENONOTICE("You start prying open [src]'s panels."))
+			if(!do_after(M, wait_time, INTERRUPT_NO_NEEDHAND|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD, src) && !corrupted)
+				to_chat(M, SPAN_XENONOTICE("You plant a pulsing node inside of [src], leaching energy for the hive."))
+				set_corrupted(TRUE)
+			return XENO_ATTACK_ACTION
+
 	if(stat & BROKEN)
 		to_chat(M, SPAN_XENONOTICE("[src] is already broken!"))
 		return XENO_NO_DELAY_ACTION

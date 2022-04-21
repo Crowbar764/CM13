@@ -213,8 +213,9 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 #define PREREQUISITES_ALL 4
 
 // Functionality flags
-#define OBJ_DO_NOT_TREE (1<<0)
-#define OBJ_DEAD_END (1<<1)
+#define OBJ_DO_NOT_TREE (1<<0) // Not part of the 'clue' tree
+#define OBJ_DEAD_END (1<<1) // Should this objective unlock zero clues?
+#define OBJ_START_PROCESSING_ON_DISCOVERY (1<<2) // Should this objective process() every subsystem 'tick' once its breadcrumb trail of clues have been finished?
 
 // Display flags
 #define OBJ_DISPLAY_AT_END (1<<0) // show it on the round end screen

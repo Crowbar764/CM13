@@ -161,9 +161,9 @@
 	if(--round_started > 0)
 		return FALSE //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
 
-	for(var/T in SStechtree.trees)
-		var/datum/techtree/tree = SStechtree.trees[T]
-		tree.passive_gain()
+	// for(var/T in SStechtree.trees)
+	// 	var/datum/techtree/tree = SStechtree.trees[T]
+	// 	tree.passive_gain()
 
 	if(next_research_allocation < world.time)
 		chemical_data.update_credits(research_allocation_amount)
@@ -239,7 +239,7 @@
 	message_admins("FIRST DROP")
 	..()
 	message_admins("FIRST DROP2")
-	SStechtree.activate_passive_gain()
+	// SStechtree.activate_passive_gain()
 
 ///////////////////////////
 //Checks to see who won///

@@ -7,16 +7,12 @@
 	objective_flags = OBJ_DO_NOT_TREE
 	display_flags = OBJ_DISPLAY_HIDDEN
 	value = 0
+	state = OBJECTIVE_ACTIVE
 	var/list/power_objects
 	var/uses_smes = FALSE
 	var/uses_apc = FALSE
-	var/first_drop_complete = FALSE // Power objectives don't process until first drop to give xenos time to destroy them
 	var/total_apcs = 0 // For APC objectives
 	var/total_points = 0 // Also for APC objectives
-
-/datum/cm_objective/power/New()
-	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_DS_FIRST_LANDED, .proc/on_marine_landing)
 
 /datum/cm_objective/power/Destroy()
 	power_objects = null
@@ -36,12 +32,6 @@
 			total_apcs++
 			LAZYADD(power_objects, colony_apc)
 			RegisterSignal(colony_apc, COMSIG_PARENT_QDELETING, .proc/remove_machine)
-
-// Called when marines first drop, enables processing of power objectives
-/datum/cm_objective/power/proc/on_marine_landing()
-	SIGNAL_HANDLER
-	first_drop_complete = TRUE
-	UnregisterSignal(SSdcs, COMSIG_GLOB_DS_FIRST_LANDED)
 
 // Used for objectives that track APCs
 /datum/cm_objective/power/proc/check_apc_status()
@@ -66,7 +56,6 @@
 // --------------------------------------------
 
 /datum/cm_objective/power/establish_power
-	name = "Restore Colony Power"
 	var/minimum_power_required = MINIMUM_POWER_OUTPUT
 	var/last_power_output = 0 // for displaying progress
 	objective_flags = OBJ_DO_NOT_TREE
@@ -75,13 +64,16 @@
 	controller = TREE_MARINE
 	uses_smes = TRUE
 
+/datum/cm_objective/power/establish_power/post_round_start()
+	activate()
+
 /datum/cm_objective/power/establish_power/get_readable_progress()
-	if(!first_drop_complete)
+	if(!SSobjectives.first_drop_complete)
 		return "Unable to remotely interface with powernet"
 	return "[last_power_output]W, [minimum_power_required]W required"
 
 /datum/cm_objective/power/establish_power/check_completion()
-	if(!first_drop_complete)
+	if(!SSobjectives.first_drop_complete)
 		return
 	var/total_power_output = 0
 	for(var/obj/structure/machinery/power/smes/colony_smes in power_objects)
@@ -95,20 +87,11 @@
 			total_power_output += colony_smes.output
 	last_power_output = total_power_output
 	if(total_power_output >= minimum_power_required)
-
-		// GET_TREE(controller)
 		complete()
-		return TRUE
-	return FALSE
 
-// /datum/cm_objective/power/establish_power/get_point_value()
-// 	check_completion()
-// 	if (last_power_output >= minimum_power_required)
-// 		return priority
-// 	return priority * last_power_output / minimum_power_required
-
-// /datum/cm_objective/power/establish_power/total_point_value()
-// 	return priority
+/datum/cm_objective/power/establish_power/complete()
+	award_points()
+	state = OBJECTIVE_COMPLETE
 
 // --------------------------------------------
 // *** Restore the apcs to working order ***
@@ -124,15 +107,15 @@
 	var/next_score_time = 0
 	var/last_functioning = 0
 
-/datum/cm_objective/power/repair_apcs/on_marine_landing()
-	..()
-	next_score_time = world.time + score_interval
-	ai_silent_announcement("Remote link established with colony powernet. Current status: [check_apc_status()]/[total_apcs] APCs online and recieving power.", ":v", TRUE)
+// /datum/cm_objective/power/repair_apcs/on_marine_landing()
+// 	..()
+// 	next_score_time = world.time + score_interval
+// 	ai_silent_announcement("Remote link established with colony powernet. Current status: [check_apc_status()]/[total_apcs] APCs online and recieving power.", ":v", TRUE)
 
 /datum/cm_objective/power/repair_apcs/process(delta_time)
 	. = ..()
 	last_functioning = check_apc_status()
-	if(!first_drop_complete)
+	if(!SSobjectives.first_drop_complete)
 		return
 	if(next_score_time > world.time)
 		return
@@ -140,12 +123,12 @@
 	total_points += value * (last_functioning / max(total_apcs, 1))
 
 /datum/cm_objective/power/repair_apcs/check_completion()
-	if(!first_drop_complete)
+	if(!SSobjectives.first_drop_complete)
 		return
 	last_functioning = check_apc_status()
 
 // /datum/cm_objective/power/repair_apcs/get_completion_status()
-// 	if(!first_drop_complete)
+// 	if(!SSobjectives.first_drop_complete)
 // 		return "UNKNOWN/[total_apcs] APCs online, [get_point_value()]pts achieved"
 // 	return "[last_functioning]/[total_apcs] APCs online, [get_point_value()]pts achieved"
 
@@ -166,16 +149,16 @@
 /datum/cm_objective/power/destroy_apcs/process(delta_time)
 	. = ..()
 	last_disabled = total_apcs - check_apc_status()
-	if(!first_drop_complete)
+	if(!SSobjectives.first_drop_complete)
 		return
 	if(next_score_time > world.time)
 		return
 	next_score_time = world.time + score_interval
 	total_points += value * (last_disabled / max(total_apcs, 1))
 
-/datum/cm_objective/power/destroy_apcs/on_marine_landing()
-	..()
-	next_score_time = world.time + score_interval
+// /datum/cm_objective/power/destroy_apcs/on_marine_landing()
+// 	..()
+// 	next_score_time = world.time + score_interval
 
 // /datum/cm_objective/power/destroy_apcs/get_completion_status()
 // 	return "[last_disabled]/[total_apcs] APCs disabled, [get_point_value()]pts achieved"

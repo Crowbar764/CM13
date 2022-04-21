@@ -30,6 +30,7 @@
 #define APC_UPOVERLAY_ENVIRON2 2048
 #define APC_UPOVERLAY_LOCKED 4096
 #define APC_UPOVERLAY_OPERATING 8192
+#define APC_UPOVERLAY_CORRUPTED 16384
 
 #define APC_UPDATE_ICON_COOLDOWN 100 //10 seconds
 
@@ -72,6 +73,7 @@
 	var/obj/item/cell/cell
 	var/start_charge = 90 //Initial cell charge %
 	var/cell_type = /obj/item/cell/apc //0 = no cell, 1 = regular, 2 = high-cap (x5) <- old, now it's just 0 = no cell, otherwise dictate cellcapacity by changing this value. 1 used to be 1000, 2 was 2500
+	var/corrupted = FALSE // Is this APC corrupted? (corrupted APCs earn tech points)
 
 	var/opened = APC_COVER_CLOSED
 	var/shorted = 0
@@ -115,6 +117,7 @@
 	var/global/list/status_overlays_equipment
 	var/global/list/status_overlays_lighting
 	var/global/list/status_overlays_environ
+	var/global/status_overlay_corrupted
 
 	var/printout = FALSE
 	power_machine = TRUE
@@ -197,6 +200,9 @@
 
 /obj/structure/machinery/power/apc/examine(mob/user)
 	to_chat(user, desc)
+
+	if(corrupted)
+		to_chat(user, SPAN_PURPLE("It oozes strange goop.."))
 	if(stat & BROKEN)
 		to_chat(user, SPAN_INFO("It appears to be completely broken. It's hard to see what else is wrong with it."))
 		return
@@ -256,6 +262,8 @@
 		status_overlays_environ[3] = image(icon, "apco2-2")
 		status_overlays_environ[4] = image(icon, "apco2-3")
 
+		status_overlay_corrupted = image(icon, "apc-corrupted")
+
 	var/update = check_updates()	//Returns 0 if no need to update icons.
 									//1 if we need to update the icon_state
 									//2 if we need to update the overlays
@@ -298,6 +306,9 @@
 				overlays += status_overlays_equipment[equipment + 1]
 				overlays += status_overlays_lighting[lighting + 1]
 				overlays += status_overlays_environ[environ + 1]
+
+		if(corrupted && !opened)
+			overlays += status_overlay_corrupted
 
 /obj/structure/machinery/power/apc/proc/check_updates()
 
@@ -357,6 +368,9 @@
 		else if(environ == 2)
 			update_overlay |= APC_UPOVERLAY_ENVIRON2
 
+	if(corrupted)
+		update_overlay |= APC_UPOVERLAY_CORRUPTED
+
 	var/results = 0
 	if(last_update_state == update_state && last_update_overlay == update_overlay)
 		return 0
@@ -377,6 +391,29 @@
 
 //Attack with an item - open/close cover, insert cell, or (un)lock interface
 /obj/structure/machinery/power/apc/attackby(obj/item/W, mob/user)
+
+	// Corruption
+	if(ishuman(user) && corrupted)
+		if(iswelder(W))
+			var/obj/item/tool/weldingtool/WT = W
+			if(WT.remove_fuel(1, user))
+				playsound(loc, 'sound/items/weldingtool_weld.ogg', 25)
+				user.visible_message(SPAN_NOTICE("[user] starts burning away the resin from [src]."))
+				to_chat(user, SPAN_NOTICE("You start burning away the resin from [src]."))
+				if(do_after(user, (10 SECONDS) * user.get_skill_duration_multiplier(SKILL_ENGINEER), INTERRUPT_ALL|BEHAVIOR_IMMOBILE, BUSY_ICON_BUILD))
+					if(!corrupted || !WT.isOn())
+						return FALSE
+					playsound(loc, 'sound/items/Welder2.ogg', 25, 1)
+					user.visible_message(SPAN_NOTICE("[user] cleans the infectious resin from [src]."))
+					to_chat(user, SPAN_NOTICE("You clean the infectious resin from [src]."))
+					set_corrupted(FALSE)
+					return TRUE
+			else
+				to_chat(user, SPAN_WARNING("You need more welding fuel to remove the resin."))
+				return FALSE
+		else
+			to_chat(user, SPAN_WARNING("[src] seems to be coated in a strange pulsing resin. Use a welding tool to remove it."))
+			return FALSE
 
 	if(isRemoteControlling(user) && get_dist(src, user) > 1)
 		return attack_hand(user)
@@ -1240,6 +1277,11 @@
 					L.broken()
 					sleep(1)
 
+/obj/structure/machinery/power/apc/proc/set_corrupted(newState)
+	if (newState != corrupted)
+		corrupted = newState
+		update_icon()
+
 /obj/structure/machinery/power/apc/Destroy()
 	area.power_light = 0
 	area.power_equip = 0
@@ -1251,7 +1293,6 @@
 	cell_type = /obj/item/cell/apc/full
 	req_one_access = list(ACCESS_ILLEGAL_PIRATE)
 
-
 //------Almayer APCs ------//
 
 /obj/structure/machinery/power/apc/almayer
@@ -1261,9 +1302,5 @@
 	name = "hardened area power controller"
 	desc = "A control terminal for the area electrical systems. This one is hardened against sudden power fluctuations caused by electrical grid damage."
 	crash_break_probability = 0
-
-
-
-
 
 #undef APC_UPDATE_ICON_COOLDOWN

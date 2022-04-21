@@ -38,7 +38,9 @@ export const TechMemories = (props, context) => {
             />
           )}
         >
-          <Box fontSize="16px">{tech_points + " (+" + data.passive_tech_points + " / min)"}</Box>
+          <Box fontSize="16px">{tech_points}</Box>
+          {/* <Box fontSize="16px">{tech_points + " (+" + data.passive_tech_p
+          oints + " / min)"}</Box> */}
         </Section>
 
         <Objectives />

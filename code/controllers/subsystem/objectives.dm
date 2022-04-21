@@ -1,23 +1,17 @@
+#define CORPSES_TO_SPAWN 15
+
 SUBSYSTEM_DEF(objectives)
 	name = "Objectives"
 	init_order = SS_INIT_OBJECTIVES
 	wait = 5.5 SECONDS
 	var/list/objectives = list()
-	// var/list/active_objectives = list()
-	// var/list/inactive_objectives = list()
-	// var/list/non_processing_objectives = list()
 	var/list/processing_objectives = list()
-	// var/datum/cm_objective/communications/comms
-	// var/datum/cm_objective/power/establish_power/power
-	// var/datum/cm_objective/power/repair_apcs/repair_apcs
-	// var/datum/cm_objective/power/destroy_apcs/destroy_apcs
-	// var/datum/cm_objective/recover_corpses/corpsewar
+	var/datum/cm_objective/communications/comms
+	var/datum/cm_objective/power/establish_power/power
+	var/datum/cm_objective/recover_corpses/corpsewar
 	// var/datum/cm_objective/contain/contain
-	// var/datum/cm_objective/analyze_chems/chems
 	var/next_sitrep = SITREP_INTERVAL
-	// var/corpses = 15
-
-	var/comms_online = TRUE
+	var/first_drop_complete = FALSE // Some objectives don't process until first drop.
 
 	var/statistics = list()
 
@@ -32,6 +26,7 @@ SUBSYSTEM_DEF(objectives)
 	statistics["documents_total_points_earned"] = 0
 
 	statistics["chemicals_completed"] = 0
+	statistics["chemicals_total_instances"] = 0
 	statistics["chemicals_total_points_earned"] = 0
 
 	statistics["data_retrieval_completed"] = 0
@@ -46,31 +41,29 @@ SUBSYSTEM_DEF(objectives)
 	statistics["miscellaneous_total_instances"] = 0
 	statistics["miscellaneous_total_points_earned"] = 0
 
-	// Setup some global objectives
-	// power = new
-	// repair_apcs = new
-	// destroy_apcs = new
-	// comms = new
-	// corpsewar = new
-	// contain = new
-	// chems = new
-	// active_objectives += power
+	statistics["corpses_recovered"] = 0
+	statistics["corpses_total_points_earned"] = 0
+
+	power = new
+	comms = new
+	corpsewar = new
 
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_PRESETUP, .proc/pre_round_start)
 	RegisterSignal(SSdcs, COMSIG_GLOB_MODE_POSTSETUP, .proc/post_round_start)
+	RegisterSignal(SSdcs, COMSIG_GLOB_DS_FIRST_LANDED, .proc/on_marine_landing)
 
 /datum/controller/subsystem/objectives/fire(resumed = FALSE)
 	if(!resumed)
 		current_active_run = processing_objectives.Copy()
 
 		if(world.time > next_sitrep)
-			next_sitrep = world.time + SITREP_INTERVAL
 			announce_stats()
 			if(MC_TICK_CHECK)
 				return
 
 	while(length(current_active_run))
 		var/datum/cm_objective/O = current_active_run[length(current_active_run)]
+		message_admins("processing [O.type]")
 		current_active_run.len--
 		O.process()
 		O.check_completion()
@@ -80,35 +73,29 @@ SUBSYSTEM_DEF(objectives)
 		if(MC_TICK_CHECK)
 			return
 
+// Called when marines first drop
+/datum/controller/subsystem/objectives/proc/on_marine_landing()
+	SIGNAL_HANDLER
+	first_drop_complete = TRUE
+	UnregisterSignal(SSdcs, COMSIG_GLOB_DS_FIRST_LANDED)
+
 /datum/controller/subsystem/objectives/proc/announce_stats()
-	// var/scored_points
-	// var/total_points
-	// var/datum/techtree/tree
+	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
 
-	// total_points = get_total_points(TREE_MARINE)
-	// scored_points = get_scored_points(TREE_MARINE)
-	// tree = GET_TREE(TREE_MARINE)
+	var/message = "[round(tree.points, 0.1)] tech points available (+ [round(tree.total_points - tree.total_points_last_sitrep, 0.1)])."
 
-	// ai_silent_announcement("Tier [tree.tier.tier] assets active. [round(tree.points, 0.1)] tech points available.", ":v", TRUE)
-	// ai_silent_announcement("Estimating [scored_points] / [total_points] objective points achieved.", ":i", TRUE)
-	// message_staff("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points available.")
-	// to_chat(GLOB.observer_list, "<h2 class='alert'>Objectives report</h2>")
-	// to_chat(GLOB.observer_list, SPAN_WARNING("Marine objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points."))
+	ai_silent_announcement(message, ":v", TRUE)
+	ai_silent_announcement(message, ":t", TRUE)
+	tree.total_points_last_sitrep = tree.total_points
 
-	// total_points = get_total_points(TREE_XENO)
-	// scored_points = get_scored_points(TREE_XENO)
-	// tree = GET_TREE(TREE_XENO)
-
-	// xeno_message(SPAN_XENOANNOUNCE("The hive recollects having achieved [scored_points] / [total_points] points of its current objectives."), 2)
-	// message_staff("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points available.")
-	// to_chat(GLOB.observer_list, SPAN_WARNING("Xeno objectives status: [scored_points] / [total_points] points, active tier [tree.tier.tier], [round(tree.points, 0.1)] tech points."))
+	next_sitrep = world.time + SITREP_INTERVAL
 
 /// Allows to perform objective initialization later on in case of map changes
 /datum/controller/subsystem/objectives/proc/initialize_objectives()
 	SHOULD_NOT_SLEEP(TRUE)
 	generate_objectives()
 	connect_objectives()
-	// generate_corpses(corpses)
+	corpsewar.generate_corpses(CORPSES_TO_SPAWN)
 
 /datum/controller/subsystem/objectives/proc/generate_objectives()
 	if(!length(GLOB.objective_landmarks_close) || !length(GLOB.objective_landmarks_medium) \
@@ -199,19 +186,6 @@ SUBSYSTEM_DEF(objectives)
 		var/dest = pick(15;"close", 30;"medium", 5;"far", 50;"science")
 		spawn_objective_at_landmark(dest, /obj/item/storage/fancy/vials/random)
 
-/datum/controller/subsystem/objectives/proc/generate_corpses(corpses)
-	var/list/obj/effect/landmark/corpsespawner/objective_spawn_corpse = GLOB.corpse_spawns.Copy()
-	while(corpses--)
-		if(!length(objective_spawn_corpse))
-			break
-		var/obj/effect/landmark/corpsespawner/spawner = pick(objective_spawn_corpse)
-		var/turf/spawnpoint = get_turf(spawner)
-		if(spawnpoint)
-			var/mob/living/carbon/human/M = new /mob/living/carbon/human(spawnpoint)
-			M.create_hud() //Need to generate hud before we can equip anything apparently...
-			arm_equipment(M, "Corpse - [spawner.name]", TRUE, FALSE)
-		objective_spawn_corpse.Remove(spawner)
-
 /datum/controller/subsystem/objectives/proc/spawn_objective_at_landmark(var/dest, var/obj/item/it)
 	var/picked_location
 	switch(dest)
@@ -293,58 +267,16 @@ SUBSYSTEM_DEF(objectives)
 
 /datum/controller/subsystem/objectives/proc/pre_round_start()
 	SIGNAL_HANDLER
+	message_admins("pre_round_start")
 	initialize_objectives()
 	for(var/datum/cm_objective/O in objectives)
 		O.pre_round_start()
 
 /datum/controller/subsystem/objectives/proc/post_round_start()
 	SIGNAL_HANDLER
+	message_admins("post_round_start")
 	for(var/datum/cm_objective/O in objectives)
 		O.post_round_start()
-
-/datum/controller/subsystem/objectives/proc/get_objectives_progress(tree = TREE_NONE)
-	// var/point_total = 0
-	var/complete = 0
-
-	var/list/categories = list()
-	var/list/notable_objectives = list()
-
-	for(var/datum/cm_objective/C as anything in objectives)
-		if(!C.observable_by_faction(tree))
-			continue
-		if(C.display_category)
-			if(!(C.display_category in categories))
-				categories += C.display_category
-				categories[C.display_category] = list("count" = 0, "total" = 0, "complete" = 0)
-			categories[C.display_category]["count"]++
-			// categories[C.display_category]["total"] += C.total_point_value(tree)
-			// categories[C.display_category]["complete"] += C.get_point_value(tree)
-
-		if(C.display_flags & OBJ_DISPLAY_AT_END)
-			notable_objectives += C
-
-		// point_total += C.total_point_value(tree)
-		// complete += C.get_point_value(tree)
-
-	var/dat = ""
-	if(LAZYLEN(objectives)) // protect against divide by zero
-		dat = "<b>Total Objectives:</b> [complete]pts achieved<br>"
-		if(LAZYLEN(categories))
-			var/total = 1 //To avoid divide by zero errors, just in case...
-			var/compl
-			for(var/cat in categories)
-				total = categories[cat]["total"]
-				compl = categories[cat]["complete"]
-				if(total == 0)
-					total = 1 //To avoid divide by zero errors, just in case...
-				dat += "<b>[cat]: </b> [compl]pts achieved<br>"
-
-		for(var/datum/cm_objective/O as anything in notable_objectives)
-			if(!O.observable_by_faction(tree))
-				continue
-			dat += O.get_readable_progress(tree)
-
-	return dat
 
 // Gets the total/scored amount of document points, and scores them for techpoints
 // /datum/cm_objective/document/complete() already handles checking for completion, so we don't need to check that here.

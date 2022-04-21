@@ -20,23 +20,18 @@
 // Tech Flags
 /// The tech can be purchased multiple times
 #define TECH_FLAG_MULTIUSE		(1<<0)
-
 /// Prevents a tech from being added to the tech trees
 #define TECH_FLAG_DISABLED		(1<<1)
-
 /// Don't announce when this tech is bought.
 #define TECH_FLAG_NO_ANNOUNCE	(1<<2)
 
 // Resource
 #define RESOURCE_HEALTH 200
 
-#define SITREP_INTERVAL 1 SECONDS
+#define SITREP_INTERVAL 3 SECONDS
 /// Controls the passive increase amount.
-#define PASSIVE_INCREASE_AMOUNT 0.0025 // Every PASSIVE_INCREASE_INTERVAL, the points passively generated increased by PASSIVE_INCREASE_AMOUNT
-#define PASSIVE_INCREASE_INTERVAL 10 MINUTES
-
-#define RESOURCE_PLASMA_PER_REPAIR 3 // Calculated like this: RESOURCE_PLASMA_PER_REPAIR * damage_to_repair
-#define RESOURCE_FUEL_TO_REPAIR 5 // Calculated like this: RESOURCE_FUEL_TO_REPAIR * (damage_to_repair / max_health)
+// #define PASSIVE_INCREASE_AMOUNT 0.0025 // Every PASSIVE_INCREASE_INTERVAL, the points passively generated increased by PASSIVE_INCREASE_AMOUNT
+// #define PASSIVE_INCREASE_INTERVAL 10 MINUTES
 
 // Droppods
 #define DROPPOD_DROPPED (1<<0)

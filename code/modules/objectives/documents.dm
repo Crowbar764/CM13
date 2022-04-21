@@ -17,6 +17,8 @@
 	. = ..()
 	document = D
 	initial_area = get_area(document)
+
+/datum/cm_objective/document/pre_round_start()
 	SSobjectives.statistics["documents_total_instances"]++
 
 /datum/cm_objective/document/Destroy()
@@ -28,17 +30,28 @@
 /datum/cm_objective/document/get_related_label()
 	return document.label
 
-/datum/cm_objective/document/complete()
+/datum/cm_objective/document/complete(var/mob/living/carbon/human/user)
 	. = ..()
 
+	SSobjectives.statistics["documents_total_points_earned"] += value
 	var/datum/techtree/tree = GET_TREE(controller)
 	tree.add_points(value)
-	SSobjectives.statistics["documents_total_points_earned"] += value
 
+	if (user && user.mind)
+		message_admins("has mind!")
+		user.mind.store_objective(document.retrieve_objective)
+
+	message_admins("0")
+	// Enable child objectives
 	for(var/datum/cm_objective/child_objective in enables_objectives)
+		message_admins("1 [child_objective.type]")
 		if(child_objective.state & OBJECTIVE_INACTIVE)
 			child_objective.state = OBJECTIVE_ACTIVE
-			// CASPERTODO IF NEEDS ONTICK PROCESS, ADD TO LIST HERE??
+			message_admins("ENABLING [child_objective.type]")
+			message_admins("Child flags is: [child_objective.objective_flags]")
+			if(child_objective.objective_flags & OBJ_START_PROCESSING_ON_DISCOVERY)
+				message_admins("ACTIVATINGGGGGGGGGG [child_objective.type]")
+				child_objective.activate()
 
 /datum/cm_objective/document/get_clue()
 	return SPAN_DANGER("[document.name] in <u>[initial_area]</u>")
@@ -112,6 +125,7 @@
 
 /obj/item/document_objective
 	var/datum/cm_objective/document/objective
+	var/datum/cm_objective/retrieve_item/document/retrieve_objective
 	var/reading_time = 10
 	var/objective_type = /datum/cm_objective/document
 	unacidable = TRUE
@@ -123,12 +137,16 @@
 	. = ..()
 	label = "[pick(alphabet_uppercase)][rand(100,999)]"
 	objective = new objective_type(src)
+	retrieve_objective = new /datum/cm_objective/retrieve_item/document(src)
+	LAZYADD(objective.enables_objectives, retrieve_objective)
 	pixel_y = rand(-8, 8)
 	pixel_x = rand(-9, 9)
 
 /obj/item/document_objective/Destroy()
 	objective.document = null
 	objective = null
+	retrieve_objective.target_item = null
+	retrieve_objective = null
 	return ..()
 
 /obj/item/document_objective/proc/display_read_message(mob/living/user)
@@ -136,7 +154,14 @@
 		user.mind.store_objective(objective)
 	var/related_labels = ""
 	for(var/datum/cm_objective/D in objective.enables_objectives)
-		to_chat(user, SPAN_NOTICE("You make out something about [D.get_clue()]."))
+		var/clue = D.get_clue()
+
+		// Some objectives don't have clues.
+		if (!clue)
+			message_admins("NO CLUE")
+			continue
+
+		to_chat(user, SPAN_NOTICE("You make out something about [clue]."))
 		if (related_labels != "")
 			related_labels+=","
 		related_labels+=D.get_related_label()
@@ -165,7 +190,7 @@
 
 	// Our first time reading this successfully.
 	if(!(objective.state & OBJECTIVE_COMPLETE))
-		objective.complete()
+		objective.complete(user)
 		SSobjectives.statistics["documents_completed"]++
 		objective.state = OBJECTIVE_COMPLETE
 
@@ -186,7 +211,7 @@
 	objective_type = /datum/cm_objective/document/progress_report
 
 /obj/item/document_objective/folder
-	name = "intel folder"
+	name = "Intel folder"
 	desc = "A folder with some documents inside."
 	icon = 'icons/obj/items/paper.dmi'
 	icon_state = "folder"
