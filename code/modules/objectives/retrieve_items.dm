@@ -6,8 +6,7 @@
 	var/list/area/target_areas
 	var/area/initial_area
 	controller = TREE_MARINE
-	display_category = "Item Retrieval"
-	objective_flags = OBJ_START_PROCESSING_ON_DISCOVERY
+	objective_flags = OBJECTIVE_START_PROCESSING_ON_DISCOVERY
 	target_areas = list(
 		/area/almayer/command/securestorage,
 		/area/almayer/command/computerlab,
@@ -65,8 +64,8 @@
 
 /datum/cm_objective/retrieve_item/fulton
 	name = "Recover a lost fulton"
-	value = OBJECTIVE_NO_VALUE
 	state = OBJECTIVE_ACTIVE
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	target_areas = list(
 		/area/almayer,
 	)
@@ -96,8 +95,9 @@
 // -----------------------------------------------------------
 
 /datum/cm_objective/retrieve_item/document
+	name = "Store document in ship lab"
 	value = OBJECTIVE_LOW_VALUE
-	objective_flags = OBJ_DO_NOT_TREE | OBJ_START_PROCESSING_ON_DISCOVERY
+	objective_flags = OBJECTIVE_DO_NOT_TREE | OBJECTIVE_START_PROCESSING_ON_DISCOVERY
 
 /datum/cm_objective/retrieve_item/document/pre_round_start()
 	SSobjectives.statistics["item_retrieval_total_instances"]++

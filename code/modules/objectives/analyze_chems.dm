@@ -1,7 +1,6 @@
 datum/cm_objective/analyze_chems
 	name = "Analyze chems"
-	objective_flags = OBJ_DO_NOT_TREE
-	display_category = "Analyze chems"
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	controller = TREE_MARINE
 
 // /datum/cm_objective/analyze_chems/total_point_value()

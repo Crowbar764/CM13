@@ -3,8 +3,7 @@
 // --------------------------------------------
 /datum/cm_objective/recover_corpses
 	name = "Recover corpses"
-	objective_flags = OBJ_DO_NOT_TREE
-	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_UBIQUITOUS
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	state = OBJECTIVE_ACTIVE
 	controller = TREE_MARINE
 	/// List of list of active corpses per tech-faction ownership
@@ -145,8 +144,7 @@
 
 // /datum/cm_objective/contain
 // 	name = "Contain alien specimens"
-// 	objective_flags = OBJ_DO_NOT_TREE
-// 	display_flags = OBJ_DISPLAY_AT_END
+// 	objective_flags = OBJECTIVE_DO_NOT_TREE
 // 	controller = TREE_MARINE
 // 	var/area/recovery_area = /area/almayer/medical/containment/cell
 // 	var/contained_specimen_points = 0
@@ -182,6 +180,3 @@
 // 		if(Y.stat == DEAD) continue
 // 		if(istype(get_area(Y),recovery_area))
 // 			contained_specimen_points += points_per_specimen_tier_4
-
-// /datum/cm_objective/contain/get_readable_progress()
-// 	return "[get_point_value()]pts Contained"

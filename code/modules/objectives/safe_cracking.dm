@@ -2,11 +2,10 @@
 /datum/cm_objective/crack_safe
 	var/obj/structure/safe/target
 	var/area/initial_area
-	value = OBJECTIVE_MEDIUM_VALUE
-	prerequisites_required = PREREQUISITES_NONE
-	objective_flags = OBJ_DEAD_END
+	value = OBJECTIVE_HIGH_VALUE
+	objective_flags = OBJECTIVE_DEAD_END
 	controller = TREE_MARINE
-	number_of_clues_to_generate = 4
+	number_of_clues_to_generate = 2
 
 /datum/cm_objective/crack_safe/New(var/obj/structure/safe/safe)
 	target = safe

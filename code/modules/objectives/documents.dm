@@ -3,15 +3,12 @@
 // These are intended as the initial breadcrumbs that lead to more objectives such as data retrieval
 // --------------------------------------------
 /datum/cm_objective/document
-	name = "Document Clue"
+	name = "Paper scrap objective"
 	var/obj/item/document_objective/document
 	var/area/initial_area
 	value = OBJECTIVE_LOW_VALUE
-	display_flags = OBJ_DISPLAY_HIDDEN
 	state = OBJECTIVE_ACTIVE
 	controller = TREE_MARINE
-	prerequisites_required = PREREQUISITES_NONE
-	display_category = "Documents"
 
 /datum/cm_objective/document/New(var/obj/item/document_objective/D)
 	. = ..()
@@ -43,7 +40,7 @@
 	for(var/datum/cm_objective/child_objective in enables_objectives)
 		if(child_objective.state & OBJECTIVE_INACTIVE)
 			child_objective.state = OBJECTIVE_ACTIVE
-			if(child_objective.objective_flags & OBJ_START_PROCESSING_ON_DISCOVERY)
+			if(child_objective.objective_flags & OBJECTIVE_START_PROCESSING_ON_DISCOVERY)
 				child_objective.activate()
 
 /datum/cm_objective/document/get_clue()
@@ -58,11 +55,26 @@
 
 	return clue
 
+// Progress report
+/datum/cm_objective/document/progress_report
+	name = "Progress report objective"
+	value = OBJECTIVE_MEDIUM_VALUE
+
+/datum/cm_objective/document/progress_report/get_tgui_data()
+	var/list/clue = list()
+
+	clue["text"] = "Progress report"
+	clue["location"] = initial_area.name
+
+	return clue
+
+/datum/cm_objective/document/progress_report/get_clue()
+	return SPAN_DANGER("A progress report in <u>[initial_area]</u>.")
+
 // Folder
 /datum/cm_objective/document/folder
+	name = "Folder objective"
 	value = OBJECTIVE_MEDIUM_VALUE
-	prerequisites_required = PREREQUISITES_ONE
-	display_flags = 0
 	var/color // Text name of the color
 	var/display_color // Color of the sprite
 	number_of_clues_to_generate = 2
@@ -82,26 +94,12 @@
 /datum/cm_objective/document/folder/get_clue()
 	return SPAN_DANGER("A <font color=[display_color]><u>[color]</u></font> folder <b>[document.label]</b> in <u>[initial_area]</u>.")
 
-// Progress report
-/datum/cm_objective/document/progress_report
-	value = OBJECTIVE_MEDIUM_VALUE
-	prerequisites_required = PREREQUISITES_NONE
-	display_flags = 0
-
-/datum/cm_objective/document/progress_report/get_tgui_data()
-	var/list/clue = list()
-
-	clue["text"] = "Progress report"
-	clue["location"] = initial_area.name
-
-	return clue
-
 // Technical manual
 /datum/cm_objective/document/technical_manual
+	name = "Technical manual objective"
 	value = OBJECTIVE_HIGH_VALUE
-	prerequisites_required = PREREQUISITES_NONE
-	display_flags = 0
 	state = OBJECTIVE_INACTIVE
+	number_of_clues_to_generate = 2
 
 /datum/cm_objective/document/technical_manual/get_tgui_data()
 	var/list/clue = list()

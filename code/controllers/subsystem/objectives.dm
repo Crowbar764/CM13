@@ -15,7 +15,7 @@ SUBSYSTEM_DEF(objectives)
 
 	var/statistics = list()
 
-	// Controller runtime
+	// Keep track of the list of objectives to process, in case we need to defer to the next tick.
 	var/list/datum/cm_objective/current_active_run = list()
 
 /datum/controller/subsystem/objectives/Initialize(start_timeofday)
@@ -186,6 +186,7 @@ SUBSYSTEM_DEF(objectives)
 		var/dest = pick(15;"close", 30;"medium", 5;"far", 50;"science")
 		spawn_objective_at_landmark(dest, /obj/item/storage/fancy/vials/random)
 
+// Populate the map with objective items.
 /datum/controller/subsystem/objectives/proc/spawn_objective_at_landmark(var/dest, var/obj/item/it)
 	var/picked_location
 	switch(dest)
@@ -253,18 +254,6 @@ SUBSYSTEM_DEF(objectives)
 	if(!generated)
 		new it(picked_location)
 
-/datum/controller/subsystem/objectives/proc/connect_objectives()
-	for(var/datum/cm_objective/C in objectives)
-		if(!(C in objectives))
-			objectives += C
-		// if(C.objective_flags & OBJ_PROCESS_ON_DEMAND)
-		// 	non_processing_objectives += C
-		// else
-			// inactive_objectives += C
-	setup_tree()
-	// for(var/datum/cm_objective/N in non_processing_objectives)
-	// 	N.activate()
-
 /datum/controller/subsystem/objectives/proc/pre_round_start()
 	SIGNAL_HANDLER
 	initialize_objectives()
@@ -276,140 +265,87 @@ SUBSYSTEM_DEF(objectives)
 	for(var/datum/cm_objective/O in objectives)
 		O.post_round_start()
 
-// Gets the total/scored amount of document points, and scores them for techpoints
-// /datum/cm_objective/document/complete() already handles checking for completion, so we don't need to check that here.
-// /datum/controller/subsystem/objectives/proc/score_documents(datum/cm_objective/document/D)
-// 	document_score["points"] += D.value
-// 	var/tp_equiv = round(document_score["points"] * OBJ_VALUE_TO_TECH_POINTS)
-// 	var/diff = tp_equiv - document_score["awarded_points"]
-// 	if(diff > 0)
-// 		var/datum/techtree/TT = GET_TREE(TREE_MARINE)
-// 		TT.add_points(diff)
-// 		document_score["awarded_points"] = tp_equiv
+/datum/controller/subsystem/objectives/proc/connect_objectives()
+	// Sets up the objective interdependance tree
+	// Every objective (which isn't a dead end) gets one guaranteed objective it unlocks.
+	// Every objective gets x random objectives that unlock it based on variable 'number_of_clues_to_generate'
 
-/datum/controller/subsystem/objectives/proc/setup_tree()
-	//Sets up the objective interdependance tree
-	//Every objective that is not a dead end enables an objective of a higher tier
-	//Every objective that needs prerequisites gets them from objectives of lower tier
-	//If an objective doesn't need prerequisites, it can't be picked by lower tiers
-	//If an objective is a dead end, it can't be picked by higher tiers
-
-	var/list/no_value
 	var/list/low_value
-	var/list/low_value_with_prerequisites
-	var/list/med_value
-	var/list/med_value_with_prerequisites
+	var/list/medium_value
 	var/list/high_value
-	var/list/high_value_with_prerequisites
 	var/list/extreme_value
-	var/list/extreme_value_with_prerequisites
 	var/list/absolute_value
-	var/list/absolute_value_with_prerequisites
 
+	// Sort objectives into categories
 	for(var/datum/cm_objective/O in objectives)
-		if(O.objective_flags & OBJ_DO_NOT_TREE)
+		if(O.objective_flags & OBJECTIVE_DO_NOT_TREE)
 			continue // exempt from the tree
 		switch(O.value)
-			if(OBJECTIVE_NO_VALUE)
-				LAZYADD(no_value, O)
 			if(OBJECTIVE_LOW_VALUE)
 				LAZYADD(low_value, O)
-				if(O.prerequisites_required != PREREQUISITES_NONE)
-					LAZYADD(low_value_with_prerequisites, O)
 			if(OBJECTIVE_MEDIUM_VALUE)
-				LAZYADD(med_value, O)
-				if(O.prerequisites_required != PREREQUISITES_NONE)
-					LAZYADD(med_value_with_prerequisites, O)
+				LAZYADD(medium_value, O)
 			if(OBJECTIVE_HIGH_VALUE)
 				LAZYADD(high_value, O)
-				if(O.prerequisites_required != PREREQUISITES_NONE)
-					LAZYADD(high_value_with_prerequisites, O)
 			if(OBJECTIVE_EXTREME_VALUE)
 				LAZYADD(extreme_value, O)
-				if(O.prerequisites_required != PREREQUISITES_NONE)
-					LAZYADD(extreme_value_with_prerequisites, O)
 			if(OBJECTIVE_ABSOLUTE_VALUE)
 				LAZYADD(absolute_value, O)
-				if(O.prerequisites_required != PREREQUISITES_NONE)
-					LAZYADD(absolute_value_with_prerequisites, O)
 
-	var/datum/cm_objective/enables
-	for(var/datum/cm_objective/N in no_value)
-		if(!LAZYLEN(low_value_with_prerequisites))
-			break
-		if(N.objective_flags & OBJ_DEAD_END)
-			LAZYREMOVE(no_value, N) // stop it being picked
-			continue
-		enables = pick(low_value_with_prerequisites)
-		if(!enables)
-			break
-		link_objectives(N, enables)
-	for(var/datum/cm_objective/L in low_value)
-		while(LAZYLEN(L.required_objectives) < L.number_of_clues_to_generate && LAZYLEN(no_value))
-			var/datum/cm_objective/req = pick(no_value)
-			if(req in L.required_objectives)
-				continue //don't want to pick the same thing twice
-			link_objectives(req, L)
-		if(!LAZYLEN(med_value_with_prerequisites))
-			break
-		if(L.objective_flags & OBJ_DEAD_END)
-			LAZYREMOVE(low_value, L)
-			continue
-		enables = pick(med_value_with_prerequisites)
-		if(!enables)
-			break
-		link_objectives(L, enables)
-	for(var/datum/cm_objective/M in med_value)
-		while(LAZYLEN(M.required_objectives) < M.number_of_clues_to_generate && LAZYLEN(low_value))
+	// Set up preqrequisites:
+	// Low
+	for(var/datum/cm_objective/objective in low_value)
+		// Add at least one guaranteed clue for this objective to unlock.
+		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(medium_value))
+			var/datum/cm_objective/enables = pick(medium_value)
+			link_objectives(objective, enables)
+
+	// Medium
+	for(var/datum/cm_objective/objective in medium_value)
+		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(low_value))
 			var/datum/cm_objective/req = pick(low_value)
-			if(req in M.required_objectives)
-				continue //don't want to pick the same thing twice
-			link_objectives(req, M)
-		if(!LAZYLEN(high_value_with_prerequisites))
-			break
-		if(M.objective_flags & OBJ_DEAD_END)
-			LAZYREMOVE(med_value, M)
-			continue
-		enables = pick(high_value_with_prerequisites)
-		if(!enables)
-			break
-		link_objectives(M, enables)
-	for(var/datum/cm_objective/H in high_value)
-		while(LAZYLEN(H.required_objectives) < H.number_of_clues_to_generate && LAZYLEN(med_value))
-			var/datum/cm_objective/req = pick(med_value)
-			if(req in H.required_objectives)
-				continue //don't want to pick the same thing twice
-			link_objectives(req, H)
-		if(!LAZYLEN(extreme_value_with_prerequisites))
-			break
-		if(H.objective_flags & OBJ_DEAD_END)
-			LAZYREMOVE(high_value, H)
-			continue
-		enables = pick(extreme_value_with_prerequisites)
-		if(!enables)
-			break
-		link_objectives(H, enables)
-	for(var/datum/cm_objective/E in extreme_value)
-		while(LAZYLEN(E.required_objectives) < E.number_of_clues_to_generate && LAZYLEN(high_value))
+			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
+				continue //don't want to pick the same thing twice OR use a dead-end objective.
+			link_objectives(req, objective)
+
+		// Add at least one guaranteed clue for this objective to unlock.
+		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(high_value))
+			var/datum/cm_objective/enables = pick(high_value)
+			link_objectives(objective, enables)
+
+	// High
+	for(var/datum/cm_objective/objective in high_value)
+		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(medium_value))
+			var/datum/cm_objective/req = pick(medium_value)
+			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
+				continue //don't want to pick the same thing twice OR use a dead-end objective.
+			link_objectives(req, objective)
+
+		// Add at least one guaranteed clue for this objective to unlock.
+		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(extreme_value))
+			var/datum/cm_objective/enables = pick(extreme_value)
+			link_objectives(objective, enables)
+
+	// Extreme
+	for(var/datum/cm_objective/objective in extreme_value)
+		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(high_value))
 			var/datum/cm_objective/req = pick(high_value)
-			if(req in E.required_objectives)
-				continue //don't want to pick the same thing twice
-			link_objectives(req, E)
-		if(!LAZYLEN(absolute_value_with_prerequisites))
-			break
-		if(E.objective_flags & OBJ_DEAD_END)
-			LAZYREMOVE(extreme_value, E)
-			continue
-		enables = pick(absolute_value_with_prerequisites)
-		if(!enables)
-			break
-		link_objectives(E, enables)
-	for(var/datum/cm_objective/A in absolute_value)
-		while(LAZYLEN(A.required_objectives) < A.number_of_clues_to_generate && LAZYLEN(extreme_value))
+			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
+				continue //don't want to pick the same thing twice OR use a dead-end objective.
+			link_objectives(req, objective)
+
+		// Add at least one guaranteed clue for this objective to unlock.
+		if (!(objective.objective_flags & OBJECTIVE_DEAD_END) && LAZYLEN(absolute_value))
+			var/datum/cm_objective/enables = pick(absolute_value)
+			link_objectives(objective, enables)
+
+	// Absolute
+	for(var/datum/cm_objective/objective in absolute_value)
+		while(LAZYLEN(objective.required_objectives) < objective.number_of_clues_to_generate && LAZYLEN(extreme_value))
 			var/datum/cm_objective/req = pick(extreme_value)
-			if(req in A.required_objectives)
-				continue //don't want to pick the same thing twice
-			link_objectives(req, A)
+			if(req in objective.required_objectives || (req.objective_flags & OBJECTIVE_DEAD_END))
+				continue //don't want to pick the same thing twice OR use a dead-end objective.
+			link_objectives(req, objective)
 
 // For linking 2 objectives together in the objective tree
 /datum/controller/subsystem/objectives/proc/link_objectives(var/datum/cm_objective/required_objective, var/datum/cm_objective/enabled_objective)

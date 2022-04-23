@@ -192,53 +192,24 @@ var/global/list/whitelist_hierarchy = list(WHITELIST_NORMAL, WHITELIST_COUNCIL, 
 
 // Objective priorities
 #define OBJECTIVE_NO_VALUE 0
-#define OBJECTIVE_LOW_VALUE 6
-#define OBJECTIVE_MEDIUM_VALUE 12
-#define OBJECTIVE_HIGH_VALUE 20
-#define OBJECTIVE_EXTREME_VALUE 40
-#define OBJECTIVE_ABSOLUTE_VALUE 60
+#define OBJECTIVE_LOW_VALUE 0.1
+#define OBJECTIVE_MEDIUM_VALUE 0.2
+#define OBJECTIVE_HIGH_VALUE 0.35
+#define OBJECTIVE_EXTREME_VALUE 0.7
+#define OBJECTIVE_ABSOLUTE_VALUE 1.4
 
 // Objective states
 #define OBJECTIVE_INACTIVE (1<<0)
 #define OBJECTIVE_ACTIVE (1<<1)
 #define OBJECTIVE_COMPLETE (1<<2)
 
-//=================================================
-
-// Required prereqs
-#define PREREQUISITES_NONE 0
-#define PREREQUISITES_ONE 1
-#define PREREQUISITES_QUARTER 2
-#define PREREQUISITES_MAJORITY 3
-#define PREREQUISITES_ALL 4
-
 // Functionality flags
-#define OBJ_DO_NOT_TREE (1<<0) // Not part of the 'clue' tree
-#define OBJ_DEAD_END (1<<1) // Should this objective unlock zero clues?
-#define OBJ_START_PROCESSING_ON_DISCOVERY (1<<2) // Should this objective process() every subsystem 'tick' once its breadcrumb trail of clues have been finished?
-
-// Display flags
-#define OBJ_DISPLAY_AT_END (1<<0) // show it on the round end screen
-#define OBJ_DISPLAY_WHEN_INACTIVE (1<<1)
-#define OBJ_DISPLAY_WHEN_COMPLETE (1<<2)
-#define OBJ_DISPLAY_HIDDEN (1<<3)
-
-/// Show this objective even when controlled by a different faction
-#define OBJ_DISPLAY_UBIQUITOUS (1<<4)
+#define OBJECTIVE_DO_NOT_TREE (1<<0) // Not part of the 'clue' tree
+#define OBJECTIVE_DEAD_END (1<<1) // Should this objective unlock zero clues?
+#define OBJECTIVE_START_PROCESSING_ON_DISCOVERY (1<<2) // Should this objective process() every subsystem 'tick' once its breadcrumb trail of clues have been finished?
 
 /// Misc. defines for objectives
 #define APC_SCORE_INTERVAL 10 MINUTES
-
-//=================================================
-
-// TW / DEFCON balancing factors
-/// Scale from objective value to given out tech points
-#define OBJ_VALUE_TO_TECH_POINTS 0.025
-/// Scales xeno point gain for recovering corpses compared to base point gain
-#define XENO_REWARD_MULTIPLIER 2
-/// Defines how many resource points xenos get when they pool/morpher a scored corpse.
-#define TECH_POINTS_PER_CORPSE 4
-
 
 //=================================================
 

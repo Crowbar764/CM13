@@ -3,8 +3,7 @@
 // --------------------------------------------
 /datum/cm_objective/communications
 	name = "Restore Colony Communications"
-	objective_flags = OBJ_DO_NOT_TREE
-	display_flags = OBJ_DISPLAY_AT_END
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	value = OBJECTIVE_EXTREME_VALUE
 	controller = TREE_MARINE
 

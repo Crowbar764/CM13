@@ -13,8 +13,7 @@
 	SSobjectives.statistics["item_retrieval_completed"]++
 
 /datum/cm_objective/retrieve_item/device
-	objective_flags = OBJ_DEAD_END | OBJ_START_PROCESSING_ON_DISCOVERY
-	prerequisites_required = PREREQUISITES_MAJORITY
+	objective_flags = OBJECTIVE_DEAD_END | OBJECTIVE_START_PROCESSING_ON_DISCOVERY
 	number_of_clues_to_generate = 8
 
 /datum/cm_objective/retrieve_item/device/get_clue()

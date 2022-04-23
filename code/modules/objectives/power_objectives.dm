@@ -4,8 +4,7 @@
 // Tracks APCs/SMESes here so we don't have to check every APC/SMES every time we want to score an objective
 /datum/cm_objective/power
 	name = "Something power-related"
-	objective_flags = OBJ_DO_NOT_TREE
-	display_flags = OBJ_DISPLAY_HIDDEN
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	value = 0
 	state = OBJECTIVE_ACTIVE
 	var/list/power_objects
@@ -58,19 +57,13 @@
 /datum/cm_objective/power/establish_power
 	var/minimum_power_required = MINIMUM_POWER_OUTPUT
 	var/last_power_output = 0 // for displaying progress
-	objective_flags = OBJ_DO_NOT_TREE
-	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_WHEN_COMPLETE
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	value = OBJECTIVE_ABSOLUTE_VALUE
 	controller = TREE_MARINE
 	uses_smes = TRUE
 
 /datum/cm_objective/power/establish_power/post_round_start()
 	activate()
-
-/datum/cm_objective/power/establish_power/get_readable_progress()
-	if(!SSobjectives.first_drop_complete)
-		return "Unable to remotely interface with powernet"
-	return "[last_power_output]W, [minimum_power_required]W required"
 
 /datum/cm_objective/power/establish_power/check_completion()
 	if(!SSobjectives.first_drop_complete)
@@ -98,8 +91,7 @@
 // --------------------------------------------
 /datum/cm_objective/power/repair_apcs
 	name = "Repair APCs"
-	objective_flags = OBJ_DO_NOT_TREE
-	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_WHEN_COMPLETE
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	value = OBJECTIVE_EXTREME_VALUE
 	controller = TREE_MARINE
 	uses_apc = TRUE
@@ -137,8 +129,7 @@
 // --------------------------------------------
 /datum/cm_objective/power/destroy_apcs
 	name = "Disable APCs"
-	objective_flags = OBJ_DO_NOT_TREE
-	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_WHEN_COMPLETE
+	objective_flags = OBJECTIVE_DO_NOT_TREE
 	value = OBJECTIVE_EXTREME_VALUE * 2
 	controller = TREE_XENO
 	uses_apc = TRUE

@@ -3,13 +3,13 @@
 // --------------------------------------------
 /datum/cm_objective/retrieve_data
 	name = "Retrieve Important Data"
+	objective_flags = OBJECTIVE_DEAD_END
 	var/data_total = 100
 	var/data_retrieved = 0
 	var/data_transfer_rate = 10
 	var/area/initial_area
 	controller = TREE_MARINE
 	var/decryption_password
-	display_category = "Data Retrieval"
 	number_of_clues_to_generate = 2
 
 /datum/cm_objective/retrieve_data/New()
@@ -42,7 +42,6 @@
 	var/obj/structure/machinery/computer/objective/terminal
 	var/uploading = FALSE
 	value = OBJECTIVE_EXTREME_VALUE
-	prerequisites_required = PREREQUISITES_MAJORITY
 
 /datum/cm_objective/retrieve_data/terminal/New(var/obj/structure/machinery/computer/objective/D)
 	. = ..()
@@ -108,7 +107,6 @@
 /datum/cm_objective/retrieve_data/disk
 	var/obj/item/disk/objective/disk
 	value = OBJECTIVE_HIGH_VALUE
-	prerequisites_required = PREREQUISITES_ONE
 
 /datum/cm_objective/retrieve_data/disk/New(var/obj/item/disk/objective/O)
 	. = ..()
