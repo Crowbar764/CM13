@@ -1,59 +1,4 @@
 // --------------------------------------------
-// *** Get a mob to an area/level ***
-// --------------------------------------------
-#define MOB_CAN_COMPLETE_AFTER_DEATH 1
-#define MOB_FAILS_ON_DEATH 2
-
-/datum/cm_objective/move_mob
-	var/mob/living/target
-	var/mob_can_die = MOB_CAN_COMPLETE_AFTER_DEATH
-	objective_flags = OBJ_DO_NOT_TREE
-
-/datum/cm_objective/move_mob/New(var/mob/living/H)
-	if(istype(H, /mob/living))
-		target = H
-	. = ..()
-
-/datum/cm_objective/move_mob/Destroy()
-	target = null
-	return ..()
-
-/datum/cm_objective/move_mob/check_completion()
-	. = ..()
-	if(target.stat == DEAD && mob_can_die & MOB_FAILS_ON_DEATH)
-		if(ishuman(target))
-			var/mob/living/carbon/human/H = target
-			if(!H.check_tod() || !H.is_revivable()) // they went unrevivable
-				//Synths can (almost) always be revived, so don't fail their objective...
-				// if(!isSynth(H))
-					// CASPERTODO
-					// fail()
-				return FALSE
-		else
-			// fail()
-			return FALSE
-
-	if(target.stat != DEAD || mob_can_die & MOB_CAN_COMPLETE_AFTER_DEATH)
-		if(validate_destination())
-			complete()
-			return TRUE
-
-/datum/cm_objective/proc/validate_destination()
-	return TRUE
-
-/datum/cm_objective/move_mob/almayer
-	controller = TREE_MARINE
-/datum/cm_objective/move_mob/validate_destination()
-	if(istype(get_area(target), /area/almayer))
-		return TRUE
-
-/datum/cm_objective/move_mob/almayer/survivor
-	name = "Rescue the Survivor"
-	mob_can_die = MOB_FAILS_ON_DEATH
-	value = OBJECTIVE_EXTREME_VALUE
-	display_category = "Rescue the Survivors"
-
-// --------------------------------------------
 // *** Recover the dead ***
 // --------------------------------------------
 /datum/cm_objective/recover_corpses
@@ -61,16 +6,13 @@
 	objective_flags = OBJ_DO_NOT_TREE
 	display_flags = OBJ_DISPLAY_AT_END | OBJ_DISPLAY_UBIQUITOUS
 	state = OBJECTIVE_ACTIVE
+	controller = TREE_MARINE
 	/// List of list of active corpses per tech-faction ownership
 	var/list/corpses = list()
 	var/list/scored_corpses = list()
 
 /datum/cm_objective/recover_corpses/New()
 	. = ..()
-	// RegisterSignal(SSdcs, list(
-	// 	COMSIG_GLOB_CORPSE_POOLED,
-	// 	COMSIG_GLOB_CORPSE_MORPHED
-	// ), .proc/handle_corpse_consumption)
 
 	RegisterSignal(SSdcs, list(
 		COMSIG_GLOB_MARINE_DEATH,
@@ -96,32 +38,16 @@
 
 /datum/cm_objective/recover_corpses/post_round_start()
 	activate()
-	// Populate list at round start with survivors
-	// for(var/mob/living/carbon/human/H as anything in GLOB.human_mob_list)
-	// 	var/turf/T = get_turf(H)
-	// 	if(is_ground_level(T?.z) && H.stat == DEAD && !H.spawned_corpse)
-	// 		LAZYADD(corpses, H)
-
 
 /datum/cm_objective/recover_corpses/proc/handle_mob_deaths(datum/source, mob/living/carbon/dead_mob, gibbed)
 	SIGNAL_HANDLER
 
-	message_admins("New corpse dead1 [dead_mob.type]")
-	message_admins("New corpse dead2 [dead_mob.name]")
-
-
-
-	// if(gibbed || !istype(dead_mob, /mob/living/carbon))
-	// 	message_admins("Gibbed or not type")
-	// 	return
-
-	if(!iscarbon(dead_mob))
+	if(gibbed || !iscarbon(dead_mob))
 		message_admins("Gibbed or not type")
 		return
 
 	// This mob has already been scored before
 	if(LAZYISIN(scored_corpses, dead_mob))
-		message_admins("corpse already scored.")
 		return
 
 	LAZYDISTINCTADD(corpses, dead_mob)
@@ -193,20 +119,6 @@
 
 	return value
 
-/// Handle consumption of a corpse by a spawn pool or eggmorpher and addition to base point pool
-// /datum/cm_objective/recover_corpses/proc/handle_corpse_consumption(datum/source, mob/target, target_hive)
-// 	var/datum/techtree/T = GET_TREE(TREE_XENO)
-// 	if(ishuman(target))
-// 		var/mob/living/carbon/human/H = target
-// 		if(!H.spawned_corpse) // Gives points for pooled marines/survivors/monkey reskins, but not roundstart corpses
-// 			T.add_points(TECH_POINTS_PER_CORPSE)
-// 	else if(isYautja(target))
-// 		T.add_points(TECH_POINTS_PER_CORPSE * 3) // Gives more points in the event a pred gets captured
-// 	current += score_corpse(target)
-// 	LAZYSET(points_base, TREE_XENO, current)
-// 	for(var/F as anything in corpses)
-// 		LAZYREMOVE(corpses[F], target)
-
 /datum/cm_objective/recover_corpses/process()
 	message_admins("Corpse process:")
 
@@ -225,17 +137,11 @@
 		if(istype(A, /area/almayer/medical/morgue) || istype(A, /area/almayer/medical/containment))
 			award_points(corpse_val)
 			SSobjectives.statistics["corpses_recovered"]++
+			SSobjectives.statistics["corpses_total_points_earned"] += corpse_val
 
 			message_admins("Corpse '[target]' in ship, awarding points.")
 			corpses -= target
 			scored_corpses += target
-
-/// Update awarded points to the controlling tech-faction
-/datum/cm_objective/recover_corpses/award_points(points)
-	message_admins("Awarding points: [points].")
-	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
-	tree.add_points(points)
-	SSobjectives.statistics["corpses_total_points_earned"] += points
 
 // /datum/cm_objective/contain
 // 	name = "Contain alien specimens"

@@ -33,8 +33,7 @@
 
 /obj/item/device/mass_spectrometer/adv/objective/Initialize()
 	. = ..()
-	if(prob(50))
-		objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(src)
 	name += " #[serial_number]"
 
 /obj/item/device/mass_spectrometer/adv/objective/Destroy()
@@ -48,8 +47,7 @@
 
 /obj/item/device/reagent_scanner/adv/objective/Initialize(mapload, ...)
 	. = ..()
-	if(prob(50))
-		objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(src)
 	name += " #[serial_number]"
 
 /obj/item/device/reagent_scanner/adv/objective/Destroy()
@@ -63,8 +61,7 @@
 
 /obj/item/device/healthanalyzer/objective/Initialize(mapload, ...)
 	. = ..()
-	if(prob(50))
-		objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(src)
 	name += " #[serial_number]"
 
 /obj/item/device/healthanalyzer/objective/Destroy()
@@ -78,8 +75,7 @@
 
 /obj/item/device/autopsy_scanner/objective/Initialize(mapload, ...)
 	. = ..()
-	if(prob(50))
-		objective = new /datum/cm_objective/retrieve_item/device(src)
+	objective = new /datum/cm_objective/retrieve_item/device(src)
 	name += " #[serial_number]"
 
 /obj/item/device/autopsy_scanner/objective/Destroy()

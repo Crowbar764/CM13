@@ -34,23 +34,16 @@
 	. = ..()
 
 	SSobjectives.statistics["documents_total_points_earned"] += value
-	var/datum/techtree/tree = GET_TREE(controller)
-	tree.add_points(value)
+	award_points()
 
 	if (user && user.mind)
-		message_admins("has mind!")
 		user.mind.store_objective(document.retrieve_objective)
 
-	message_admins("0")
 	// Enable child objectives
 	for(var/datum/cm_objective/child_objective in enables_objectives)
-		message_admins("1 [child_objective.type]")
 		if(child_objective.state & OBJECTIVE_INACTIVE)
 			child_objective.state = OBJECTIVE_ACTIVE
-			message_admins("ENABLING [child_objective.type]")
-			message_admins("Child flags is: [child_objective.objective_flags]")
 			if(child_objective.objective_flags & OBJ_START_PROCESSING_ON_DISCOVERY)
-				message_admins("ACTIVATINGGGGGGGGGG [child_objective.type]")
 				child_objective.activate()
 
 /datum/cm_objective/document/get_clue()

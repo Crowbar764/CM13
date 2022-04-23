@@ -10,6 +10,5 @@
 
 /datum/cm_objective/communications/complete()
 	ai_silent_announcement("SYSTEMS REPORT: Colony communications link online.", ":v")
-	message_admins("comms online, state now [state]")
 	state = OBJECTIVE_COMPLETE
 	award_points()

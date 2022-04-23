@@ -48,9 +48,6 @@
 /datum/cm_objective/retrieve_item/complete()
 	state = OBJECTIVE_COMPLETE
 	award_points()
-
-/datum/cm_objective/retrieve_item/award_points()
-	..()
 	SSobjectives.statistics["item_retrieval_total_points_earned"] += value
 
 /datum/cm_objective/retrieve_item/get_tgui_data()

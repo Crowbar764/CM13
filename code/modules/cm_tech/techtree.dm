@@ -22,9 +22,6 @@
 	var/total_points_last_sitrep = 0 // The total points we had at the last announcement. Used to calculate how many points were earned since then.
 	var/points = INITIAL_STARTING_POINTS // Current points.
 	var/points_mult = 1.0 // Factor we earn points by. Increases based on current unlocked tech tier.
-	// var/resources_per_second = PASSIVE_INCREASE_AMOUNT // The rate points are passively earned.
-	// var/passive_gain_enabled = FALSE // Should we passively earn points? Start disabled, we only start getting points after first drop.
-	// var/next_passive_increase = PASSIVE_INCREASE_INTERVAL // How long until the rate we passively earn points increases.
 
 	// UI Variables
 	var/ui_theme
@@ -178,17 +175,3 @@
 /// Triggered just after a tier change
 /datum/techtree/proc/on_tier_change(datum/tier/oldtier)
 	return
-
-// Passive gain increases over time.
-// /datum/techtree/proc/passive_gain()
-// 	if (!passive_gain_enabled)
-// 		return
-
-// 	message_admins("PASSIVE GAIN STARTING...:")
-
-// 	if (next_passive_increase < world.time)
-// 		resources_per_second += PASSIVE_INCREASE_AMOUNT
-// 		next_passive_increase = world.time + PASSIVE_INCREASE_INTERVAL
-// 		message_admins("resources_per_second increase to [resources_per_second] (+ [PASSIVE_INCREASE_AMOUNT])")
-
-// 	add_points(resources_per_second)

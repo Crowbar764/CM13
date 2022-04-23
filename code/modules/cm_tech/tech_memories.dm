@@ -210,7 +210,6 @@
 
 	.["tech_points"] = holder.points
 	.["total_tech_points"] = tree.total_points
-	// .["passive_tech_points"] = tree.resources_per_second * 60
 	.["objectives"] = get_objectives(user)
 	.["clue_categories"] = get_clues(user)
 

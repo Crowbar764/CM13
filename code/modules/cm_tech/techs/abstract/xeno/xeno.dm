@@ -12,14 +12,6 @@
 /datum/tech/xeno/on_unlock()
 	. = ..()
 
-	if(tech_flags & TECH_FLAG_NO_ANNOUNCE)
-		message_admins("one")
-
-	if(!(tech_flags & TECH_FLAG_NO_ANNOUNCE))
-		message_admins("two")
-
-	message_admins("Flags: [tech_flags]")
-
 	if(!(tech_flags & TECH_FLAG_NO_ANNOUNCE))
 		xeno_message("The hive has unlocked the '[name]' evolution.", 3, hivenumber)
 		for(var/m in hive.totalXenos)

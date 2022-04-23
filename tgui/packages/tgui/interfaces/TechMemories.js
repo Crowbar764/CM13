@@ -39,8 +39,6 @@ export const TechMemories = (props, context) => {
           )}
         >
           <Box fontSize="16px">{tech_points}</Box>
-          {/* <Box fontSize="16px">{tech_points + " (+" + data.passive_tech_p
-          oints + " / min)"}</Box> */}
         </Section>
 
         <Objectives />
@@ -122,61 +120,6 @@ const CluesAdvanced = (props, context) => {
 
 const Objectives = (props, context) => {
   const { data } = useBackend(context);
-
-  // const test123 = [
-  //   {
-  //     label: "Documents",
-  //     content: "5 / 20",
-  //     content_color: "orange",
-  //     content_credits: "(420pts)",
-  //   },
-  //   {
-  //     label: "Data retrieval",
-  //     content_credits: "100pts",
-  //   },
-  //   {
-  //     label: "Item retrieval",
-  //     content_credits: "420pts",
-  //   },
-  //   {
-  //     label: "Analyze chems",
-  //     content: "5 / ∞",
-  //     content_credits: "420pts",
-  //   },
-  //   {
-  //     label: "Colony communications",
-  //     content: "Online",
-  //     content_color: "green",
-  //     content_credits: "(420pts)",
-  //   },
-  //   {
-  //     label: "Colony generators",
-  //     content: "Offline",
-  //     content_color: "red",
-  //   },
-  //   {
-  //     label: "Colony generators",
-  //     content: "20000W. 30000W required",
-  //     content_color: "orange",
-  //     content_credits: "(100pts)",
-  //   },
-  //   {
-  //     label: "Colony generators",
-  //     content: "Online",
-  //     content_color: "green",
-  //     content_credits: "(200pts)",
-  //   },
-  //   {
-  //     label: "Colony power grid",
-  //     content: "5/24 APCs online",
-  //     content_color: "orange",
-  //     content_credits: "(300pts. +5pts / 10 mins)",
-  //   },
-  //   {
-  //     label: "Corpses recovered",
-  //     content_credits: "100pts",
-  //   },
-  // ];
 
   return (
     <Section title="Objectives"

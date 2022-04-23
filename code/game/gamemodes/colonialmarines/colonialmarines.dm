@@ -236,10 +236,7 @@
 	addtimer(CALLBACK(GLOBAL_PROC, /proc/show_blurb_uscm), DROPSHIP_DROP_MSG_DELAY)
 
 /datum/game_mode/colonialmarines/ds_first_landed(var/datum/shuttle/ferry/marine/m_shuttle)
-	message_admins("FIRST DROP")
 	..()
-	message_admins("FIRST DROP2")
-	// SStechtree.activate_passive_gain()
 
 ///////////////////////////
 //Checks to see who won///

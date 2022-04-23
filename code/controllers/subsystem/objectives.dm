@@ -63,7 +63,7 @@ SUBSYSTEM_DEF(objectives)
 
 	while(length(current_active_run))
 		var/datum/cm_objective/O = current_active_run[length(current_active_run)]
-		message_admins("processing [O.type]")
+
 		current_active_run.len--
 		O.process()
 		O.check_completion()
@@ -267,14 +267,12 @@ SUBSYSTEM_DEF(objectives)
 
 /datum/controller/subsystem/objectives/proc/pre_round_start()
 	SIGNAL_HANDLER
-	message_admins("pre_round_start")
 	initialize_objectives()
 	for(var/datum/cm_objective/O in objectives)
 		O.pre_round_start()
 
 /datum/controller/subsystem/objectives/proc/post_round_start()
 	SIGNAL_HANDLER
-	message_admins("post_round_start")
 	for(var/datum/cm_objective/O in objectives)
 		O.post_round_start()
 

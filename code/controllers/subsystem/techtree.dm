@@ -33,7 +33,6 @@ SUBSYSTEM_DEF(techtree)
 		if(initial(tree.flags) == NO_FLAGS)
 			continue
 		tree = new tree()
-		// message_admins("INIT tech tree: [tree.name]")
 		trees += list("[tree.name]" = tree)
 
 		var/datum/space_level/zpos = SSmapping.add_new_zlevel(tree.name, list(ZTRAIT_TECHTREE))
@@ -49,7 +48,6 @@ SUBSYSTEM_DEF(techtree)
 			new /area/techtree(Tu)
 
 		for(var/tier in tree.tree_tiers)
-			// message_admins("Tier: [tier]")
 			tree.unlocked_techs += tier
 			tree.all_techs += tier
 			tree.unlocked_techs[tier] = list()
@@ -62,7 +60,6 @@ SUBSYSTEM_DEF(techtree)
 				continue
 
 			node = new N()
-			// message_admins("Tech: [node.name]")
 			var/tier = node.tier
 
 			if(tree.flags & node.flags)

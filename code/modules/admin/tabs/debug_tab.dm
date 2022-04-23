@@ -25,18 +25,20 @@
 	if(!check_rights(R_DEBUG))
 		return
 
-	var/list/trees = list()
+	// var/list/trees = list()
 
-	for(var/T in SStechtree.trees)
-		trees += list("[T]" = SStechtree.trees[T])
+	// for(var/T in SStechtree.trees)
+	// 	trees += list("[T]" = SStechtree.trees[T])
 
-	var/value = tgui_input_list(src, "Choose which tree to enter", "Enter Tree", trees)
+	// var/value = tgui_input_list(src, "Choose which tree to enter", "Enter Tree", trees)
 
-	if(!value)
-		to_chat(src, SPAN_WARNING("Something went wrong"))
-		return
+	// if(!value)
+	// 	to_chat(src, SPAN_WARNING("Something went wrong"))
+	// 	return
 
-	var/datum/techtree/tree = trees[value]
+	// var/datum/techtree/tree = trees[value]
+
+	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
 
 	tree.enter_mob(src.mob, TRUE)
 

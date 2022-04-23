@@ -61,12 +61,15 @@
 /datum/cm_objective/proc/get_tgui_data()
 
 /// Update awarded points to the controlling tech-faction
-/datum/cm_objective/proc/award_points()
+/datum/cm_objective/proc/award_points(override_points = -1)
 	var/datum/techtree/controlling_tree = GET_TREE(controller)
 	if (!controlling_tree)
 		return
 
-	controlling_tree.add_points(value)
+	if (override_points != -1)
+		controlling_tree.add_points(override_points)
+	else
+		controlling_tree.add_points(value)
 
 /datum/cm_objective/proc/get_readable_progress(tree = TREE_NONE)
 	// if (complete)

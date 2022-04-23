@@ -1,7 +1,3 @@
-#define TECH_ALWAYS_PROCESS 1 // Always process
-#define TECH_UNLOCKED_PROCESS 2 // Only processes when unlocked
-#define TECH_NEVER_PROCESS 3 // Never processes
-
 #define TREE_ACCESS_MODIFY 1
 #define TREE_ACCESS_VIEW 2
 
@@ -10,7 +6,6 @@
 #define TREE_FLAG_XENO  (1<<1)
 
 // Trees
-
 #define TREE_NONE "Undefined"
 #define TREE_MARINE "Marine Tech Tree"
 #define TREE_XENO "Xenomorph Tech Tree"
@@ -25,13 +20,7 @@
 /// Don't announce when this tech is bought.
 #define TECH_FLAG_NO_ANNOUNCE	(1<<2)
 
-// Resource
-#define RESOURCE_HEALTH 200
-
-#define SITREP_INTERVAL 3 SECONDS
-/// Controls the passive increase amount.
-// #define PASSIVE_INCREASE_AMOUNT 0.0025 // Every PASSIVE_INCREASE_INTERVAL, the points passively generated increased by PASSIVE_INCREASE_AMOUNT
-// #define PASSIVE_INCREASE_INTERVAL 10 MINUTES
+#define SITREP_INTERVAL 3 SECONDS // How frequent the ARES updates are for tech point announcements.
 
 // Droppods
 #define DROPPOD_DROPPED (1<<0)

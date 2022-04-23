@@ -138,6 +138,8 @@ var/global/datum/intel_system/intel_system = new()
 	var/total_transferred = 0
 	var/outcome = 0 //outcome of an individual upload - if something interrupts us, we cancel the rest
 
+	user.mind.objective_memory.clean_objectives() // Don't upload completed objectives, there's no point.
+
 	for(var/datum/cm_objective/O in user.mind.objective_memory.folders)
 		outcome = transfer_intel(user, O)
 		if(outcome < 0)
@@ -202,12 +204,16 @@ var/global/datum/intel_system/intel_system = new()
 	if(user.action_busy)
 		return 0
 
+	var/clue = O.get_clue()
+	if(!clue) // Not all objectives have clues.
+		return 0
+
 	playsound(user, pick('sound/machines/computer_typing4.ogg', 'sound/machines/computer_typing5.ogg', 'sound/machines/computer_typing6.ogg'), 5, 1)
 
 	if(!do_after(user, typing_time * user.get_skill_duration_multiplier(SKILL_INTEL), INTERRUPT_ALL, BUSY_ICON_GENERIC)) // Can't move from the spot
 		to_chat(user, SPAN_WARNING("You get distracted and lose your train of thought, you'll have to start the typing over..."))
 		return -1
 
-	to_chat(user, SPAN_NOTICE("...something about \"[O.get_clue()]\"..."))
+	to_chat(user, SPAN_NOTICE("...something about \"[clue]\"..."))
 	intel_system.store_single_objective(O)
 	return 1
