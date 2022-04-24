@@ -5,12 +5,10 @@
 /datum/cm_objective/power
 	name = "Something power-related"
 	objective_flags = OBJECTIVE_DO_NOT_TREE
-	value = 0
+	value = OBJECTIVE_NO_VALUE
 	state = OBJECTIVE_ACTIVE
 	var/list/power_objects
 	var/uses_smes = FALSE
-	var/total_apcs = 0 // For APC objectives
-	var/total_points = 0 // Also for APC objectives
 
 /datum/cm_objective/power/Destroy()
 	power_objects = null
@@ -23,19 +21,6 @@
 				continue
 			LAZYADD(power_objects, colony_smes)
 			RegisterSignal(colony_smes, COMSIG_PARENT_QDELETING, .proc/remove_machine)
-
-// Used for objectives that track APCs
-/datum/cm_objective/power/proc/check_apc_status()
-	var/total_functioning = 0
-	if(!uses_apc)
-		return 0
-	for(var/obj/structure/machinery/power/apc/colony_apc as anything in power_objects)
-		if(colony_apc.stat & (BROKEN|MAINT))
-			continue
-		if(colony_apc.equipment < 2)
-			continue
-		total_functioning++
-	return total_functioning
 
 /datum/cm_objective/power/proc/remove_machine(obj/structure/machinery/power/machine)
 	SIGNAL_HANDLER

@@ -134,9 +134,9 @@
 			scored_corpses += target
 
 			if (isXeno(target))
-				UnregisterSignal(revived_mob, COMSIG_XENO_REVIVED)
+				UnregisterSignal(target, COMSIG_XENO_REVIVED)
 			else
-				UnregisterSignal(revived_mob, COMSIG_HUMAN_REVIVED)
+				UnregisterSignal(target, COMSIG_HUMAN_REVIVED)
 
 // /datum/cm_objective/contain
 // 	name = "Contain alien specimens"
