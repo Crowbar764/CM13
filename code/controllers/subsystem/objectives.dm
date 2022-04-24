@@ -107,24 +107,22 @@ SUBSYSTEM_DEF(objectives)
 		//The map doesn't have the correct landmarks, so we generate nothing, hoping the map has normal objectives
 		return
 
-	//roughly the numbers LV has:
-	var/paper_scraps = 9
-	var/progress_reports = 3
-	var/folders = 6
-	var/technical_manuals = 2
-	var/disks = 6
-	var/experimental_devices = 3
-
-	var/research_papers = 6
-	var/vial_boxes = 6
+	var/paper_scraps = 40
+	var/progress_reports = 15
+	var/folders = 30
+	var/technical_manuals = 10
+	var/disks = 30
+	var/experimental_devices = 15
+	var/research_papers = 15
+	var/vial_boxes = 20
 
 	//A stub of tweaking item spawns based on map
 	switch(SSmapping.configs[GROUND_MAP])
 		if(MAP_LV_624)
-			paper_scraps = 9
-			progress_reports = 3
-			folders = 6
-			disks = 6
+			paper_scraps = 35
+			progress_reports = 12
+			folders = 25
+			disks = 25
 		if(MAP_CORSAT)
 			vial_boxes = 30
 			research_papers = 30

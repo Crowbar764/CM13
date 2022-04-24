@@ -75,9 +75,3 @@ SUBSYSTEM_DEF(techtree)
 		to_chat(world, "<span class='boldannounce'>[msg]</span>")
 
 	. = ..()
-
-// /datum/controller/subsystem/techtree/proc/activate_passive_gain()
-// 	for(var/name in trees)
-// 		var/datum/techtree/T = trees[name]
-// 		T.passive_gain_enabled = TRUE
-// 		T.next_passive_increase = world.time + PASSIVE_INCREASE_INTERVAL

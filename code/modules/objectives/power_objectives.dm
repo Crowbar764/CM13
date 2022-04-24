@@ -9,7 +9,6 @@
 	state = OBJECTIVE_ACTIVE
 	var/list/power_objects
 	var/uses_smes = FALSE
-	var/uses_apc = FALSE
 	var/total_apcs = 0 // For APC objectives
 	var/total_points = 0 // Also for APC objectives
 
@@ -24,13 +23,6 @@
 				continue
 			LAZYADD(power_objects, colony_smes)
 			RegisterSignal(colony_smes, COMSIG_PARENT_QDELETING, .proc/remove_machine)
-	if(uses_apc)
-		for(var/obj/structure/machinery/power/apc/colony_apc in machines)
-			if(!is_ground_level(colony_apc.z))
-				continue
-			total_apcs++
-			LAZYADD(power_objects, colony_apc)
-			RegisterSignal(colony_apc, COMSIG_PARENT_QDELETING, .proc/remove_machine)
 
 // Used for objectives that track APCs
 /datum/cm_objective/power/proc/check_apc_status()
@@ -85,71 +77,3 @@
 /datum/cm_objective/power/establish_power/complete()
 	award_points()
 	state = OBJECTIVE_COMPLETE
-
-// --------------------------------------------
-// *** Restore the apcs to working order ***
-// --------------------------------------------
-/datum/cm_objective/power/repair_apcs
-	name = "Repair APCs"
-	objective_flags = OBJECTIVE_DO_NOT_TREE
-	value = OBJECTIVE_EXTREME_VALUE
-	controller = TREE_MARINE
-	uses_apc = TRUE
-	var/score_interval = APC_SCORE_INTERVAL
-	var/next_score_time = 0
-	var/last_functioning = 0
-
-// /datum/cm_objective/power/repair_apcs/on_marine_landing()
-// 	..()
-// 	next_score_time = world.time + score_interval
-// 	ai_silent_announcement("Remote link established with colony powernet. Current status: [check_apc_status()]/[total_apcs] APCs online and recieving power.", ":v", TRUE)
-
-/datum/cm_objective/power/repair_apcs/process(delta_time)
-	. = ..()
-	last_functioning = check_apc_status()
-	if(!SSobjectives.first_drop_complete)
-		return
-	if(next_score_time > world.time)
-		return
-	next_score_time = world.time + score_interval
-	total_points += value * (last_functioning / max(total_apcs, 1))
-
-/datum/cm_objective/power/repair_apcs/check_completion()
-	if(!SSobjectives.first_drop_complete)
-		return
-	last_functioning = check_apc_status()
-
-// /datum/cm_objective/power/repair_apcs/get_completion_status()
-// 	if(!SSobjectives.first_drop_complete)
-// 		return "UNKNOWN/[total_apcs] APCs online, [get_point_value()]pts achieved"
-// 	return "[last_functioning]/[total_apcs] APCs online, [get_point_value()]pts achieved"
-
-// --------------------------------------------
-// *** Disable APCs to disable the powernet ***
-// --------------------------------------------
-/datum/cm_objective/power/destroy_apcs
-	name = "Disable APCs"
-	objective_flags = OBJECTIVE_DO_NOT_TREE
-	value = OBJECTIVE_EXTREME_VALUE * 2
-	controller = TREE_XENO
-	uses_apc = TRUE
-	var/score_interval = APC_SCORE_INTERVAL
-	var/next_score_time = 0
-	var/last_disabled = 0
-
-/datum/cm_objective/power/destroy_apcs/process(delta_time)
-	. = ..()
-	last_disabled = total_apcs - check_apc_status()
-	if(!SSobjectives.first_drop_complete)
-		return
-	if(next_score_time > world.time)
-		return
-	next_score_time = world.time + score_interval
-	total_points += value * (last_disabled / max(total_apcs, 1))
-
-// /datum/cm_objective/power/destroy_apcs/on_marine_landing()
-// 	..()
-// 	next_score_time = world.time + score_interval
-
-// /datum/cm_objective/power/destroy_apcs/get_completion_status()
-// 	return "[last_disabled]/[total_apcs] APCs disabled, [get_point_value()]pts achieved"

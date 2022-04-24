@@ -30,7 +30,6 @@
 	SIGNAL_HANDLER
 
 	qdel(src)
-	// target_item = null
 
 /datum/cm_objective/retrieve_item/get_clue()
 	return SPAN_DANGER("[target_item] in <u>[initial_area]</u>")
@@ -53,7 +52,6 @@
 	var/list/clue = list()
 
 	clue["text"] = target_item.name
-	// clue["itemID"] = document.label
 	clue["location"] = initial_area.name
 
 	return clue

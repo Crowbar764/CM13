@@ -40,8 +40,6 @@
 	if(!zlevel)
 		return
 
-	//passive_node.make_active()
-
 	var/longest_tier = 0
 	for(var/tier in all_techs)
 		var/tier_length = length(all_techs[tier])

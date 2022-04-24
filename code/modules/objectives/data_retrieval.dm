@@ -81,12 +81,6 @@
 
 	..()
 
-	// if(..())
-	// 	if(intel_system)
-	// 		intel_system.store_objective(src)
-	// 	return TRUE
-	// return FALSE
-
 /datum/cm_objective/retrieve_data/terminal/get_tgui_data()
 	var/list/clue = list()
 

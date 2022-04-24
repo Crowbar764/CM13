@@ -5,9 +5,6 @@ GLOBAL_LIST_EMPTY(marine_leaders)
 	name = TREE_MARINE
 	flags = TREE_FLAG_MARINE
 
-	// var/last_pain_reduction = 0
-	// var/barricade_bonus_health = 100
-
 	background_icon_locked = "marine"
 
 	var/mob/living/carbon/human/leader
@@ -51,23 +48,6 @@ GLOBAL_LIST_EMPTY(marine_leaders)
 
 /datum/techtree/marine/can_attack(var/mob/living/carbon/H)
 	return !ishuman(H)
-
-// /datum/techtree/marine/proc/apply_barricade_health(var/obj/structure/barricade/B)
-// 	B.maxhealth += barricade_bonus_health
-// 	B.update_health(-barricade_bonus_health)
-
-// /datum/techtree/marine/on_process(var/obj/structure/resource_node/RN)
-// 	if(last_pain_reduction > world.time)
-// 		return
-
-// 	var/area/A = RN.controlled_area
-// 	if(!A)
-// 		return
-
-// 	for(var/mob/living/carbon/human/H in A)
-// 		H.pain.apply_pain_reduction(PAIN_REDUCTION_MULTIPLIER) // Level 1 painkilling chem
-
-// 	last_pain_reduction = world.time + 1 SECONDS // Every second
 
 /datum/techtree/marine/proc/transfer_leader_to(var/mob/living/carbon/human/H)
 	if(!H)
@@ -148,7 +128,6 @@ GLOBAL_LIST_EMPTY(tech_controls_marine)
 	GLOB.tech_controls_marine -= src
 	attached_tree = null
 	return ..()
-
 
 // Disallow deconstructing
 /obj/structure/machinery/computer/tech_control/attackby(obj/item/I, mob/user)

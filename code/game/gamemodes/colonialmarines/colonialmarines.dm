@@ -161,10 +161,6 @@
 	if(--round_started > 0)
 		return FALSE //Initial countdown, just to be safe, so that everyone has a chance to spawn before we check anything.
 
-	// for(var/T in SStechtree.trees)
-	// 	var/datum/techtree/tree = SStechtree.trees[T]
-	// 	tree.passive_gain()
-
 	if(next_research_allocation < world.time)
 		chemical_data.update_credits(research_allocation_amount)
 		next_research_allocation = world.time + research_allocation_interval
@@ -242,7 +238,6 @@
 //Checks to see who won///
 //////////////////////////
 /datum/game_mode/colonialmarines/check_win()
-	return
 	if(SSticker.current_state != GAME_STATE_PLAYING)
 		return
 

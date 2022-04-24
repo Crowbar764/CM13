@@ -20,7 +20,7 @@
 /// Don't announce when this tech is bought.
 #define TECH_FLAG_NO_ANNOUNCE	(1<<2)
 
-#define SITREP_INTERVAL 3 SECONDS // How frequent the ARES updates are for tech point announcements.
+#define SITREP_INTERVAL 15 MINUTES // How frequent the ARES updates are for tech point announcements.
 
 // Droppods
 #define DROPPOD_DROPPED (1<<0)

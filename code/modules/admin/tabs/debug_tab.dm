@@ -25,19 +25,6 @@
 	if(!check_rights(R_DEBUG))
 		return
 
-	// var/list/trees = list()
-
-	// for(var/T in SStechtree.trees)
-	// 	trees += list("[T]" = SStechtree.trees[T])
-
-	// var/value = tgui_input_list(src, "Choose which tree to enter", "Enter Tree", trees)
-
-	// if(!value)
-	// 	to_chat(src, SPAN_WARNING("Something went wrong"))
-	// 	return
-
-	// var/datum/techtree/tree = trees[value]
-
 	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
 
 	tree.enter_mob(src.mob, TRUE)
@@ -49,20 +36,7 @@
 	if(!check_rights(R_DEBUG))
 		return
 
-	var/list/trees = list()
-
-	// for(var/T in SStechtree.trees)
-	// 	trees += list("[T]" = SStechtree.trees[T])
-
-	// var/value = tgui_input_list(src, "Choose which tree to give points to", "Give Points", trees)
-
-	// if(!value)
-	// 	to_chat(src, SPAN_WARNING("Something went wrong"))
-	// 	return
-
-	// var/datum/techtree/tree = trees[value]
 	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
-
 	var/number_to_set = input(src, "How many points should this tech tree be at?", "", tree.points) as null|num
 
 	if(number_to_set == null)
@@ -155,36 +129,3 @@
 
 	message_staff("[usr.ckey] manually reloaded the role whitelist.")
 	RoleAuthority.load_whitelist()
-
-/client/proc/bulk_fetcher()
-	set name = "Bulk Fetch Items"
-	set category = "Debug"
-
-	if (admin_holder)
-		admin_holder.bulk_fetcher_panel()
-
-/datum/admins/proc/bulk_fetcher_panel()
-	if(!check_rights(R_DEBUG,0))
-		return
-
-	var/dat = {"
-		<B>Fetch Objectives</B><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchdisks'>Disks</A><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchtechmanuals'>Technical Manuals</A><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchprogressreports'>Progress Reports</A><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchpaperscraps'>Paper Scraps</A><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchfolders'>Folders</A><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchexpdevices'>Experimental Devices</A><BR>
-		<BR>
-		<B>Research</B><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchvials'>Vials</A><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchresearchnotes'>Research Notes</A><BR>
-		<BR>
-		<B>Bodies</B><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchhumancorpses'>Human corpses</A><BR>
-		<A href='?_src_=admin_holder;debug=bulkfetchxenocorpses'>Xeno corpses</A><BR>
-		<BR>
-		"}
-
-	show_browser(usr, dat, "Bulk Fetcher Panel", "debug")
-	return
