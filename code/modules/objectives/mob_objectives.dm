@@ -41,8 +41,7 @@
 /datum/cm_objective/recover_corpses/proc/handle_mob_deaths(datum/source, mob/living/carbon/dead_mob, gibbed)
 	SIGNAL_HANDLER
 
-	if(gibbed || !iscarbon(dead_mob))
-		message_admins("Gibbed or not type")
+	if(!iscarbon(dead_mob))
 		return
 
 	// This mob has already been scored before
@@ -62,8 +61,6 @@
 /datum/cm_objective/recover_corpses/proc/handle_mob_revival(mob/living/carbon/revived_mob)
 	SIGNAL_HANDLER
 
-	message_admins("Corpse being revived")
-
 	UnregisterSignal(revived_mob, list(COMSIG_LIVING_REJUVENATED, COMSIG_PARENT_QDELETING))
 
 	if (isXeno(revived_mob))
@@ -76,8 +73,6 @@
 
 /datum/cm_objective/recover_corpses/proc/handle_corpse_deletion(mob/living/carbon/deleted_mob)
 	SIGNAL_HANDLER
-
-	message_admins("Corpse being deleted")
 
 	UnregisterSignal(deleted_mob, list(
 		COMSIG_LIVING_REJUVENATED,
@@ -119,7 +114,6 @@
 	return value
 
 /datum/cm_objective/recover_corpses/process()
-	message_admins("Corpse process:")
 
 	for(var/mob/target as anything in corpses)
 		if(QDELETED(target))
@@ -132,15 +126,17 @@
 		// Add points depending on who controls it
 		var/turf/T = get_turf(target)
 		var/area/A = get_area(T)
-		message_admins("Checking Corpse '[target]'.")
 		if(istype(A, /area/almayer/medical/morgue) || istype(A, /area/almayer/medical/containment))
-			award_points(corpse_val)
 			SSobjectives.statistics["corpses_recovered"]++
 			SSobjectives.statistics["corpses_total_points_earned"] += corpse_val
 
-			message_admins("Corpse '[target]' in ship, awarding points.")
 			corpses -= target
 			scored_corpses += target
+
+			if (isXeno(target))
+				UnregisterSignal(revived_mob, COMSIG_XENO_REVIVED)
+			else
+				UnregisterSignal(revived_mob, COMSIG_HUMAN_REVIVED)
 
 // /datum/cm_objective/contain
 // 	name = "Contain alien specimens"
