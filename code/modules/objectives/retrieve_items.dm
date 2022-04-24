@@ -35,11 +35,9 @@
 	return SPAN_DANGER("[target_item] in <u>[initial_area]</u>")
 
 /datum/cm_objective/retrieve_item/check_completion()
-	message_admins("Processing [target_item]...")
 	for(var/T in target_areas)
 		var/area/target_area = T //not sure why the cast is necessary (rather than casting in the loop), but it doesn't work without it... ~ThePiachu
 		if(istype(get_area(target_item.loc), target_area))
-			message_admins("Found! [target_item]")
 			complete()
 			return
 

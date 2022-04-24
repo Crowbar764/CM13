@@ -149,7 +149,6 @@
 
 		// Some objectives don't have clues.
 		if (!clue)
-			message_admins("NO CLUE")
 			continue
 
 		to_chat(user, SPAN_NOTICE("You make out something about [clue]."))
