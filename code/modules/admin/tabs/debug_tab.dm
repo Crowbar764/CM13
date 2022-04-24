@@ -51,16 +51,17 @@
 
 	var/list/trees = list()
 
-	for(var/T in SStechtree.trees)
-		trees += list("[T]" = SStechtree.trees[T])
+	// for(var/T in SStechtree.trees)
+	// 	trees += list("[T]" = SStechtree.trees[T])
 
-	var/value = tgui_input_list(src, "Choose which tree to give points to", "Give Points", trees)
+	// var/value = tgui_input_list(src, "Choose which tree to give points to", "Give Points", trees)
 
-	if(!value)
-		to_chat(src, SPAN_WARNING("Something went wrong"))
-		return
+	// if(!value)
+	// 	to_chat(src, SPAN_WARNING("Something went wrong"))
+	// 	return
 
-	var/datum/techtree/tree = trees[value]
+	// var/datum/techtree/tree = trees[value]
+	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
 
 	var/number_to_set = input(src, "How many points should this tech tree be at?", "", tree.points) as null|num
 

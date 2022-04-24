@@ -5,17 +5,6 @@ import { Window } from '../layouts';
 export const TechMemories = (props, context) => {
   const { act, data } = useBackend(context);
   const [clueCategory, setClueCategory] = useLocalState(context, 'clueCategory', 0);
-  if (data.stats_dynamic) {
-    if (data.stats) {
-      if (data.original_stats) data.stats = data.original_stats;
-      else data.original_stats = data.stats;
-
-      data.stats = data.stats.concat(data.stats_dynamic || []);
-    } else {
-      data.original_stats = [];
-      data.stats = data.stats_dynamic;
-    }
-  }
 
   const {
     tech_points,
@@ -34,7 +23,7 @@ export const TechMemories = (props, context) => {
           buttons={(
             <Button
               content="Open Tech Tree"
-              onClick={() => act('open_techweb')}
+              onClick={() => act('enter_techtree')}
             />
           )}
         >

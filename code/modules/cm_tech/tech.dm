@@ -73,13 +73,10 @@
 	return holder.ui_status(user, state)
 
 /datum/tech/ui_data(mob/user)
-	var/total_points = 0
-	if(holder)
-		total_points = holder.points
-
 	. = list(
-		"total_points" = total_points,
-		"can_buy" = holder.can_use_points(required_points) && check_tier_level(),
+		"total_points" = holder.points,
+		"valid_tier" = check_tier_level(),
+		"can_afford" = holder.can_use_points(required_points),
 		"unlocked" = tech_flags & TECH_FLAG_MULTIUSE? FALSE: unlocked,
 		"cost" = required_points
 	)
@@ -104,7 +101,7 @@
 	if(!ui)
 		ui = new(user, src, "TechNode", name)
 		ui.open()
-		ui.set_autoupdate(FALSE)
+		ui.set_autoupdate(TRUE)
 
 /datum/tech/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()

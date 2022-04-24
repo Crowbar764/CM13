@@ -82,7 +82,11 @@ SUBSYSTEM_DEF(objectives)
 /datum/controller/subsystem/objectives/proc/announce_stats()
 	var/datum/techtree/tree = GET_TREE(TREE_MARINE)
 
-	var/message = "[round(tree.points, 0.1)] tech points available (+ [round(tree.total_points - tree.total_points_last_sitrep, 0.1)])."
+	var/message = "[round(tree.points, 0.1)] tech points available"
+	var/earned = round(tree.total_points - tree.total_points_last_sitrep, 0.1)
+	if (earned)
+		message += " (+[earned])"
+	message += "."
 
 	ai_silent_announcement(message, ":v", TRUE)
 	ai_silent_announcement(message, ":t", TRUE)
