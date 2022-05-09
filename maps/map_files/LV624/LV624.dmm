@@ -3009,6 +3009,7 @@
 /obj/item/clothing/glasses/hud/health,
 /obj/effect/landmark/crap_item,
 /obj/item/reagent_container/spray/cleaner,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -3367,6 +3368,7 @@
 /obj/structure/machinery/light{
 	dir = 8
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "whiteblue"
@@ -4788,6 +4790,7 @@
 /area/lv624/lazarus/research)
 "awq" = (
 /obj/item/clothing/glasses/regular,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "white"
 	},
@@ -5467,6 +5470,7 @@
 	stat = 2
 	},
 /obj/effect/landmark/corpsespawner/scientist,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "freezerfloor"
 	},
@@ -5565,12 +5569,13 @@
 	},
 /area/lv624/lazarus/robotics)
 "ayX" = (
-/obj/structure/surface/table,
+/obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
-	dir = 5;
-	icon_state = "whitepurple"
+	dir = 8;
+	icon_state = "vault"
 	},
-/area/lv624/lazarus/research)
+/area/lv624/lazarus/quartstorage)
 "ayY" = (
 /obj/item/device/multitool,
 /obj/structure/extinguisher_cabinet{
@@ -12252,6 +12257,8 @@
 	dir = 8
 	},
 /obj/item/cell/high,
+/obj/effect/landmark/objective_landmark/far,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/greengrid,
 /area/lv624/lazarus/secure_storage)
 "aWT" = (
@@ -12870,6 +12877,9 @@
 "aZg" = (
 /obj/structure/surface/table/woodentable/fancy,
 /obj/structure/machinery/light/small,
+/obj/structure/machinery/computer/objective{
+	dir = 1
+	},
 /turf/open/floor{
 	icon_state = "grimy"
 	},
@@ -12986,6 +12996,7 @@
 	dir = 4
 	},
 /obj/effect/landmark/objective_landmark/close,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 1;
 	icon_state = "redcorner"
@@ -12996,6 +13007,7 @@
 /obj/structure/machinery/light/small{
 	dir = 8
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/wood{
 	icon_state = "wood-broken4"
 	},
@@ -13046,12 +13058,14 @@
 /area/lv624/lazarus/hop)
 "aZG" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "dark"
 	},
 /area/lv624/lazarus/engineering)
 "aZI" = (
 /obj/structure/filingcabinet/chestdrawer,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "dark"
 	},
@@ -13517,6 +13531,16 @@
 /obj/structure/flora/bush/ausbushes/reedbush,
 /turf/open/gm/river,
 /area/lv624/ground/river/west_river)
+"bGh" = (
+/obj/structure/surface/table/holotable,
+/obj/structure/machinery/computer/objective{
+	dir = 5
+	},
+/turf/open/floor{
+	dir = 5;
+	icon_state = "whitepurple"
+	},
+/area/lv624/lazarus/research)
 "bGV" = (
 /obj/structure/machinery/iv_drip,
 /turf/open/floor{
@@ -14234,6 +14258,7 @@
 /area/lv624/ground/barrens/north_east_barrens)
 "dsz" = (
 /obj/structure/closet/crate/hydroponics/prespawned,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 9;
 	icon_state = "green"
@@ -14530,6 +14555,7 @@
 "dZH" = (
 /obj/structure/filingcabinet,
 /obj/structure/machinery/light,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	icon_state = "whiteblue";
 	tag = "icon-whiteblue"
@@ -15695,6 +15721,7 @@
 	pixel_y = 16
 	},
 /obj/effect/landmark/objective_landmark/close,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 9;
 	icon_state = "whiteblue";
@@ -15821,6 +15848,13 @@
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/gm/dirt,
 /area/lv624/lazarus/crashed_ship_containers)
+"hgb" = (
+/obj/structure/surface/table/reinforced,
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
+/turf/open/floor/greengrid,
+/area/lv624/lazarus/secure_storage)
 "hgt" = (
 /obj/structure/flora/bush/ausbushes/grassybush,
 /obj/structure/flora/jungle/vines,
@@ -16019,6 +16053,7 @@
 "hJd" = (
 /obj/structure/surface/rack,
 /obj/item/moneybag,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/greengrid,
 /area/lv624/lazarus/corporate_dome)
 "hJn" = (
@@ -16477,6 +16512,11 @@
 	tag = "icon-whiteblue (NORTH)"
 	},
 /area/lv624/lazarus/medbay)
+"iPZ" = (
+/obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/greengrid,
+/area/lv624/lazarus/secure_storage)
 "iRb" = (
 /obj/effect/landmark/monkey_spawn,
 /turf/open/gm/grass{
@@ -18459,6 +18499,7 @@
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
 "nDr" = (
 /obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor{
 	dir = 8;
 	icon_state = "vault"
@@ -18860,6 +18901,11 @@
 	},
 /turf/open/floor/wood,
 /area/lv624/ground/caves/north_central_caves)
+"okD" = (
+/obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/greengrid,
+/area/lv624/lazarus/secure_storage)
 "omK" = (
 /turf/open/gm/coast{
 	dir = 4;
@@ -19072,6 +19118,7 @@
 /obj/item/clothing/head/helmet/marine/veteran/PMC,
 /obj/item/clothing/under/marine/veteran/PMC,
 /obj/item/storage/fancy/cigar,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor{
 	dir = 5;
 	icon_state = "whiteyellow"
@@ -19459,6 +19506,9 @@
 /obj/structure/surface/table,
 /obj/structure/machinery/light{
 	dir = 4
+	},
+/obj/structure/machinery/computer/objective{
+	dir = 8
 	},
 /turf/open/floor{
 	icon_state = "white"
@@ -20484,6 +20534,7 @@
 /obj/structure/surface/rack,
 /obj/item/ammo_magazine/rifle/mar40,
 /obj/item/ammo_magazine/rifle/mar40,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "dark"
 	},
@@ -22852,6 +22903,7 @@
 /obj/structure/surface/table/reinforced/prison,
 /obj/item/tool/crowbar,
 /obj/item/reagent_container/spray/cleaner,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 9;
 	icon_state = "whiteyellow"
@@ -23117,6 +23169,7 @@
 	pixel_y = 6
 	},
 /obj/item/storage/firstaid/adv,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/greengrid,
 /area/lv624/lazarus/corporate_dome)
 "yjh" = (
@@ -30203,7 +30256,7 @@ aTf
 aTf
 aTf
 aTf
-aUj
+hgb
 aWR
 aUj
 aTf
@@ -30658,7 +30711,7 @@ aTf
 aTf
 aUQ
 aUQ
-aZt
+vUO
 aUQ
 aZt
 aUQ
@@ -31116,9 +31169,9 @@ aUQ
 aUQ
 vUO
 aUQ
-aZt
+okD
 aUQ
-aZt
+iPZ
 aUQ
 aUQ
 aYs
@@ -40414,7 +40467,7 @@ udP
 udP
 asU
 ath
-ayX
+ath
 aum
 auV
 atU
@@ -41782,7 +41835,7 @@ udP
 udP
 udP
 asU
-aum
+bGh
 aum
 auY
 asT
@@ -57287,7 +57340,7 @@ axa
 ati
 tfA
 aub
-nDr
+ayX
 ati
 awY
 ati
