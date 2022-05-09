@@ -11072,7 +11072,6 @@
 	},
 /area/almayer/engineering/upper_engineering)
 "aDu" = (
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "silver";
@@ -41696,7 +41695,6 @@
 	},
 /area/almayer/evacuation/pod18)
 "fjh" = (
-/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/almayer{
 	dir = 4;
 	icon_state = "silvercorner";
@@ -41873,10 +41871,6 @@
 	tag = "icon-orange (NORTH)"
 	},
 /area/almayer/engineering/engineering_workshop/hangar)
-"fpx" = (
-/obj/effect/landmark/objective_landmark/close,
-/turf/open/floor/almayer,
-/area/almayer/hallways/aft_hallway)
 "fpO" = (
 /obj/structure/pipes/standard/manifold/hidden/supply,
 /turf/open/floor/plating/plating_catwalk,
@@ -45366,14 +45360,6 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/hallways/hangar)
-"gSd" = (
-/obj/effect/landmark/objective_landmark/close,
-/turf/open/floor/almayer{
-	dir = 4;
-	icon_state = "silvercorner";
-	tag = "icon-silvercorner (EAST)"
-	},
-/area/almayer/hallways/aft_hallway)
 "gSi" = (
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/computer/security/almayer_network,
@@ -50796,14 +50782,6 @@
 	tag = "icon-green"
 	},
 /area/almayer/squads/req)
-"jrt" = (
-/obj/effect/landmark/objective_landmark/medium,
-/turf/open/floor/almayer{
-	dir = 1;
-	icon_state = "silver";
-	tag = "icon-silver (NORTH)"
-	},
-/area/almayer/hallways/aft_hallway)
 "jrR" = (
 /obj/effect/landmark/shuttle_loc/marine_crs/dropship,
 /turf/open/floor/almayer,
@@ -51014,14 +50992,6 @@
 	tag = "icon-bluecorner (NORTH)"
 	},
 /area/almayer/engineering/engine_core)
-"jyl" = (
-/obj/effect/landmark/objective_landmark/medium,
-/turf/open/floor/almayer{
-	dir = 1;
-	icon_state = "silvercorner";
-	tag = "icon-silvercorner (NORTH)"
-	},
-/area/almayer/hallways/aft_hallway)
 "jyR" = (
 /obj/structure/machinery/cm_vending/sorted/tech/comp_storage{
 	req_one_access_txt = "7;23;27"
@@ -51240,13 +51210,6 @@
 	tag = "icon-sterile"
 	},
 /area/almayer/medical/medical_science)
-"jHC" = (
-/obj/structure/machinery/status_display{
-	pixel_y = 30
-	},
-/obj/effect/landmark/objective_landmark/science,
-/turf/open/floor/almayer,
-/area/almayer/hallways/stern_hallway)
 "jHG" = (
 /obj/structure/sign/safety/maint{
 	pixel_x = 8;
@@ -76717,7 +76680,6 @@
 	},
 /area/almayer/medical/lower_medical_medbay)
 "voi" = (
-/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/almayer{
 	dir = 1;
 	icon_state = "silvercorner";
@@ -121503,7 +121465,7 @@ aHq
 aHq
 aHq
 aHq
-fpx
+abg
 ajt
 abg
 aPm
@@ -121706,7 +121668,7 @@ kXu
 xRk
 bti
 aHq
-gSd
+cbr
 ajt
 abg
 ejp
@@ -121909,7 +121871,7 @@ aRi
 aGN
 rUy
 cnS
-jrt
+iWN
 ajt
 abg
 qVM
@@ -122112,7 +122074,7 @@ aGN
 aGN
 dxv
 cnS
-jyl
+cnv
 ajt
 anf
 qVM
@@ -123127,7 +123089,7 @@ aGN
 hgB
 cbn
 aHq
-jHC
+uLu
 anC
 aiC
 aUH
