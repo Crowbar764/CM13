@@ -4136,6 +4136,7 @@
 	desc = "Someone has crossed out the Space from Space Cleaner and written in Surgery. 'Do not remove under punishment of death!!!' is scrawled on the back.";
 	name = "Surgery Cleaner"
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "whitebluefull";
 	tag = "icon-whitebluefull"
@@ -5571,9 +5572,10 @@
 	},
 /area/lv624/lazarus/robotics)
 "ayX" = (
-/obj/effect/landmark/objective_landmark/medium,
-/turf/open/floor/wood,
-/area/lv624/ground/jungle/west_jungle)
+/obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/greengrid,
+/area/lv624/lazarus/secure_storage)
 "ayY" = (
 /obj/item/device/multitool,
 /obj/structure/extinguisher_cabinet{
@@ -5840,6 +5842,7 @@
 	icon_state = "open";
 	opened = 1
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "bluecorner"
 	},
@@ -6311,6 +6314,7 @@
 	layer = 2.5
 	},
 /obj/structure/largecrate/random,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating{
 	icon_state = "platebot"
 	},
@@ -11762,6 +11766,7 @@
 /area/lv624/ground/barrens/central_barrens)
 "aVo" = (
 /obj/structure/filingcabinet/chestdrawer,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "grimy"
 	},
@@ -12962,7 +12967,7 @@
 /area/lv624/lazarus/kitchen)
 "aZt" = (
 /obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/close,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/greengrid,
 /area/lv624/lazarus/secure_storage)
 "aZw" = (
@@ -12985,6 +12990,7 @@
 /area/lv624/lazarus/engineering)
 "aZy" = (
 /obj/structure/closet/secure_closet/engineering_personal,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	icon_state = "dark"
 	},
@@ -13720,13 +13726,6 @@
 	},
 /turf/closed/wall/rock/brown,
 /area/lv624/ground/caves/south_central_caves)
-"cdI" = (
-/obj/structure/flora/bush/ausbushes/var3/brflowers,
-/obj/effect/landmark/objective_landmark/medium,
-/turf/open/gm/grass{
-	icon_state = "grass2"
-	},
-/area/lv624/lazarus/yggdrasil)
 "cen" = (
 /turf/open/floor{
 	dir = 8;
@@ -13818,11 +13817,6 @@
 	tag = "icon-whiteblue (SOUTHWEST)"
 	},
 /area/lv624/lazarus/corporate_dome)
-"cmU" = (
-/obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/science,
-/turf/open/floor/greengrid,
-/area/lv624/lazarus/secure_storage)
 "cng" = (
 /obj/structure/stairs/perspective{
 	color = "#6b675e";
@@ -15266,6 +15260,12 @@
 	icon_state = "warning"
 	},
 /area/lv624/lazarus/landing_zones/lz1)
+"fDA" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/plating{
+	icon_state = "platebotc"
+	},
+/area/lv624/lazarus/quartstorage/outdoors)
 "fDO" = (
 /obj/structure/flora/jungle/plantbot1{
 	icon_state = "alienplant1";
@@ -17409,6 +17409,13 @@
 	icon_state = "grass2"
 	},
 /area/lv624/ground/jungle/east_jungle)
+"ldw" = (
+/obj/structure/surface/table/reinforced,
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
+/turf/open/floor/greengrid,
+/area/lv624/lazarus/secure_storage)
 "ldB" = (
 /obj/structure/flora/grass/tallgrass/jungle/corner{
 	dir = 4
@@ -17895,6 +17902,10 @@
 	},
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/north_east_jungle)
+"mlA" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/wood,
+/area/lv624/ground/jungle/west_jungle)
 "mmu" = (
 /obj/structure/flora/jungle/plantbot1,
 /turf/open/gm/grass,
@@ -18062,11 +18073,6 @@
 	icon_state = "grassdirt_corner2"
 	},
 /area/lv624/ground/colony/south_medbay_road)
-"mHW" = (
-/obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/far,
-/turf/open/floor/greengrid,
-/area/lv624/lazarus/secure_storage)
 "mIs" = (
 /obj/structure/flora/jungle/vines{
 	icon_state = "light_3"
@@ -18454,6 +18460,14 @@
 	icon_state = "wood-broken6"
 	},
 /area/lv624/ground/caves/north_central_caves)
+"nxq" = (
+/obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	dir = 8;
+	icon_state = "vault"
+	},
+/area/lv624/lazarus/quartstorage)
 "nxu" = (
 /obj/effect/decal/cleanable/blood/drip,
 /turf/open/floor{
@@ -18701,16 +18715,6 @@
 	icon_state = "whiteyellowfull"
 	},
 /area/lv624/ground/caves/sand_temple)
-"nRg" = (
-/obj/structure/surface/table/holotable,
-/obj/structure/machinery/computer/objective{
-	dir = 5
-	},
-/turf/open/floor{
-	dir = 5;
-	icon_state = "whitepurple"
-	},
-/area/lv624/lazarus/research)
 "nSg" = (
 /obj/structure/window/framed/colony,
 /turf/open/floor{
@@ -19243,6 +19247,11 @@
 	icon_state = "grass2"
 	},
 /area/lv624/ground/barrens/south_eastern_jungle_barrens)
+"oWP" = (
+/obj/structure/surface/rack,
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/greengrid,
+/area/lv624/lazarus/secure_storage)
 "oXl" = (
 /turf/open/gm/dirtgrassborder{
 	dir = 8
@@ -19765,6 +19774,13 @@
 /obj/structure/machinery/colony_floodlight,
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/east_jungle)
+"qdd" = (
+/obj/structure/largecrate/random,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/plating{
+	icon_state = "platebotc"
+	},
+/area/lv624/lazarus/quartstorage/outdoors)
 "qdQ" = (
 /obj/structure/machinery/colony_floodlight,
 /turf/open/gm/grass,
@@ -20578,13 +20594,6 @@
 	icon_state = "vault"
 	},
 /area/lv624/lazarus/quartstorage)
-"sfn" = (
-/obj/structure/surface/table/reinforced,
-/obj/structure/machinery/computer/objective{
-	dir = 4
-	},
-/turf/open/floor/greengrid,
-/area/lv624/lazarus/secure_storage)
 "sfH" = (
 /obj/structure/inflatable,
 /turf/open/gm/dirt,
@@ -20788,14 +20797,6 @@
 /obj/structure/flora/bush/ausbushes/var3/brflowers,
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/south_central_jungle)
-"sEW" = (
-/obj/structure/surface/rack,
-/obj/effect/landmark/objective_landmark/medium,
-/turf/open/floor{
-	dir = 8;
-	icon_state = "vault"
-	},
-/area/lv624/lazarus/quartstorage)
 "sFc" = (
 /obj/structure/flora/bush/ausbushes/var3/stalkybush,
 /turf/open/gm/river,
@@ -21523,6 +21524,16 @@
 	},
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/north_east_jungle)
+"uft" = (
+/obj/structure/surface/table/holotable,
+/obj/structure/machinery/computer/objective{
+	dir = 5
+	},
+/turf/open/floor{
+	dir = 5;
+	icon_state = "whitepurple"
+	},
+/area/lv624/lazarus/research)
 "ufG" = (
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_wall,
 /obj/effect/landmark/structure_spawner/setup/distress/xeno_wall,
@@ -21904,6 +21915,14 @@
 /obj/structure/flora/bush/ausbushes/reedbush,
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/north_east_jungle)
+"vbU" = (
+/obj/structure/closet,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	dir = 9;
+	icon_state = "purple"
+	},
+/area/lv624/lazarus/sleep_female)
 "vcY" = (
 /obj/structure/machinery/colony_floodlight,
 /turf/open/gm/grass,
@@ -22484,6 +22503,14 @@
 /obj/structure/flora/bush/ausbushes/var3/leafybush,
 /turf/open/gm/grass,
 /area/lv624/ground/jungle/east_central_jungle)
+"wAX" = (
+/obj/structure/largecrate/random,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	dir = 9;
+	icon_state = "brown"
+	},
+/area/lv624/lazarus/comms)
 "wBS" = (
 /obj/item/clothing/suit/armor/yautja_flavor,
 /turf/open/floor/sandstone/runed,
@@ -22890,6 +22917,13 @@
 /obj/effect/landmark/lv624/fog_blocker,
 /turf/open/gm/dirt,
 /area/lv624/ground/river/west_river)
+"xvd" = (
+/obj/structure/flora/bush/ausbushes/var3/brflowers,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/gm/grass{
+	icon_state = "grass2"
+	},
+/area/lv624/lazarus/yggdrasil)
 "xvN" = (
 /obj/structure/barricade/handrail/strata{
 	dir = 1
@@ -23217,6 +23251,7 @@
 /area/lv624/ground/colony/south_nexus_road)
 "ylI" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor{
 	dir = 10;
 	icon_state = "whiteyellow"
@@ -29090,7 +29125,7 @@ aBn
 aqS
 aFQ
 aug
-ayX
+mlA
 avo
 aFQ
 axX
@@ -30277,7 +30312,7 @@ aTf
 aTf
 aTf
 aTf
-sfn
+ldw
 aWR
 aUj
 aTf
@@ -30734,7 +30769,7 @@ aUQ
 aUQ
 vUO
 aUQ
-mHW
+oWP
 aUQ
 vUO
 aUQ
@@ -31190,9 +31225,9 @@ aUQ
 aUQ
 vUO
 aUQ
-cmU
-aUQ
 aZt
+aUQ
+ayX
 aUQ
 aUQ
 aYs
@@ -38942,7 +38977,7 @@ aQn
 aQn
 aQn
 aQn
-aSg
+wAX
 aSg
 aPT
 ooM
@@ -41856,7 +41891,7 @@ udP
 udP
 udP
 asU
-nRg
+uft
 aum
 auY
 asT
@@ -43488,7 +43523,7 @@ aKF
 aLf
 aLN
 aLM
-cdI
+xvd
 aOv
 aPh
 aPV
@@ -51444,7 +51479,7 @@ fjM
 fjM
 fjM
 azx
-aIB
+vbU
 aAA
 aBa
 aBD
@@ -54624,7 +54659,7 @@ asA
 asj
 asj
 ask
-ask
+fDA
 ask
 ask
 avx
@@ -55541,7 +55576,7 @@ ask
 ask
 ask
 atd
-atd
+qdd
 cfD
 cfD
 apu
@@ -57361,7 +57396,7 @@ axa
 ati
 tfA
 aub
-sEW
+nxq
 ati
 awY
 ati
