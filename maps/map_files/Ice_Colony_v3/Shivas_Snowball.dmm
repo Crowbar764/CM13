@@ -1125,6 +1125,7 @@
 	dir = 1;
 	pixel_y = 9
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	dir = 1;
 	icon_state = "wred"
@@ -1162,6 +1163,7 @@
 /area/shiva/interior/colony/research_hab)
 "aeA" = (
 /obj/structure/closet/wardrobe/chaplain_black,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor{
 	icon_state = "wood"
 	},
@@ -1369,6 +1371,7 @@
 "afE" = (
 /obj/structure/surface/table,
 /obj/item/stack/nanopaste,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "wred"
@@ -1395,6 +1398,7 @@
 	},
 /area/shiva/interior/colony/medseceng)
 "afN" = (
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	dir = 4;
 	icon_state = "purplefull"
@@ -1554,6 +1558,13 @@
 /obj/structure/bed/chair/comfy/black,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/medseceng)
+"agv" = (
+/obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	icon_state = "wred"
+	},
+/area/shiva/interior/colony/medseceng)
 "agw" = (
 /obj/structure/bed/chair{
 	dir = 8;
@@ -1598,6 +1609,12 @@
 /area/shiva/interior/colony/medseceng)
 "agC" = (
 /obj/effect/landmark/structure_spawner/xvx_hive/xeno_core,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/colony/medseceng)
+"agI" = (
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 1
 	},
@@ -1686,6 +1703,7 @@
 /area/shiva/interior/colony/medseceng)
 "ahq" = (
 /obj/structure/filingcabinet/security,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/medseceng)
 "aht" = (
@@ -2094,6 +2112,7 @@
 /area/shiva/interior/colony/medseceng)
 "ajg" = (
 /obj/structure/closet/toolcloset,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	dir = 6;
 	icon_state = "yellow"
@@ -2615,6 +2634,7 @@
 "amn" = (
 /obj/structure/surface/rack,
 /obj/item/tool/crowbar,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "wredfull"
 	},
@@ -2676,6 +2696,7 @@
 /obj/structure/surface/table,
 /obj/item/weapon/gun/shotgun/pump/cmb,
 /obj/item/ammo_magazine/handful/shotgun/incendiary,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/interior/plastic,
 /area/shiva/interior/warehouse)
 "amJ" = (
@@ -3631,6 +3652,7 @@
 	pixel_x = -2;
 	pixel_y = 8
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 6;
 	icon_state = "multi_tiles"
@@ -3949,6 +3971,7 @@
 /area/shiva/interior/valley_huts/disposals)
 "ava" = (
 /obj/structure/closet/secure_closet/engineering_welding,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "yellow"
 	},
@@ -4506,6 +4529,7 @@
 /area/shiva/interior/garage)
 "azH" = (
 /obj/structure/closet/toolcloset,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "yellow"
@@ -4931,6 +4955,7 @@
 "aDE" = (
 /obj/structure/closet/crate,
 /obj/item/tool/shovel/snow,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -5309,6 +5334,18 @@
 	},
 /turf/open/auto_turf/snow/layer2,
 /area/shiva/exterior/cp_lz2)
+"aHV" = (
+/obj/structure/filingcabinet{
+	pixel_x = -8
+	},
+/obj/structure/filingcabinet{
+	pixel_x = 8
+	},
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/aerodrome)
 "aIh" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/stack/barbed_wire,
@@ -5417,6 +5454,12 @@
 	dir = 8
 	},
 /turf/open/floor/wood,
+/area/shiva/interior/aerodrome)
+"aKj" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/shuttle/dropship{
+	icon_state = "rasputin14"
+	},
 /area/shiva/interior/aerodrome)
 "aKk" = (
 /obj/structure/prop/invuln/ice_prefab/standalone/trim{
@@ -5592,6 +5635,7 @@
 /area/shiva/exterior/cp_lz2)
 "aLO" = (
 /obj/structure/surface/table/woodentable,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/shiva/interior/bar)
 "aLZ" = (
@@ -5753,6 +5797,7 @@
 "aMT" = (
 /obj/structure/surface/table/woodentable,
 /obj/item/trash/chunk,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -5892,6 +5937,7 @@
 /obj/structure/filingcabinet{
 	pixel_x = 8
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -6055,6 +6101,13 @@
 	icon_state = "multi_tiles"
 	},
 /area/shiva/interior/colony/s_admin)
+"aQd" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/lz2_habs)
 "aQg" = (
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/shiva{
@@ -6155,6 +6208,7 @@
 	dir = 8;
 	pixel_y = -5
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "purplefull"
 	},
@@ -6419,6 +6473,7 @@
 /area/shiva/interior/colony/research_hab)
 "aTT" = (
 /obj/structure/closet/secure_closet/engineering_personal,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 1
 	},
@@ -6431,6 +6486,9 @@
 /area/shiva/exterior/cp_lz2)
 "aTZ" = (
 /obj/structure/surface/table,
+/obj/structure/machinery/computer/objective{
+	dir = 8
+	},
 /turf/open/floor/wood,
 /area/shiva/interior/colony/medseceng)
 "aUc" = (
@@ -7197,6 +7255,7 @@
 	icon_state = "jensenshades";
 	name = "augmented shades"
 	},
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/auto_turf/snow/layer0,
 /area/shiva/interior/bar)
 "bcE" = (
@@ -7301,6 +7360,7 @@
 	pixel_x = -8;
 	pixel_y = 4
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating,
 /area/shiva/interior/bar)
 "bfy" = (
@@ -7729,6 +7789,18 @@
 /obj/item/reagent_container/food/drinks/flask/vacuumflask,
 /turf/open/floor/shiva,
 /area/shiva/interior/colony/research_hab)
+"bEJ" = (
+/obj/structure/filingcabinet{
+	pixel_x = 8;
+	pixel_y = 4
+	},
+/obj/structure/filingcabinet{
+	pixel_x = -8;
+	pixel_y = 4
+	},
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/plating,
+/area/shiva/interior/colony/central)
 "bFb" = (
 /obj/effect/decal/cleanable/blood{
 	icon_state = "xtracks";
@@ -8126,6 +8198,13 @@
 	icon_state = "yellow"
 	},
 /area/shiva/interior/garage)
+"bYj" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	dir = 1;
+	icon_state = "multi_tiles"
+	},
+/area/shiva/interior/colony/research_hab)
 "bYk" = (
 /obj/structure/closet/secure_closet/medical3{
 	req_access = null
@@ -8404,6 +8483,13 @@
 "crJ" = (
 /turf/open/auto_turf/ice/layer1,
 /area/shiva/interior/caves/medseceng_caves)
+"crK" = (
+/obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/colony/central)
 "cse" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "E-corner";
@@ -8462,6 +8548,12 @@
 	},
 /turf/open/floor/shiva,
 /area/shiva/interior/colony/s_admin)
+"cwb" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/lz2_habs)
 "cwZ" = (
 /turf/open/auto_turf/snow/layer0,
 /area/shiva/interior/warehouse/caves)
@@ -8517,6 +8609,7 @@
 /turf/open/auto_turf/snow/layer3,
 /area/shiva/exterior/cp_colony_grounds)
 "cAW" = (
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/plating,
 /area/shiva/interior/valley_huts/disposals)
 "cAZ" = (
@@ -9244,6 +9337,10 @@
 	},
 /turf/open/auto_turf/snow/layer3,
 /area/shiva/exterior/junkyard)
+"doX" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/auto_turf/ice/layer1,
+/area/shiva/interior/colony/central)
 "dpF" = (
 /obj/structure/flora/bush/snow{
 	icon_state = "snowgrassbb_3";
@@ -9490,6 +9587,11 @@
 "dJS" = (
 /obj/item/powerloader_clamp,
 /turf/open/auto_turf/ice/layer1,
+/area/shiva/interior/colony/research_hab)
+"dKx" = (
+/obj/structure/closet/crate,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/plating,
 /area/shiva/interior/colony/research_hab)
 "dKL" = (
 /obj/structure/flora/bush/snow{
@@ -9920,6 +10022,12 @@
 /obj/item/reagent_container/food/snacks/meat,
 /turf/open/floor/prison,
 /area/shiva/interior/bar)
+"elX" = (
+/obj/structure/closet/cabinet,
+/obj/item/clothing/under/colonist,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/wood,
+/area/shiva/interior/colony/botany)
 "emd" = (
 /turf/open/floor/shiva{
 	icon_state = "radiator_tile"
@@ -10349,6 +10457,7 @@
 "eOK" = (
 /obj/structure/closet/cabinet,
 /obj/item/clothing/under/redpyjamas,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/botany)
 "eOM" = (
@@ -10611,6 +10720,7 @@
 /area/shiva/interior/colony/research_hab)
 "fgK" = (
 /obj/structure/closet/crate,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating,
 /area/shiva/interior/colony/research_hab)
 "fhd" = (
@@ -10817,6 +10927,7 @@
 /area/shiva/interior/aerodrome)
 "fuj" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/medseceng)
 "fun" = (
@@ -10890,6 +11001,11 @@
 	icon_state = "wredfull"
 	},
 /area/shiva/interior/colony/medseceng)
+"fyV" = (
+/obj/vehicle/train/cargo/trolley,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/asphalt/cement,
+/area/shiva/interior/warehouse)
 "fze" = (
 /obj/item/frame/apc,
 /turf/open/floor/shiva{
@@ -10919,6 +11035,7 @@
 /area/shiva/interior/colony/botany)
 "fBg" = (
 /obj/structure/closet/wardrobe/green,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "greenfull"
 	},
@@ -11195,6 +11312,7 @@
 "fPA" = (
 /obj/effect/decal/cleanable/blood/gibs,
 /obj/structure/closet/cabinet,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/botany)
 "fPD" = (
@@ -11388,6 +11506,7 @@
 /area/shiva/interior/colony/central)
 "gcF" = (
 /obj/structure/closet/coffin,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -11518,6 +11637,7 @@
 /area/shiva/interior/colony/research_hab)
 "ghU" = (
 /obj/structure/closet/crate/trashcart,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "redfull"
@@ -11681,6 +11801,7 @@
 	name = "mail bins";
 	pixel_y = 14
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -11753,6 +11874,13 @@
 	},
 /turf/open/auto_turf/ice/layer0,
 /area/shiva/interior/caves/cp_camp)
+"gwi" = (
+/obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/colony/central)
 "gwq" = (
 /obj/structure/bed/chair/comfy/blue,
 /turf/open/floor/shiva{
@@ -11805,6 +11933,7 @@
 /obj/structure/filingcabinet,
 /obj/item/paper/research_notes,
 /obj/item/paper/research_notes,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/central)
 "gzM" = (
@@ -11879,6 +12008,14 @@
 	},
 /turf/closed/wall/shiva/ice,
 /area/shiva/interior/caves/cp_camp)
+"gEl" = (
+/obj/structure/surface/rack,
+/obj/item/circuitboard/airalarm,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/colony/medseceng)
 "gFb" = (
 /obj/structure/surface/table,
 /obj/structure/window{
@@ -11971,6 +12108,7 @@
 	dir = 8;
 	pixel_y = -5
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -12176,12 +12314,14 @@
 /area/shiva/interior/caves/s_lz2)
 "gSb" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 1
 	},
 /area/shiva/interior/colony/n_admin)
 "gSG" = (
 /obj/effect/decal/cleanable/blood/drip,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "wred"
@@ -12415,6 +12555,7 @@
 /obj/structure/filingcabinet/filingcabinet{
 	name = "mail bins"
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -12584,6 +12725,13 @@
 	icon_state = "multi_tiles"
 	},
 /area/shiva/exterior/lz2_fortress)
+"huu" = (
+/obj/structure/morgue{
+	dir = 8
+	},
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/plating,
+/area/shiva/interior/colony/central)
 "huv" = (
 /obj/structure/barricade/handrail/wire{
 	dir = 8;
@@ -12829,6 +12977,7 @@
 /area/shiva/interior/oob/dev_room)
 "hFJ" = (
 /obj/structure/closet,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -12921,6 +13070,12 @@
 /obj/structure/machinery/door/airlock/almayer/maint/autoname,
 /turf/open/floor/plating,
 /area/shiva/interior/colony/central)
+"hKF" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	icon_state = "bluefull"
+	},
+/area/shiva/interior/colony/s_admin)
 "hKR" = (
 /turf/open/floor/shiva{
 	dir = 1;
@@ -12972,6 +13127,13 @@
 	icon_state = "multi_tiles"
 	},
 /area/shiva/interior/colony/research_hab)
+"hOS" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/colony/medseceng)
 "hPp" = (
 /turf/closed/wall/shiva/prefabricated/orange,
 /area/shiva/interior/caves/cp_camp)
@@ -13212,6 +13374,14 @@
 	dir = 1
 	},
 /area/shiva/interior/colony/botany)
+"iar" = (
+/obj/structure/closet/secure_closet/security,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	dir = 8;
+	icon_state = "redfull"
+	},
+/area/shiva/interior/colony/medseceng)
 "iaK" = (
 /obj/structure/bed/chair/comfy/beige,
 /turf/open/floor/shiva,
@@ -13440,6 +13610,20 @@
 /obj/effect/decal/cleanable/blood/oil/streak,
 /turf/open/auto_turf/snow/layer0,
 /area/shiva/interior/warehouse)
+"ioG" = (
+/obj/structure/filingcabinet{
+	pixel_x = 8;
+	pixel_y = 4
+	},
+/obj/structure/filingcabinet{
+	pixel_x = -8;
+	pixel_y = 4
+	},
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/shiva{
+	icon_state = "yellowfull"
+	},
+/area/shiva/interior/colony/research_hab)
 "ipc" = (
 /obj/vehicle/train/cargo/trolley,
 /turf/open/auto_turf/snow/layer0,
@@ -13523,6 +13707,11 @@
 /obj/structure/platform/strata,
 /turf/open/gm/river,
 /area/shiva/exterior/cp_lz2)
+"ise" = (
+/obj/structure/bed,
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/wood,
+/area/shiva/interior/colony/botany)
 "isr" = (
 /obj/structure/bed/chair/office/light{
 	dir = 4;
@@ -13540,6 +13729,7 @@
 /area/shiva/interior/colony/central)
 "itG" = (
 /obj/structure/closet/secure_closet/security,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	dir = 10;
 	icon_state = "red"
@@ -13641,6 +13831,7 @@
 /area/shiva/interior/colony/medseceng)
 "ivS" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "redfull"
 	},
@@ -13658,6 +13849,7 @@
 /area/shiva/interior/colony/central)
 "ixo" = (
 /obj/structure/closet/secure_closet/personal,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/central)
 "ixC" = (
@@ -14083,6 +14275,12 @@
 	icon_state = "kitchen"
 	},
 /area/shiva/interior/bar)
+"iWD" = (
+/obj/structure/closet/cabinet,
+/obj/item/clothing/under/colonist,
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/wood,
+/area/shiva/interior/colony/botany)
 "iWO" = (
 /obj/structure/machinery/vending/coffee,
 /turf/open/floor/shiva{
@@ -14273,6 +14471,7 @@
 "jcv" = (
 /obj/structure/surface/table,
 /obj/item/clothing/suit/armor/hos,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "redfull"
@@ -14460,6 +14659,7 @@
 "jqT" = (
 /obj/structure/closet/firecloset,
 /obj/item/explosive/grenade/HE/PMC,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "redfull"
 	},
@@ -14485,6 +14685,7 @@
 /area/shiva/exterior/cp_lz2)
 "jsn" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/central)
 "jsA" = (
@@ -14748,6 +14949,7 @@
 /area/shiva/exterior/junkyard)
 "jLn" = (
 /obj/structure/closet/secure_closet/engineering_welding,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/shiva{
 	icon_state = "yellowfull"
 	},
@@ -14823,6 +15025,7 @@
 /obj/structure/machinery/light/small{
 	dir = 1
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/plating,
 /area/shiva/interior/bar)
 "jQe" = (
@@ -14993,6 +15196,7 @@
 	dir = 1;
 	flipped = 1
 	},
+/obj/structure/machinery/computer/objective,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -15055,6 +15259,7 @@
 "kce" = (
 /obj/structure/surface/rack,
 /obj/item/stack/sheet/metal/medium_stack,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "yellowfull"
 	},
@@ -15189,6 +15394,7 @@
 	pixel_y = 24
 	},
 /obj/structure/closet/secure_closet/detective,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/medseceng)
 "kiF" = (
@@ -15307,6 +15513,7 @@
 	pixel_x = -24
 	},
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -15584,6 +15791,11 @@
 	icon_state = "multi_tiles"
 	},
 /area/shiva/exterior/lz2_fortress)
+"kEj" = (
+/obj/structure/closet/coffin,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/plating,
+/area/shiva/interior/colony/central)
 "kEs" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/shiva,
@@ -15949,6 +16161,9 @@
 /area/shiva/exterior/cp_s_research)
 "kVe" = (
 /obj/structure/surface/table,
+/obj/structure/machinery/computer/objective{
+	dir = 4
+	},
 /turf/open/floor/shiva,
 /area/shiva/interior/colony/research_hab)
 "kVs" = (
@@ -16238,6 +16453,7 @@
 /area/shiva/interior/caves/s_lz2)
 "lnY" = (
 /obj/structure/closet/secure_closet/engineering_electrical,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	icon_state = "yellowfull"
 	},
@@ -16365,6 +16581,7 @@
 /area/shiva/exterior/cp_lz2)
 "lsk" = (
 /obj/structure/closet/secure_closet/freezer/fridge,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -16632,6 +16849,14 @@
 	icon_state = "greencorners"
 	},
 /area/shiva/interior/colony/botany)
+"lKY" = (
+/obj/structure/surface/table/reinforced/prison,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	dir = 8;
+	icon_state = "bluefull"
+	},
+/area/shiva/interior/aerodrome)
 "lLv" = (
 /obj/structure/machinery/power/port_gen/pacman,
 /turf/open/floor/plating,
@@ -16687,6 +16912,7 @@
 /area/shiva/interior/colony/medseceng)
 "lOO" = (
 /obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 4;
 	icon_state = "yellow"
@@ -16695,6 +16921,7 @@
 "lOT" = (
 /obj/structure/bed,
 /obj/item/bedsheet/orange,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 10;
 	icon_state = "red"
@@ -16745,6 +16972,7 @@
 /area/shiva/exterior/cp_lz2)
 "lRI" = (
 /obj/structure/largecrate/random/mini/med,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -16791,6 +17019,7 @@
 /area/shiva/exterior/lz1_valley)
 "lUQ" = (
 /obj/structure/closet/toolcloset,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 1;
 	icon_state = "yellow"
@@ -16856,6 +17085,22 @@
 	icon_state = "chapel"
 	},
 /area/shiva/interior/colony/central)
+"lXe" = (
+/obj/structure/prop/invuln{
+	desc = "The mounting points are ground down from heavy use. They'll need some maintenance work before they can be used again.";
+	icon = 'icons/obj/structures/props/almayer_props.dmi';
+	icon_state = "equip_base";
+	name = "shuttle attachment point"
+	},
+/obj/structure/machinery/light{
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
+	},
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/shuttle{
+	icon_state = "floor7"
+	},
+/area/shiva/interior/aerodrome)
 "lXj" = (
 /turf/open/floor/shiva{
 	dir = 8;
@@ -17060,6 +17305,12 @@
 	icon_state = "redfull"
 	},
 /area/shiva/interior/colony/medseceng)
+"mfl" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/colony/botany)
 "mfr" = (
 /turf/open/floor/shiva{
 	dir = 4;
@@ -17073,6 +17324,12 @@
 	icon_state = "floor3"
 	},
 /area/shiva/interior/lz2_habs)
+"mgD" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/caves/cp_camp)
 "mgL" = (
 /obj/item/weapon/gun/energy/taser,
 /obj/structure/machinery/light/double{
@@ -17123,6 +17380,11 @@
 	icon_state = "yellow"
 	},
 /area/shiva/interior/colony/research_hab)
+"miY" = (
+/obj/structure/bed,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/wood,
+/area/shiva/interior/colony/botany)
 "mjV" = (
 /obj/structure/largecrate/random/case/small,
 /turf/open/floor/plating,
@@ -17187,6 +17449,7 @@
 "mqd" = (
 /obj/structure/filingcabinet,
 /obj/item/paper/research_notes,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "bluefull"
 	},
@@ -17641,6 +17904,13 @@
 "mMK" = (
 /turf/open/auto_turf/snow/layer4,
 /area/shiva/exterior/cp_lz2)
+"mMR" = (
+/obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/shiva{
+	icon_state = "bluefull"
+	},
+/area/shiva/interior/colony/central)
 "mNs" = (
 /obj/structure/platform/strata,
 /turf/open/auto_turf/snow/layer2,
@@ -17809,6 +18079,7 @@
 /area/shiva/interior/colony/medseceng)
 "mWA" = (
 /obj/structure/closet/secure_closet/freezer/fridge,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "multi_tiles"
 	},
@@ -18096,6 +18367,7 @@
 /area/shiva/exterior/cp_lz2)
 "nnG" = (
 /obj/structure/filingcabinet/security,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/shiva{
 	dir = 6;
 	icon_state = "red"
@@ -18424,6 +18696,7 @@
 "nIB" = (
 /obj/structure/surface/table,
 /obj/item/device/taperecorder,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "redfull"
@@ -18585,6 +18858,11 @@
 	},
 /turf/open/auto_turf/snow/layer0,
 /area/shiva/interior/colony/central)
+"nQH" = (
+/obj/structure/closet/bodybag,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/plating/plating_catwalk/shiva,
+/area/shiva/interior/bar)
 "nRy" = (
 /obj/structure/window/reinforced/tinted{
 	dir = 8;
@@ -18709,6 +18987,7 @@
 /area/shiva/interior/warehouse/caves)
 "nZM" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "bluefull"
 	},
@@ -18833,6 +19112,7 @@
 /area/shiva/exterior/junkyard)
 "ofK" = (
 /obj/structure/closet/secure_closet/security,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 1
 	},
@@ -18912,6 +19192,13 @@
 /obj/item/device/pinpointer,
 /turf/open/floor/shiva{
 	icon_state = "bluefull"
+	},
+/area/shiva/interior/colony/s_admin)
+"omd" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
 	},
 /area/shiva/interior/colony/s_admin)
 "omu" = (
@@ -19073,6 +19360,13 @@
 	},
 /turf/closed/wall/shiva/ice,
 /area/shiva/interior/caves/cp_camp)
+"ouT" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/shiva{
+	icon_state = "redfull"
+	},
+/area/shiva/interior/colony/n_admin)
 "ovc" = (
 /turf/open/floor/carpet,
 /area/shiva/interior/colony/medseceng)
@@ -19334,6 +19628,7 @@
 "oKM" = (
 /obj/structure/closet/cabinet,
 /obj/item/clothing/under/assistantformal,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/botany)
 "oLr" = (
@@ -19425,6 +19720,12 @@
 /obj/item/lightstick/red/variant/planted,
 /turf/open/auto_turf/snow/layer0,
 /area/shiva/exterior/lz1_valley)
+"oWa" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/lz2_habs)
 "oWk" = (
 /obj/structure/barricade/deployable{
 	dir = 1
@@ -19578,6 +19879,13 @@
 	},
 /turf/open/auto_turf/snow/layer0,
 /area/shiva/exterior/cp_colony_grounds)
+"pdu" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/colony/medseceng)
 "peb" = (
 /obj/structure/flora/bush/ausbushes/lavendergrass,
 /turf/open/auto_turf/snow/layer3,
@@ -19646,6 +19954,13 @@
 	icon_state = "floor3"
 	},
 /area/shiva/interior/aerodrome)
+"pix" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	dir = 8;
+	icon_state = "redfull"
+	},
+/area/shiva/interior/colony/medseceng)
 "piW" = (
 /obj/structure/machinery/vending/snack,
 /turf/open/floor/shiva{
@@ -19696,6 +20011,7 @@
 /area/shiva/exterior/cp_s_research)
 "pmz" = (
 /obj/structure/closet/secure_closet/personal,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -19790,6 +20106,7 @@
 /area/shiva/exterior/cp_colony_grounds)
 "pth" = (
 /obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -19848,6 +20165,7 @@
 /area/shiva/interior/colony/s_admin)
 "puT" = (
 /obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -20115,6 +20433,12 @@
 	},
 /turf/open/auto_turf/ice/layer1,
 /area/shiva/interior/caves/s_lz2)
+"pEL" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/exterior/lz2_fortress)
 "pFd" = (
 /obj/structure/machinery/light/double,
 /turf/open/floor/shiva{
@@ -20161,6 +20485,7 @@
 /area/shiva/interior/caves/cp_camp)
 "pHz" = (
 /obj/structure/closet/secure_closet/personal,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 10;
 	icon_state = "red"
@@ -20262,6 +20587,7 @@
 	pixel_y = 8
 	},
 /obj/item/trash/cigbutt,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/plating,
 /area/shiva/interior/bar)
 "pLf" = (
@@ -20314,6 +20640,12 @@
 	icon_state = "kitchen"
 	},
 /area/shiva/interior/bar)
+"pMP" = (
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/colony/research_hab)
 "pMV" = (
 /obj/structure/prop/ice_colony/ground_wire{
 	dir = 4
@@ -20516,6 +20848,7 @@
 	pixel_y = 7
 	},
 /obj/structure/surface/table,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/auto_turf/ice/layer1,
 /area/shiva/interior/caves/cp_camp)
 "pWw" = (
@@ -20734,6 +21067,7 @@
 	flipped = 1
 	},
 /obj/effect/decal/cleanable/blood/splatter,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -20782,6 +21116,7 @@
 	name = "mail bins";
 	pixel_y = 14
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -20805,6 +21140,7 @@
 /obj/item/folder/black{
 	pixel_y = 8
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/interior/plastic/alt,
 /area/shiva/interior/warehouse)
 "qof" = (
@@ -20958,6 +21294,7 @@
 /obj/structure/closet/secure_closet/medical3{
 	req_access_txt = "100"
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	dir = 9;
 	icon_state = "wred"
@@ -21112,6 +21449,7 @@
 /area/shiva/interior/colony/medseceng)
 "qGN" = (
 /obj/structure/closet/crate/trashcart,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/auto_turf/snow/layer3,
 /area/shiva/exterior/cp_colony_grounds)
 "qIr" = (
@@ -21172,6 +21510,13 @@
 "qKA" = (
 /obj/structure/barricade/handrail/wire,
 /turf/open/auto_turf/ice/layer0,
+/area/shiva/interior/caves/cp_camp)
+"qLd" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	dir = 4;
+	icon_state = "snow_mat"
+	},
 /area/shiva/interior/caves/cp_camp)
 "qLA" = (
 /obj/structure/machinery/door/airlock/almayer/maint/autoname{
@@ -21418,6 +21763,18 @@
 	icon_state = "radiator_tile"
 	},
 /area/shiva/exterior/lz2_fortress)
+"qXd" = (
+/obj/structure/filingcabinet{
+	pixel_x = -8
+	},
+/obj/structure/filingcabinet{
+	pixel_x = 8
+	},
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/aerodrome)
 "qXk" = (
 /obj/item/clipboard,
 /turf/open/floor/shiva{
@@ -21748,11 +22105,26 @@
 	dir = 8;
 	pixel_y = -5
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "wred"
 	},
 /area/shiva/interior/colony/medseceng)
+"rqQ" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/shiva{
+	dir = 8;
+	icon_state = "redfull"
+	},
+/area/shiva/interior/colony/research_hab)
+"rrc" = (
+/obj/structure/closet/wardrobe/chaplain_black,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor{
+	icon_state = "wood"
+	},
+/area/shiva/interior/colony/central)
 "rti" = (
 /obj/structure/surface/table,
 /obj/item/tool/pen/blue{
@@ -22117,6 +22489,7 @@
 "rRO" = (
 /obj/structure/machinery/light/double,
 /obj/structure/closet/secure_closet/personal,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	icon_state = "red"
 	},
@@ -22762,6 +23135,12 @@
 	icon_state = "floor3"
 	},
 /area/shiva/interior/colony/research_hab)
+"sCm" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/colony/central)
 "sFj" = (
 /obj/structure/largecrate/random/case/double,
 /turf/open/auto_turf/ice/layer1,
@@ -22775,11 +23154,13 @@
 /obj/item/folder/black{
 	pixel_y = 8
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/interior/plastic,
 /area/shiva/interior/warehouse)
 "sFR" = (
 /obj/structure/closet,
 /obj/item/newspaper,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -22796,6 +23177,7 @@
 "sGI" = (
 /obj/structure/closet/secure_closet/freezer/fridge,
 /obj/item/clothing/head/cakehat,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -23116,6 +23498,7 @@
 "taq" = (
 /obj/item/tool/kitchen/rollingpin,
 /obj/structure/surface/table/reinforced/prison,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "kitchen";
 	tag = "icon-kitchen"
@@ -23158,6 +23541,20 @@
 	},
 /turf/open/floor/interior/plastic,
 /area/shiva/interior/warehouse)
+"tdr" = (
+/obj/structure/filingcabinet{
+	pixel_x = 8;
+	pixel_y = 4
+	},
+/obj/structure/filingcabinet{
+	pixel_x = -8;
+	pixel_y = 4
+	},
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	icon_state = "yellowfull"
+	},
+/area/shiva/interior/colony/research_hab)
 "tds" = (
 /obj/structure/bed/chair{
 	dir = 1;
@@ -23268,6 +23665,11 @@
 /obj/structure/fence,
 /turf/open/auto_turf/snow/layer3,
 /area/shiva/exterior/junkyard)
+"tje" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/wood,
+/area/shiva/interior/colony/medseceng)
 "tkb" = (
 /obj/structure/surface/table,
 /obj/item/tool/pen/blue,
@@ -23368,6 +23770,7 @@
 	pixel_x = -3;
 	pixel_y = 8
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -23549,6 +23952,7 @@
 /area/shiva/interior/colony/central)
 "txA" = (
 /obj/structure/filingcabinet/security,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 6;
 	icon_state = "red"
@@ -24608,6 +25012,11 @@
 	},
 /turf/closed/wall/shiva/ice,
 /area/shiva/interior/caves/s_lz2)
+"uwB" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/wood,
+/area/shiva/interior/colony/central)
 "uwS" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -24679,6 +25088,7 @@
 /area/shiva/exterior/lz1_valley)
 "uAq" = (
 /obj/structure/surface/table/reinforced/prison,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -24721,6 +25131,10 @@
 	icon_state = "kitchen"
 	},
 /area/shiva/interior/colony/central)
+"uDT" = (
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/interior/plastic/alt,
+/area/shiva/interior/warehouse)
 "uEo" = (
 /obj/structure/platform/strata,
 /obj/item/lightstick/variant/planted,
@@ -24775,6 +25189,7 @@
 	dir = 8;
 	pixel_y = -5
 	},
+/obj/effect/landmark/objective_landmark/far,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -24869,6 +25284,7 @@
 	pixel_x = -14;
 	pixel_y = 14
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -24924,6 +25340,7 @@
 	req_access_txt = "100"
 	},
 /obj/item/paper/research_notes,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 8;
 	icon_state = "wred"
@@ -25266,6 +25683,7 @@
 /area/shiva/interior/colony/medseceng)
 "vdb" = (
 /obj/structure/closet/secure_closet/freezer/meat,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -25335,6 +25753,13 @@
 	icon_state = "red"
 	},
 /area/shiva/interior/colony/medseceng)
+"veE" = (
+/obj/structure/closet/coffin,
+/obj/effect/landmark/objective_landmark/far,
+/turf/open/floor/shiva{
+	icon_state = "floor3"
+	},
+/area/shiva/interior/colony/central)
 "veS" = (
 /obj/structure/largecrate/random/case/double,
 /turf/open/floor/plating,
@@ -25522,6 +25947,20 @@
 	},
 /turf/closed/wall/shiva/prefabricated/reinforced/hull,
 /area/shiva/exterior/lz2_fortress)
+"voI" = (
+/obj/structure/filingcabinet{
+	pixel_x = 8;
+	pixel_y = 4
+	},
+/obj/structure/filingcabinet{
+	pixel_x = -8;
+	pixel_y = 4
+	},
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/shiva{
+	icon_state = "yellowfull"
+	},
+/area/shiva/interior/colony/research_hab)
 "vpZ" = (
 /obj/item/tool/wet_sign,
 /turf/open/floor/shiva{
@@ -25535,6 +25974,9 @@
 /area/shiva/interior/colony/central)
 "vqw" = (
 /obj/structure/surface/table,
+/obj/structure/machinery/computer/objective{
+	dir = 8
+	},
 /turf/open/floor/shiva{
 	dir = 4;
 	icon_state = "yellow"
@@ -25629,6 +26071,7 @@
 "vxW" = (
 /obj/structure/filingcabinet,
 /obj/item/paper/research_notes,
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/shiva{
 	icon_state = "floor3"
 	},
@@ -25660,6 +26103,7 @@
 	dir = 4
 	},
 /obj/structure/largecrate/random/mini/med,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/auto_turf/snow/layer3,
 /area/shiva/exterior/junkyard/fortbiceps)
 "vAp" = (
@@ -25740,6 +26184,10 @@
 	icon_state = "bluefull"
 	},
 /area/shiva/interior/colony/s_admin)
+"vDv" = (
+/obj/effect/landmark/objective_landmark/medium,
+/turf/open/floor/plating,
+/area/shiva/interior/colony/medseceng)
 "vDB" = (
 /obj/structure/barricade/metal{
 	dir = 4
@@ -25757,6 +26205,13 @@
 /obj/structure/prop/ice_colony/surveying_device,
 /turf/open/auto_turf/snow/layer3,
 /area/shiva/exterior/junkyard/cp_bar)
+"vEJ" = (
+/obj/structure/filingcabinet,
+/obj/effect/landmark/objective_landmark/close,
+/turf/open/floor/shiva{
+	dir = 1
+	},
+/area/shiva/interior/colony/medseceng)
 "vEN" = (
 /obj/structure/largecrate/random/mini/wooden{
 	pixel_x = -16;
@@ -26786,6 +27241,7 @@
 	pixel_x = 6;
 	pixel_y = 11
 	},
+/obj/effect/landmark/objective_landmark/science,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -26865,6 +27321,7 @@
 "xde" = (
 /obj/structure/closet/cabinet,
 /obj/item/clothing/under/bluepyjamas,
+/obj/effect/landmark/objective_landmark/medium,
 /turf/open/floor/wood,
 /area/shiva/interior/colony/botany)
 "xdT" = (
@@ -27149,6 +27606,7 @@
 	dir = 1;
 	pixel_y = -24
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	icon_state = "red"
 	},
@@ -27291,6 +27749,7 @@
 	dir = 1;
 	pixel_y = 24
 	},
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/prison{
 	icon_state = "kitchen"
 	},
@@ -27345,6 +27804,10 @@
 "xNO" = (
 /turf/open/auto_turf/snow/layer4,
 /area/shiva/exterior/research_alley)
+"xNW" = (
+/obj/effect/landmark/objective_landmark/science,
+/turf/open/floor/plating,
+/area/shiva/interior/caves/research_caves)
 "xOb" = (
 /turf/open/floor/plating/plating_catwalk/shiva,
 /area/shiva/interior/bar)
@@ -27500,6 +27963,7 @@
 /area/shiva/exterior/cp_colony_grounds)
 "xXV" = (
 /obj/structure/closet/secure_closet/engineering_welding,
+/obj/effect/landmark/objective_landmark/close,
 /turf/open/floor/shiva{
 	dir = 1
 	},
@@ -28204,9 +28668,9 @@ aac
 vZj
 wil
 aac
-pth
+aQd
 liD
-pth
+aQd
 sPn
 aac
 aac
@@ -28670,7 +29134,7 @@ puZ
 puZ
 aac
 aPg
-cce
+cwb
 odz
 uwv
 xQJ
@@ -30242,7 +30706,7 @@ fwv
 goj
 bXo
 chU
-vKu
+rqQ
 vKu
 wnK
 vKu
@@ -31615,7 +32079,7 @@ iuK
 iuK
 iuK
 iuK
-iuK
+pEL
 uFA
 dkP
 tEr
@@ -32333,7 +32797,7 @@ dRb
 lSU
 rHO
 rHO
-fgK
+dKx
 lSU
 chU
 gAV
@@ -34613,7 +35077,7 @@ uKo
 rZt
 wjK
 goj
-chU
+bYj
 goj
 asz
 agm
@@ -35901,10 +36365,10 @@ nOB
 rMI
 rMI
 asz
-kbZ
+ioG
 wdy
 dTU
-wnK
+pMP
 dTU
 twc
 fNE
@@ -35941,7 +36405,7 @@ amu
 amu
 amu
 fXX
-fXX
+xNW
 fXX
 amu
 puZ
@@ -36063,11 +36527,11 @@ wnK
 dTU
 pkK
 asz
-kbZ
+tdr
 chU
 kbZ
 chU
-kbZ
+voI
 chU
 fNE
 uvU
@@ -36227,9 +36691,9 @@ wnK
 asz
 kbZ
 chU
-kbZ
+voI
 sHf
-kbZ
+ioG
 chU
 ogu
 rZt
@@ -36387,7 +36851,7 @@ rMI
 rMI
 rMI
 asz
-kbZ
+tdr
 wnK
 dTU
 wnK
@@ -36772,7 +37236,7 @@ ffn
 ffn
 ryZ
 txS
-pth
+aQd
 anc
 gJI
 aEJ
@@ -37059,7 +37523,7 @@ jrg
 jrg
 jrg
 amu
-fXX
+xNW
 fXX
 fXX
 fXX
@@ -37096,7 +37560,7 @@ bwJ
 bwJ
 rZj
 txS
-pth
+aQd
 aEd
 ayc
 qta
@@ -37737,7 +38201,7 @@ puZ
 anc
 kbl
 xQJ
-xQJ
+oWa
 nTC
 odz
 bsM
@@ -41072,7 +41536,7 @@ hPp
 hPp
 quO
 pwT
-mnZ
+qLd
 sud
 ggC
 hPp
@@ -41394,7 +41858,7 @@ ntJ
 wMh
 bni
 jOi
-jOi
+mgD
 jOi
 jOi
 jOi
@@ -43456,7 +43920,7 @@ gwq
 mkK
 mqt
 rBH
-wZW
+ise
 fiK
 rBH
 gsK
@@ -43788,7 +44252,7 @@ hKR
 vNJ
 nur
 hul
-vmy
+mfl
 pSM
 rBH
 rBH
@@ -43977,7 +44441,7 @@ uhL
 uhL
 uhL
 gIq
-owD
+omd
 nOd
 rAH
 xgc
@@ -44580,7 +45044,7 @@ hLf
 azZ
 sCc
 uzP
-ivS
+ouT
 ivS
 hLf
 stN
@@ -45272,7 +45736,7 @@ uhL
 hyu
 hyu
 tWn
-hyu
+hKF
 hyu
 cvs
 vxb
@@ -45838,7 +46302,7 @@ ffj
 axz
 aiE
 aAg
-ndR
+sCm
 jqY
 jqY
 ndR
@@ -46370,7 +46834,7 @@ mdx
 stN
 tFk
 fiK
-pNy
+iWD
 rBH
 eOK
 fiK
@@ -46534,7 +46998,7 @@ rBH
 gKQ
 wZW
 rBH
-wZW
+miY
 gKQ
 rBH
 qng
@@ -47018,7 +47482,7 @@ stN
 rBH
 gKQ
 fiK
-wZW
+miY
 rBH
 wZW
 fiK
@@ -47214,8 +47678,8 @@ fkF
 aOW
 akX
 uhL
-owD
-owD
+omd
+omd
 aOW
 raQ
 cZk
@@ -47316,7 +47780,7 @@ jvT
 djn
 djn
 doc
-aeA
+rrc
 axz
 pMs
 bsp
@@ -47344,7 +47808,7 @@ ecZ
 ecZ
 uzU
 rBH
-pNy
+elX
 fiK
 fiK
 tFk
@@ -47774,7 +48238,7 @@ puZ
 "}
 (125,1,1) = {"
 aad
-aAi
+gwi
 qrz
 jqY
 jqY
@@ -47883,7 +48347,7 @@ aRm
 qXS
 xOb
 tnu
-kPZ
+nQH
 aKK
 xCA
 eCg
@@ -48284,7 +48748,7 @@ axz
 qDJ
 bks
 bks
-bks
+huu
 wQR
 axz
 ndR
@@ -48605,7 +49069,7 @@ xha
 xha
 veS
 axz
-kuY
+bEJ
 xha
 xha
 vyM
@@ -48774,7 +49238,7 @@ xha
 xha
 vBg
 ndR
-gcF
+veE
 axz
 sqy
 bsp
@@ -48932,7 +49396,7 @@ axz
 mru
 rZP
 hTk
-nCx
+kEj
 nCx
 vBg
 ndR
@@ -49070,7 +49534,7 @@ puZ
 "}
 (133,1,1) = {"
 aad
-aAi
+crK
 qrz
 jqY
 jqY
@@ -50369,7 +50833,7 @@ aad
 ajD
 apF
 apG
-apG
+doX
 apG
 jFy
 nfe
@@ -50721,7 +51185,7 @@ axz
 hJH
 axz
 jsn
-jsn
+uwB
 tfd
 hin
 axz
@@ -51176,7 +51640,7 @@ puZ
 "}
 (146,1,1) = {"
 aad
-ajN
+mMR
 qrz
 jqY
 jqY
@@ -51838,7 +52302,7 @@ aek
 arA
 acT
 acT
-vXh
+vEJ
 vXh
 vXh
 mEV
@@ -52101,7 +52565,7 @@ aYf
 baY
 bdk
 aWS
-bYO
+lXe
 aWQ
 dbH
 uyI
@@ -52611,7 +53075,7 @@ rdS
 axJ
 axJ
 axJ
-hAS
+uDT
 pKf
 iYC
 huz
@@ -53061,7 +53525,7 @@ aKQ
 bKV
 bKV
 omu
-aOb
+aHV
 uji
 uji
 pvv
@@ -53224,7 +53688,7 @@ bKV
 bKV
 aNg
 bKV
-aOb
+qXd
 uji
 snX
 fRg
@@ -53476,7 +53940,7 @@ uSn
 uSn
 sJP
 acT
-axG
+pix
 pyI
 axG
 acT
@@ -55167,7 +55631,7 @@ oQl
 uKZ
 hsw
 aNp
-afd
+lKY
 oYH
 oYH
 pvv
@@ -55227,7 +55691,7 @@ puZ
 (171,1,1) = {"
 acH
 amX
-ajO
+vDv
 acT
 afx
 uSn
@@ -55740,7 +56204,7 @@ ceS
 uXQ
 acT
 ylO
-uSn
+agI
 jxJ
 acT
 acT
@@ -55878,7 +56342,7 @@ ajO
 ajO
 ajO
 acT
-amh
+iar
 all
 axG
 acT
@@ -55984,7 +56448,7 @@ pvv
 aTi
 aUy
 aVL
-aWS
+aKj
 aVL
 aVL
 aVL
@@ -56014,7 +56478,7 @@ eSN
 akF
 alS
 aMW
-ans
+fyV
 dQq
 axJ
 axJ
@@ -57207,7 +57671,7 @@ uSn
 uXQ
 acT
 bzZ
-ajK
+gEl
 ajK
 uXQ
 aDn
@@ -58972,10 +59436,10 @@ eAZ
 eAZ
 eAZ
 acT
-vXh
-vXh
-vXh
-vXh
+hOS
+pdu
+vEJ
+hOS
 acT
 eAZ
 qDT
@@ -59305,7 +59769,7 @@ qlk
 eAZ
 acT
 bVz
-fuj
+tje
 fuj
 acT
 bjb
@@ -59928,7 +60392,7 @@ bhS
 dbQ
 pAB
 dbQ
-kRI
+agv
 bhS
 pAB
 sHc
@@ -60449,7 +60913,7 @@ uZf
 hms
 xEw
 acT
-ajO
+vDv
 pAB
 pAB
 pAB
